@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by S.Gianfranceschi (ESA - European Space Agency) -->
+<xs:schema targetNamespace="http://www.cosmoskymed.it/Search" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cosmoskymed.it/Search" elementFormDefault="qualified">
+	<xs:element name="Directory">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DirectoryReply">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ServiceRequestDiagnostic">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatusCode">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="SUCCESS"/>
+												<xs:enumeration value="FAILURE"/>
+												<xs:enumeration value="WARNING"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatusInfo" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CollectionInfo" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Collection">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CollectionType">
+											<xs:complexType>
+												<xs:attribute name="Value" use="required">
+													<xs:simpleType>
+														<xs:restriction base="xs:NMTOKEN">
+															<xs:enumeration value="R"/>
+															<xs:enumeration value="P"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="CollectionIdentifier">
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="ProductCollection">
+														<xs:complexType>
+															<xs:attribute name="ProductType" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="RawdataCollection">
+														<xs:complexType>
+															<xs:attribute name="SatelliteId" type="xs:string" use="required"/>
+															<xs:attribute name="SensorId" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Description" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ProviderName" type="xs:string"/>
+							<xs:element name="LocalRemote">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="L"/>
+												<xs:enumeration value="R"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="OriginatorMirror">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="L"/>
+												<xs:enumeration value="R"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Guide">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Collection" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CollectionType">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="R"/>
+												<xs:enumeration value="P"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CollectionIdentifier">
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="ProductCollection">
+											<xs:complexType>
+												<xs:attribute name="ProductType" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="RawdataCollection">
+											<xs:complexType>
+												<xs:attribute name="SatelliteId" type="xs:string" use="required"/>
+												<xs:attribute name="SensorId" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Description" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ReturnMetadataDescription">
+					<xs:complexType>
+						<xs:attribute name="Value" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:enumeration value="Y"/>
+									<xs:enumeration value="N"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GuideReply">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ServiceRequestDiagnostic">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatusCode">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="SUCCESS"/>
+												<xs:enumeration value="FAILURE"/>
+												<xs:enumeration value="WARNING"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatusInfo" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GuideResult" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CollectionSummary" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CollectionTagValues" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Tag" type="xs:string" use="required"/>
+												<xs:attribute name="Value" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="MetadataDescriptor" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Name" type="xs:string"/>
+										<xs:element name="Description" type="xs:string" minOccurs="0"/>
+										<xs:element name="MinValue" type="xs:double" minOccurs="0"/>
+										<xs:element name="MaxValue" type="xs:double" minOccurs="0"/>
+										<xs:element name="Valids" type="xs:string" minOccurs="0"/>
+										<xs:element name="Length" type="xs:int"/>
+										<xs:element name="Precision" type="xs:int" minOccurs="0"/>
+										<xs:element name="IsKey" type="xs:boolean"/>
+										<xs:element name="IsSearchable" type="xs:boolean"/>
+										<xs:element name="IsRetrievableBrief" type="xs:boolean"/>
+										<xs:element name="Operations" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Operation" maxOccurs="7">
+														<xs:complexType>
+															<xs:attribute name="Value" use="required">
+																<xs:simpleType>
+																	<xs:restriction base="xs:NMTOKEN">
+																		<xs:enumeration value="eq"/>
+																		<xs:enumeration value="le"/>
+																		<xs:enumeration value="ge"/>
+																		<xs:enumeration value="lt"/>
+																		<xs:enumeration value="gt"/>
+																		<xs:enumeration value="range"/>
+																		<xs:enumeration value="like"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Units" type="xs:string" minOccurs="0"/>
+										<xs:element name="Type" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Inventory">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InventoryType">
+					<xs:complexType>
+						<xs:attribute name="Value" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:enumeration value="S"/>
+									<xs:enumeration value="B"/>
+									<xs:enumeration value="F"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Collection" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CollectionType">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="R"/>
+												<xs:enumeration value="P"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CollectionIdentifier">
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="ProductCollection">
+											<xs:complexType>
+												<xs:attribute name="ProductType" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="RawdataCollection">
+											<xs:complexType>
+												<xs:attribute name="SatelliteId" type="xs:string" use="required"/>
+												<xs:attribute name="SensorId" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Description" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SearchCriteria" type="xs:string"/>
+				<xs:element name="IsThumbnailRequired" type="xs:boolean"/>
+				<xs:element name="IsQuicklookRequired" type="xs:boolean"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="InventoryReply">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PMId" type="xs:string" minOccurs="0"/>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ServiceRequestDiagnostic">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatusCode">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="SUCCESS"/>
+												<xs:enumeration value="FAILURE"/>
+												<xs:enumeration value="WARNING"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatusInfo" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InventoryType">
+					<xs:complexType>
+						<xs:attribute name="Value" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:enumeration value="S"/>
+									<xs:enumeration value="B"/>
+									<xs:enumeration value="F"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InventoryResult" minOccurs="0">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="FoundElements" type="xs:short"/>
+							<xs:element name="ProductList" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TagValues" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Tag" type="xs:string" use="required"/>
+												<xs:attribute name="Value" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Thumbnail" minOccurs="0">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="MimeType" type="xs:string" use="required"/>
+														<xs:attribute name="Name" type="xs:string" use="required"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="QuickLookId" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GroupCoregInterf" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="GroupId" type="xs:unsignedInt"/>
+							<xs:element name="CoregInterfKeyName">
+								<xs:complexType>
+									<xs:attribute name="Value" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:enumeration value="LinkedCoregisteredData"/>
+												<xs:enumeration value="TandemInterfCouple"/>
+												<xs:enumeration value="LinkedRepeatedTrackInterf"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="LinkedRecordNumbers">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="RecordNumbers" type="xs:unsignedInt" maxOccurs="unbounded"/>
+										<xs:element name="MasterRecordNumber" type="xs:unsignedInt" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Quicklook">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceRequestId">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionId" type="xs:string"/>
+							<xs:element name="RequestId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QuicklookId" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="QuicklookReply">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="QuicklookAttachment" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
