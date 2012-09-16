@@ -107,7 +107,7 @@ public class SearchPanel extends JPanel implements ItemListener {
     add(scrollPane, gbc_scrollPane);
 
     timeOpCombo = new JComboBox<String>();
-    timeOpCombo.setModel(new DefaultComboBoxModel(new String[] { "Contained in", "Overlaps", "After", "Before" }));
+    timeOpCombo.setModel(new DefaultComboBoxModel<String>(new String[] { "Contained in", "Overlaps", "After", "Before" }));
     timeOpCombo.setEnabled(false);
     GridBagConstraints gbc_timeOpCombo = new GridBagConstraints();
     gbc_timeOpCombo.anchor = GridBagConstraints.NORTHWEST;
@@ -182,7 +182,7 @@ public class SearchPanel extends JPanel implements ItemListener {
         paramsLayout.show(spatialParamsPanels, pname);
       }
     });
-    spatOpCombo.setModel(new DefaultComboBoxModel(paramsPanels));
+    spatOpCombo.setModel(new DefaultComboBoxModel<String>(paramsPanels));
     GridBagConstraints gbc_spatOpCombo = new GridBagConstraints();
     gbc_spatOpCombo.anchor = GridBagConstraints.NORTHWEST;
     gbc_spatOpCombo.insets = new Insets(0, 0, 5, 0);
