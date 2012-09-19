@@ -10,7 +10,6 @@ package gov.nasa.worldwindx.examples.util;
 import gov.nasa.worldwind.*;
 import gov.nasa.worldwind.avlist.*;
 import gov.nasa.worldwind.event.*;
-import gov.nasa.worldwindx.examples.ApplicationTemplate;
 import gov.nasa.worldwind.layers.*;
 import gov.nasa.worldwind.util.*;
 
@@ -179,11 +178,26 @@ public class ToolTipController implements SelectListener, Disposable
     protected void addLayer(Layer layer)
     {
         if (!this.wwd.getModel().getLayers().contains(layer))
-            ApplicationTemplate.insertBeforeCompass(this.wwd, layer);
+            ToolTipController.insertBeforeCompass(this.wwd, layer);
     }
 
     protected void removeLayer(Layer layer)
     {
         this.wwd.getModel().getLayers().remove(layer);
     }
+    
+    // copied from ApplicationTemplate.java to avoid dependency
+    public static void insertBeforeCompass(WorldWindow wwd, Layer layer)
+    {
+        // Insert the layer into the layer list just before the compass.
+        int compassPosition = 0;
+        LayerList layers = wwd.getModel().getLayers();
+        for (Layer l : layers)
+        {
+            if (l instanceof CompassLayer)
+                compassPosition = layers.indexOf(l);
+        }
+        layers.add(compassPosition, layer);
+    }
+
 }

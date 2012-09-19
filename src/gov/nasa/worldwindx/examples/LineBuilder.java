@@ -366,32 +366,4 @@ public class LineBuilder extends AVListImpl
                 pointLabels[i++].setText("");
         }
     }
-
-    /**
-     * Marked as deprecated to keep it out of the javadoc.
-     *
-     * @deprecated
-     */
-    public static class AppFrame extends ApplicationTemplate.AppFrame
-    {
-        public AppFrame()
-        {
-            super(true, false, false);
-
-            LineBuilder lineBuilder = new LineBuilder(this.getWwd(), null, null);
-            this.getContentPane().add(new LinePanel(this.getWwd(), lineBuilder), BorderLayout.WEST);
-        }
-    }
-
-    /**
-     * Marked as deprecated to keep it out of the javadoc.
-     *
-     * @param args the arguments passed to the program.
-     * @deprecated
-     */
-    public static void main(String[] args)
-    {
-        //noinspection deprecation
-        ApplicationTemplate.start("World Wind Line Builder", LineBuilder.AppFrame.class);
-    }
 }
