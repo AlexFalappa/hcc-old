@@ -43,8 +43,9 @@ import java.net.URL;
 import javax.swing.SwingConstants;
 
 /**
- * 
- * @author aim
+ * Utility class.
+ * <p>Contains static utility methods.
+ * @author Alessandro Falappa
  */
 public class Utilities {
 
@@ -141,6 +142,12 @@ public class Utilities {
         + (blue.length() == 1 ? "0" + blue : blue);
   }
 
+  /**
+	 * Prints color components
+	 * 
+	 * @param key
+	 * @param color
+	 */
   public static void printColor(String key, Color color) {
     float hsb[] = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
     System.out.println(key + ": RGB=" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "  " + "HSB="
