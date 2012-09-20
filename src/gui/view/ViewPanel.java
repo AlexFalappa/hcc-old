@@ -3,23 +3,18 @@ package gui.view;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
-import gui.DetailDialog;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import main.App;
 
 public class ViewPanel extends JPanel {
 
@@ -39,7 +34,6 @@ public class ViewPanel extends JPanel {
   private Component verticalGlue;
   private JPanel pProjection;
   private JLabel lblMode;
-  private JButton btnShowDetails;
 
   /**
    * Create the panel.
@@ -188,21 +182,6 @@ public class ViewPanel extends JPanel {
     gbc_lblMode.gridx = 0;
     gbc_lblMode.gridy = 16;
     add(lblMode, gbc_lblMode);
-    btnShowDetails = new JButton("Show details...");
-    btnShowDetails.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        DetailDialog d = new DetailDialog();
-        d.setLocationRelativeTo(App.frame);
-        d.setModal(true);
-        d.setVisible(true);
-      }
-    });
-    GridBagConstraints gbc_btnShowDetails = new GridBagConstraints();
-    gbc_btnShowDetails.gridwidth = 2;
-    gbc_btnShowDetails.insets = new Insets(0, 0, 5, 0);
-    gbc_btnShowDetails.gridx = 0;
-    gbc_btnShowDetails.gridy = 18;
-    add(btnShowDetails, gbc_btnShowDetails);
 
     verticalGlue = Box.createVerticalGlue();
     GridBagConstraints gbc_verticalGlue = new GridBagConstraints();
