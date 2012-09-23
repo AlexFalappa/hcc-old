@@ -36,7 +36,7 @@ public class AboutDialog extends JDialog {
     lblTheApplication.setFont(new Font("Dialog", Font.BOLD, 18));
     lblTheApplication.setAlignmentX(Component.CENTER_ALIGNMENT);
     contentPanel.add(lblTheApplication);
-    JLabel lblVersion = new JLabel("version 0.4.5");//TODO make a global constant
+    JLabel lblVersion = new JLabel("version 0.5");//TODO make a global constant
     lblVersion.setAlignmentX(Component.CENTER_ALIGNMENT);
     contentPanel.add(lblVersion);
     Component verticalStrut = Box.createVerticalStrut(20);
