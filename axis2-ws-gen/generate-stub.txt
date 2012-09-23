@@ -1,9 +1,9 @@
 In a terminal (adjust paths according to your environment):
 
 $> JAVA_HOME=/usr/lib/jvm/java-6-sun
-$> AXIS2_HOME=/home/sasha/Sviluppo/apache-axis2-1.6.1
+$> AXIS2_HOME=/home/sasha/Sviluppo/apache-axis2-1.6.2
 $> cd $AXIS2_HOME/bin
-$> source wsdl2java.sh -o /home/sasha/Sviluppo/gitrepos/hcc/caxis2-ws-gen -s -d xmlbeans -uri /home/sasha/Sviluppo/gitrepos/hcc/caxis2-ws-gen/schemas/hma/catalogue/0.2.4/catalogue.wsdl
+$> source wsdl2java.sh -o /home/sasha/Sviluppo/gitrepos/hcc/axis2-ws-gen -s -d xmlbeans -uri /home/sasha/Sviluppo/gitrepos/hcc/axis2-ws-gen/schemas/hma/catalogue/0.2.4/catalogue.wsdl
 
 Adjust the axis home path in the generated ant build file /home/sasha/Sviluppo/gitrepos/hcc/axis2-ws-gen/build.xml then execute target "jar.client" 
 The service client stub complete with xml data binding classes will be output in /home/sasha/Sviluppo/gitrepos/hcc/axis2-ws-gen/build/lib/catalogue-test-client.jar
