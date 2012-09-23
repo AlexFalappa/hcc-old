@@ -165,40 +165,4 @@ public class CapabilitiesDialog extends JDialog {
     worker.execute();
     setVisible(true);
   }
-
-  public static void main(String[] args) {
-    try {
-      BasicConfigurator.configure();
-      CatalogueStub stub = new CatalogueStub("http://localhost:8088/mockcatalogueSOAP");
-      GetCapabilitiesDocument capReq = GetCapabilitiesDocument.Factory.parse(new File(
-          "/home/sasha/Sviluppo/eclipsespace/hcc/requests/capabilities.xml"));
-      CapabilitiesDocument capDoc = stub.getCapabilities(capReq);
-      XmlObject[] res = capDoc
-          .selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[contains(@name,'parentIdentifier')]");
-      ArrayList<String> collections = new ArrayList<String>();
-      if (res.length > 0) {
-        XmlCursor xc = res[0].newCursor();
-        xc.toChild("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ValueList");
-        if (xc.toFirstChild()) {
-          // at first <Value> tag
-          collections.add(xc.getTextValue());
-          // iterate on sibling <Value> tags
-          while (xc.toNextSibling()) {
-            collections.add(xc.getTextValue());
-          }
-        }
-        xc.dispose();
-      }
-      System.out.println(collections);
-    } catch (RemoteException e) {
-      e.printStackTrace();
-    } catch (ServiceExceptionReportFault e) {
-      e.printStackTrace();
-    } catch (XmlException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-  }
 }

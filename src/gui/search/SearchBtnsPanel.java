@@ -152,12 +152,12 @@ public class SearchBtnsPanel extends JPanel {
       int start = (Integer) spinFromRecord.getValue();
       root.setStartPosition(BigInteger.valueOf(start));
       logger.info("Sending GetRecords HITS request");
-      System.out.println("Richiesta");
-      System.out.println(reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
+      logger.finer("Request message:");
+      logger.finer(reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
       CatalogueStub st = App.frame.getWebServStub();
       GetRecordsResponseDocument respDoc = st.getRecords(reqDoc);
       logger.info("Received GetRecords HITS response");
-      System.out.println("Risposta salvata in:" + dumpToTempFile(respDoc, "hits-"));
+      logger.fine("Response saved in:" + dumpToTempFile(respDoc, "hits-"));
       // extract hits
       BigInteger hits = respDoc.getGetRecordsResponse().getSearchResults().getNumberOfRecordsMatched();
       // present hits and ask if user wants to retrieve them
@@ -214,12 +214,12 @@ public class SearchBtnsPanel extends JPanel {
       int start = (Integer) spinFromRecord.getValue();
       root.setStartPosition(BigInteger.valueOf(start));
       logger.info("Sending GetRecords RESULTS request");
-      System.out.println("Richiesta");
-      System.out.println(reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
+      logger.finer("Request message:");
+      logger.finer(reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
       CatalogueStub st = App.frame.getWebServStub();
       GetRecordsResponseDocument respDoc = st.getRecords(reqDoc);
       logger.info("Received GetRecords RESULTS response");
-      System.out.println("Risposta salvata in:" + dumpToTempFile(respDoc, "results-"));
+      logger.fine("Response saved in:" + dumpToTempFile(respDoc, "results-"));
       XmlObject[] res = respDoc.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
       if (res.length > 0) {
         App.frame.footprints.removeAllRenderables();

@@ -83,8 +83,8 @@ public class App {
   }
 
   private static void configureLoggers() {
-    Logger.getLogger(LOGGER_MAIN).setLevel(Level.FINEST);
-    Logger.getLogger(LOGGER_GUI).setLevel(Level.FINEST);
+    Logger.getLogger(LOGGER_MAIN).setLevel(Level.FINE);
+    Logger.getLogger(LOGGER_GUI).setLevel(Level.FINE);
     Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
     Logger.getLogger("").getHandlers()[0].setFormatter(new OneLineFormatter());
   }

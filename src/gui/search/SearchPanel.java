@@ -5,7 +5,6 @@ import gui.search.params.CirclePanel;
 import gui.search.params.DateTimePanel;
 import gui.search.params.LonLatRangePanel;
 import gui.search.params.PolygonPanel;
-
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
-
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -28,14 +26,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
-
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-
 import wwind.AOILayer;
 
 public class SearchPanel extends JPanel implements ItemListener {
@@ -107,7 +102,8 @@ public class SearchPanel extends JPanel implements ItemListener {
     add(scrollPane, gbc_scrollPane);
 
     timeOpCombo = new JComboBox<String>();
-    timeOpCombo.setModel(new DefaultComboBoxModel<String>(new String[] { "Contained in", "Overlaps", "After", "Before" }));
+    timeOpCombo.setModel(new DefaultComboBoxModel<String>(new String[] { "Contained in",
+        "Overlaps", "After", "Before" }));
     timeOpCombo.setEnabled(false);
     GridBagConstraints gbc_timeOpCombo = new GridBagConstraints();
     gbc_timeOpCombo.anchor = GridBagConstraints.NORTHWEST;
@@ -261,15 +257,17 @@ public class SearchPanel extends JPanel implements ItemListener {
       // short circuit if no collection selected
       if (selectedValues.length == 0)
         return null;
-      System.out.println("Collezioni selezionate:");
-      for (Object ob : selectedValues) {
-        System.out.println(ob);
-      }
-      System.out.println();
+      // log selected collections
+      StringBuilder sb = new StringBuilder("Selected collections: ");
+      for (Object ob : selectedValues)
+        sb.append(ob).append(',');
+      logger.fine(sb.toString());
       if (selectedValues.length > 1) {
         // multicollection
-        req = GetRecordsDocument.Factory.parse(this.getClass().getResourceAsStream("xml/getrecords-multi-template.xml"));
-        XmlObject[] res = req.selectPath("declare namespace ogc='http://www.opengis.net/ogc' .//ogc:Or");
+        req = GetRecordsDocument.Factory.parse(this.getClass().getResourceAsStream(
+            "xml/getrecords-multi-template.xml"));
+        XmlObject[] res = req
+            .selectPath("declare namespace ogc='http://www.opengis.net/ogc' .//ogc:Or");
         if (res.length > 0) {
           XmlCursor xc = res[0].newCursor();
           xc.toEndToken();
@@ -281,7 +279,8 @@ public class SearchPanel extends JPanel implements ItemListener {
         }
       } else {
         // single collection
-        req = GetRecordsDocument.Factory.parse(this.getClass().getResourceAsStream("xml/getrecords-single-template.xml"));
+        req = GetRecordsDocument.Factory.parse(this.getClass().getResourceAsStream(
+            "xml/getrecords-single-template.xml"));
         XmlObject[] res = req
             .selectPath("declare namespace ogc='http://www.opengis.net/ogc' .//ogc:PropertyIsEqualTo[contains(ogc:PropertyName[1],'parentIdentifier')]");
         if (res.length > 0) {
@@ -292,23 +291,23 @@ public class SearchPanel extends JPanel implements ItemListener {
         }
       }
       // place a cursor just before the </ogc:And> tag
-      XmlObject[] res = req.selectPath("declare namespace ogc='http://www.opengis.net/ogc' .//ogc:And");
+      XmlObject[] res = req
+          .selectPath("declare namespace ogc='http://www.opengis.net/ogc' .//ogc:And");
       XmlCursor xc = res[0].newCursor();
       xc.toEndToken();
       if (chckbxTimeConstraints.isSelected()) {
-        System.out.println("Vincoli temporali");
         Date from = dtpFrom.getDateTime();
         Date to = dtpTo.getDateTime();
-        System.out.println(from);
-        System.out.println(to);
-        System.out.println();
+        sb = new StringBuilder("Temporal constraints: from ");
+        sb.append(dtpFrom).append(" to ").append(dtpTo);
+        logger.finer(sb.toString());
         addTemporalConstraintsBlock(xc, (String) timeOpCombo.getSelectedItem(), from, to);
       }
       if (chckbxSpatialConstraints.isSelected()) {
-        System.out.println("Vincoli spaziali");
-        System.out.println(spatOpCombo.getSelectedItem());
-        System.out.println(polygonPanel.getPosList());
-        System.out.println();
+        sb = new StringBuilder("Spatial constraints: ");
+        sb.append(spatOpCombo.getSelectedItem()).append(" coords ");
+        sb.append(polygonPanel.getPosList());
+        logger.finer(sb.toString());
         addSpatialConstraintsBlock(xc, (String) spatOpCombo.getSelectedItem());
       }
       xc.dispose();
