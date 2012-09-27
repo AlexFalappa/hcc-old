@@ -1,7 +1,6 @@
 package gui.search;
 
 import gov.nasa.worldwind.geom.LatLon;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +14,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-
 import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
@@ -33,7 +30,6 @@ import net.opengis.www.cat.csw._2_0_2.GetRecordsType;
 import net.opengis.www.cat.csw._2_0_2.ResultType;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 import net.opengis.www.cat.wrs._1_0.ServiceExceptionReportFault;
-
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -142,7 +138,8 @@ public class SearchBtnsPanel extends JPanel {
     try {
       GetRecordsDocument reqDoc = searchPanel.extractFromPanel();
       if (reqDoc == null) {
-        JOptionPane.showMessageDialog(App.frame, "No collection selected!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(App.frame, "No collection selected!", "Error",
+            JOptionPane.ERROR_MESSAGE);
         return;
       }
       GetRecordsType root = reqDoc.getGetRecords();
@@ -159,19 +156,27 @@ public class SearchBtnsPanel extends JPanel {
       logger.info("Received GetRecords HITS response");
       logger.fine("Response saved in:" + dumpToTempFile(respDoc, "hits-"));
       // extract hits
-      BigInteger hits = respDoc.getGetRecordsResponse().getSearchResults().getNumberOfRecordsMatched();
-      // present hits and ask if user wants to retrieve them
-      int choice = JOptionPane.showConfirmDialog(App.frame, "Search would return " + String.valueOf(hits)
-          + " products.\nRetrieve them?", "Hits", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-      if (choice == JOptionPane.YES_OPTION) {
-        spinMaxRecord.setValue(hits.intValue());
-        doResults();
+      BigInteger hits = respDoc.getGetRecordsResponse().getSearchResults()
+          .getNumberOfRecordsMatched();
+      if (hits.intValue() > 0) {
+        // present hits and ask if user wants to retrieve them
+        int choice = JOptionPane.showConfirmDialog(App.frame,
+            "Search would return " + String.valueOf(hits) + " products.\nRetrieve them?", "Hits",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (choice == JOptionPane.YES_OPTION) {
+          spinMaxRecord.setValue(hits.intValue());
+          doResults();
+        }
+      } else {
+        // present a simple information dialog
+        JOptionPane.showMessageDialog(App.frame, "Search would return no hits!", "Hits",
+            JOptionPane.INFORMATION_MESSAGE);
       }
     } catch (RemoteException e1) {
       e1.printStackTrace();
     } catch (ServiceExceptionReportFault e1) {
-      JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport().getExceptionArray(0)
-          .getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport()
+          .getExceptionArray(0).getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
       logger.warning("Catalogue error message: " + e1.getFaultMessage());
     }
     // 20 random circles
@@ -204,7 +209,8 @@ public class SearchBtnsPanel extends JPanel {
     try {
       GetRecordsDocument reqDoc = searchPanel.extractFromPanel();
       if (reqDoc == null) {
-        JOptionPane.showMessageDialog(App.frame, "No collection selected!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(App.frame, "No collection selected!", "Error",
+            JOptionPane.ERROR_MESSAGE);
         return;
       }
       GetRecordsType root = reqDoc.getGetRecords();
@@ -220,7 +226,8 @@ public class SearchBtnsPanel extends JPanel {
       GetRecordsResponseDocument respDoc = st.getRecords(reqDoc);
       logger.info("Received GetRecords RESULTS response");
       logger.fine("Response saved in:" + dumpToTempFile(respDoc, "results-"));
-      XmlObject[] res = respDoc.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
+      XmlObject[] res = respDoc
+          .selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
       if (res.length > 0) {
         App.frame.footprints.removeAllRenderables();
       }
@@ -261,8 +268,8 @@ public class SearchBtnsPanel extends JPanel {
     } catch (RemoteException e1) {
       e1.printStackTrace();
     } catch (ServiceExceptionReportFault e1) {
-      JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport().getExceptionArray(0)
-          .getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport()
+          .getExceptionArray(0).getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
       logger.warning("Catalogue error message: " + e1.getFaultMessage());
     }
   }
