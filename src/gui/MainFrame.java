@@ -13,6 +13,7 @@ import gui.search.SearchPanel;
 import gui.view.ViewPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
@@ -55,6 +57,7 @@ public class MainFrame extends JFrame {
 	public AOILayer aois;
 	private JComboBox<String> catalogueCombo;
 	private JTabbedPane tabbedPane;
+	private JScrollPane scroller;
 
 	/**
 	 * Create the frame.
@@ -137,7 +140,10 @@ public class MainFrame extends JFrame {
 		searchPanel = new SearchPanel();
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		searchPanel.linkTo(wwCanvas, aois);
-		tabbedPane.addTab("Search", null, searchPanel, null);
+		
+		scroller=new JScrollPane(searchPanel);
+		scroller.setBorder(null);
+		tabbedPane.addTab("Search", null, scroller, null);
 
 		ViewPanel layerPanel = new ViewPanel();
 		layerPanel.linkTo(wwCanvas);
@@ -145,8 +151,8 @@ public class MainFrame extends JFrame {
 
 		JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				tabbedPane, globePanel);
-		splitter.setDividerSize(8);
-		splitter.setOneTouchExpandable(true);
+		splitter.setDividerSize(6);
+		splitter.setOneTouchExpandable(false);
 		splitter.setUI(new BasicSplitPaneUI() {
 			public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {

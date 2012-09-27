@@ -6,6 +6,7 @@ import gui.search.params.DateTimePanel;
 import gui.search.params.LonLatRangePanel;
 import gui.search.params.PolygonPanel;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -89,10 +90,11 @@ public class SearchPanel extends JPanel implements ItemListener {
 
     lstCollections = new JList<String>(new String[] { "Connect to a catalogue" });
     lstCollections.setEnabled(false);
-    lstCollections.setVisibleRowCount(10);
+    lstCollections.setVisibleRowCount(5);
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
     scrollPane.setViewportView(lstCollections);
+    scrollPane.setPreferredSize(new Dimension(100, 100));
     GridBagConstraints gbc_scrollPane = new GridBagConstraints();
     gbc_scrollPane.fill = GridBagConstraints.BOTH;
     gbc_scrollPane.insets = new Insets(0, 0, 5, 0);

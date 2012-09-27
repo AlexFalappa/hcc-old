@@ -36,6 +36,7 @@ public class PolygonPanel extends JPanel {
   private JButton btnDrawFinish;
   private AOILayer aoi;
   private StringBuilder posList = new StringBuilder(200);
+  private JLabel lblGraphicalSelection;
 
   /**
    * Create the panel.
@@ -43,9 +44,9 @@ public class PolygonPanel extends JPanel {
   public PolygonPanel() {
     GridBagLayout gridBagLayout = new GridBagLayout();
     gridBagLayout.columnWidths = new int[] { 0, 0 };
-    gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0 };
+    gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0 };
     gridBagLayout.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
-    gridBagLayout.rowWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
+    gridBagLayout.rowWeights = new double[] { 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
     setLayout(gridBagLayout);
 
     JLabel lblCoords = new JLabel("Coords:");
@@ -70,14 +71,21 @@ public class PolygonPanel extends JPanel {
     // taCoords.setLineWrap(true);
     // taCoords.setWrapStyleWord(true);
     scrollPane.setViewportView(taCoords);
+    
+    lblGraphicalSelection = new JLabel("Graphical selection");
+    GridBagConstraints gbc_lblGraphicalSelection = new GridBagConstraints();
+    gbc_lblGraphicalSelection.anchor = GridBagConstraints.WEST;
+    gbc_lblGraphicalSelection.insets = new Insets(0, 0, 5, 0);
+    gbc_lblGraphicalSelection.gridx = 0;
+    gbc_lblGraphicalSelection.gridy = 2;
+    add(lblGraphicalSelection, gbc_lblGraphicalSelection);
 
     JPanel pDrawBtns = new JPanel();
     pDrawBtns.setLayout(new BoxLayout(pDrawBtns, BoxLayout.X_AXIS));
-    pDrawBtns.setBorder(new TitledBorder(null, "Graphical selection", TitledBorder.LEADING, TitledBorder.TOP, null, null));
     GridBagConstraints gbc_pDrawBtns = new GridBagConstraints();
     gbc_pDrawBtns.fill = GridBagConstraints.BOTH;
     gbc_pDrawBtns.gridx = 0;
-    gbc_pDrawBtns.gridy = 2;
+    gbc_pDrawBtns.gridy = 3;
     add(pDrawBtns, gbc_pDrawBtns);
 
     btnDrawStart = new JButton("Start");

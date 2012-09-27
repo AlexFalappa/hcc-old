@@ -5,13 +5,12 @@ package main;
 
 import gov.nasa.worldwind.Configuration;
 import gui.MainFrame;
-
 import java.awt.EventQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 
 /**
  * @author sasha
@@ -49,8 +48,8 @@ public class App {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          // set the system look and feel
-          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+          // set the jgoodies Looks look and feel
+          UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
           // create and pack main window
           logger.info("Creating and showing ui...");
           frame = new MainFrame();
@@ -83,10 +82,14 @@ public class App {
   }
 
   private static void configureLoggers() {
+    // configure java.util.logging
     Logger.getLogger(LOGGER_MAIN).setLevel(Level.FINE);
     Logger.getLogger(LOGGER_GUI).setLevel(Level.FINE);
     Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
     Logger.getLogger("").getHandlers()[0].setFormatter(new OneLineFormatter());
+    // silence log4j (used in the axis2 web service client)
+    System.setProperty("log4j.defaultInitOverride", "true");
+    org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
   }
 
 }

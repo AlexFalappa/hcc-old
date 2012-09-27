@@ -56,7 +56,7 @@ public class SearchBtnsPanel extends JPanel {
     gridBagLayout.columnWeights = new double[] { 0.0, 0.0 };
     setLayout(gridBagLayout);
 
-    JLabel lblMax = new JLabel("Max:");
+    JLabel lblMax = new JLabel("Max records:");
     GridBagConstraints gbc_lblMax = new GridBagConstraints();
     gbc_lblMax.anchor = GridBagConstraints.EAST;
     gbc_lblMax.insets = new Insets(0, 0, 5, 5);
@@ -73,7 +73,7 @@ public class SearchBtnsPanel extends JPanel {
     gbc_spinMaxRecord.gridy = 0;
     add(spinMaxRecord, gbc_spinMaxRecord);
 
-    JLabel lblFrom = new JLabel("recs. from:");
+    JLabel lblFrom = new JLabel("Start from:");
     GridBagConstraints gbc_lblFrom = new GridBagConstraints();
     gbc_lblFrom.insets = new Insets(0, 0, 5, 5);
     gbc_lblFrom.gridx = 0;
