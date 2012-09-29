@@ -8,6 +8,7 @@ import gui.MainFrame;
 import java.awt.EventQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
@@ -19,6 +20,8 @@ import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 public class App {
   public static final String APP_NAME = "HCC";
   public static final String APP_FRAME_TITLE = "HMA Catalogue Client";
+  public static final String PREFS_ROOT = "alexfalappa.hcc";
+  public static final String PREFS_KEY_SERVICES = "catalogues";
   public static final String LOGGER_GUI = "hcc.gui";
   public static final String LOGGER_MAIN = "hcc.main";
   public static MainFrame frame = null;
@@ -90,6 +93,13 @@ public class App {
     // silence log4j (used in the axis2 web service client)
     System.setProperty("log4j.defaultInitOverride", "true");
     org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
+  }
+
+  public static void currServiceInPrefs() {
+    Preferences prefs = Preferences.userRoot().node(PREFS_ROOT);
+    StringBuilder sb = new StringBuilder(prefs.get(PREFS_KEY_SERVICES, ""));
+    sb.append(frame.getWebServEdp()).append(',');
+    prefs.put(PREFS_KEY_SERVICES, sb.toString());
   }
 
 }

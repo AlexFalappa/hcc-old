@@ -1,7 +1,6 @@
 package gui;
 
 import gui.search.SearchPanel;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -9,12 +8,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -23,14 +20,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
-
 import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetCapabilitiesDocument;
 import net.opengis.www.cat.wrs._1_0.CapabilitiesDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 import net.opengis.www.cat.wrs._1_0.ServiceExceptionReportFault;
-
-import org.apache.log4j.BasicConfigurator;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -112,6 +106,7 @@ public class CapabilitiesDialog extends JDialog {
         }
         searchPane.setCollections(collections.toArray(new String[] {}));
         setVisible(false);
+        App.currServiceInPrefs();
       }
     });
     buttonPanel.add(btnAquire);
