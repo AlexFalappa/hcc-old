@@ -4,14 +4,23 @@ h2. What is "hcc"?
 
 **hcc** is an _HMA Catalogue Client_ application.
 
-Heterogeneous Missions Accessibility (http://earth.esa.int/hma/) (HMA) is a project by the *European Space Agency* to harmonize and standardize the ground segment services and related interfaces of national space agencies, satellite or mission owners and operators.
+"Heterogeneous Missions Accessibility":http://earth.esa.int/hma (HMA) is a project by the *European Space Agency* to harmonize and standardize the ground segment services and related interfaces of national space agencies, satellite or mission owners and operators.
 
 Within this project a series of data models and protocols have been designed to deal with the typical functionalities of satellite missions ground segments such as catalogue browsing, acquisition feasibility and scheduling, product ordering, ordered product access and so on.
 
-h2. Screenshot
-
-!hcc_v0.6.png
+**hcc** deals with product catalogue browsing and offers a visual graphic interface for issuing catalogue queries.
 
 h2. Features
 
-* ...
+* Discovery of product collections upon connection to the catalogue service (HMA GetCapabilities operation)
+* Supported query criteria:
+** Product collections (multiple selection)
+** Time constraints (contained or overlapping a range, before or after an instant)
+** Spatial constraints (lat/lon range, polygon or cirle areas of interest)
+* Visual representation of query product footprints on a 3D globe or 2D map (uses the "World Wind Java SDK":http://goworldwind.org )
+* Base cartography from widely known map providers (e.g. _NASA Blue Marble_ and _Microsoft Bing Aerial Map_)
+* Geographic names and lat/lon graticule overlays
+
+h2. Screenshot
+
+!hcc_v0.6.png!
