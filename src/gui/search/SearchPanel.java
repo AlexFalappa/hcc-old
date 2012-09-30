@@ -34,22 +34,24 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import wwind.AOILayer;
 
-public class SearchPanel extends JPanel implements ItemListener {
+public class SearchPanel extends JPanel {
   final static Logger logger = Logger.getLogger(App.LOGGER_GUI);
   final String[] paramsPanels = new String[] { "Polygon", "Lat/Lon range", "Circle" };
   private CardLayout paramsLayout;
   private JPanel spatialParamsPanels;
-  private JComboBox<String> timeOpCombo;
-  private LonLatRangePanel lonLatRangePanel;
   private CirclePanel circlePanel;
   private PolygonPanel polygonPanel;
-  private JList<String> lstCollections;
-  private JComboBox<String> spatOpCombo;
+  private LonLatRangePanel lonLatRangePanel;
   private DateTimePanel dtpFrom;
   private DateTimePanel dtpTo;
+  private JList<String> lstCollections;
+  private SearchBtnsPanel pSearchButtons;
+  private JComboBox<String> timeOpCombo;
+  private JComboBox<String> spatOpCombo;
   private JCheckBox chckbxSpatialConstraints;
   private JCheckBox chckbxTimeConstraints;
-  private SearchBtnsPanel pSearchButtons;
+  private JLabel lblFrom;
+  private JLabel lblTo;
 
   /**
    * Create the panel.
@@ -60,24 +62,6 @@ public class SearchPanel extends JPanel implements ItemListener {
     gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 1.0 };
     gridBagLayout.columnWidths = new int[] { 20, 0, 0 };
     setLayout(gridBagLayout);
-
-    chckbxTimeConstraints = new JCheckBox("Time constraints:");
-    chckbxTimeConstraints.setEnabled(false);
-    chckbxTimeConstraints.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-        timeOpCombo.setEnabled(enabled);
-        dtpFrom.setEnabled(enabled);
-        dtpTo.setEnabled(enabled);
-      }
-    });
-    GridBagConstraints gbc_chckbxTimeConstraints = new GridBagConstraints();
-    gbc_chckbxTimeConstraints.anchor = GridBagConstraints.NORTHWEST;
-    gbc_chckbxTimeConstraints.insets = new Insets(0, 0, 5, 0);
-    gbc_chckbxTimeConstraints.gridwidth = 3;
-    gbc_chckbxTimeConstraints.gridx = 0;
-    gbc_chckbxTimeConstraints.gridy = 2;
-    add(chckbxTimeConstraints, gbc_chckbxTimeConstraints);
 
     JLabel lblCollections = new JLabel("Collections:");
     GridBagConstraints gbc_lblCollections = new GridBagConstraints();
@@ -103,9 +87,50 @@ public class SearchPanel extends JPanel implements ItemListener {
     gbc_scrollPane.gridy = 1;
     add(scrollPane, gbc_scrollPane);
 
+    chckbxTimeConstraints = new JCheckBox("Time constraints:");
+    chckbxTimeConstraints.setEnabled(false);
+    chckbxTimeConstraints.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+        timeOpCombo.setEnabled(enabled);
+        dtpFrom.setEnabled(enabled);
+        dtpTo.setEnabled(enabled);
+      }
+    });
+    GridBagConstraints gbc_chckbxTimeConstraints = new GridBagConstraints();
+    gbc_chckbxTimeConstraints.anchor = GridBagConstraints.NORTHWEST;
+    gbc_chckbxTimeConstraints.insets = new Insets(0, 0, 5, 0);
+    gbc_chckbxTimeConstraints.gridwidth = 3;
+    gbc_chckbxTimeConstraints.gridx = 0;
+    gbc_chckbxTimeConstraints.gridy = 2;
+    add(chckbxTimeConstraints, gbc_chckbxTimeConstraints);
+
     timeOpCombo = new JComboBox<String>();
     timeOpCombo.setModel(new DefaultComboBoxModel<String>(new String[] { "Contained in",
         "Overlaps", "After", "Before" }));
+    timeOpCombo.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+          String sel = e.getItemSelectable().getSelectedObjects()[0].toString();
+          if (sel.equalsIgnoreCase("after")) {
+            lblFrom.setEnabled(true);
+            dtpFrom.setEnabled(true);
+            lblTo.setEnabled(false);
+            dtpTo.setEnabled(false);
+          } else if (sel.equalsIgnoreCase("before")) {
+            lblFrom.setEnabled(false);
+            dtpFrom.setEnabled(false);
+            lblTo.setEnabled(true);
+            dtpTo.setEnabled(true);
+          } else {
+            lblFrom.setEnabled(true);
+            dtpFrom.setEnabled(true);
+            lblTo.setEnabled(true);
+            dtpTo.setEnabled(true);
+          }
+        }
+      }
+    });
     timeOpCombo.setEnabled(false);
     GridBagConstraints gbc_timeOpCombo = new GridBagConstraints();
     gbc_timeOpCombo.anchor = GridBagConstraints.NORTHWEST;
@@ -115,25 +140,13 @@ public class SearchPanel extends JPanel implements ItemListener {
     gbc_timeOpCombo.gridy = 3;
     add(timeOpCombo, gbc_timeOpCombo);
 
-    JLabel lblFrom = new JLabel("Start:");
+    lblFrom = new JLabel("Start:");
     GridBagConstraints gbc_lblFrom = new GridBagConstraints();
     gbc_lblFrom.anchor = GridBagConstraints.NORTHEAST;
     gbc_lblFrom.insets = new Insets(0, 0, 5, 5);
     gbc_lblFrom.gridx = 1;
     gbc_lblFrom.gridy = 4;
     add(lblFrom, gbc_lblFrom);
-
-    chckbxSpatialConstraints = new JCheckBox("Spatial constraints:");
-    chckbxSpatialConstraints.setEnabled(false);
-    chckbxSpatialConstraints.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-        spatOpCombo.setEnabled(enabled);
-        lonLatRangePanel.setEnabled(enabled);
-        circlePanel.setEnabled(enabled);
-        polygonPanel.setEnabled(enabled);
-      }
-    });
 
     dtpFrom = new DateTimePanel();
     dtpFrom.setEnabled(false);
@@ -145,7 +158,7 @@ public class SearchPanel extends JPanel implements ItemListener {
     gbc_dtpFrom.gridy = 4;
     add(dtpFrom, gbc_dtpFrom);
 
-    JLabel lblTo = new JLabel("End:");
+    lblTo = new JLabel("End:");
     GridBagConstraints gbc_lblTo = new GridBagConstraints();
     gbc_lblTo.anchor = GridBagConstraints.NORTHEAST;
     gbc_lblTo.insets = new Insets(0, 0, 5, 5);
@@ -162,6 +175,18 @@ public class SearchPanel extends JPanel implements ItemListener {
     gbc_dtpTo.gridx = 2;
     gbc_dtpTo.gridy = 5;
     add(dtpTo, gbc_dtpTo);
+
+    chckbxSpatialConstraints = new JCheckBox("Spatial constraints:");
+    chckbxSpatialConstraints.setEnabled(false);
+    chckbxSpatialConstraints.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+        spatOpCombo.setEnabled(enabled);
+        lonLatRangePanel.setEnabled(enabled);
+        circlePanel.setEnabled(enabled);
+        polygonPanel.setEnabled(enabled);
+      }
+    });
     GridBagConstraints gbc_chckbxSpatialConstraints = new GridBagConstraints();
     gbc_chckbxSpatialConstraints.anchor = GridBagConstraints.NORTHWEST;
     gbc_chckbxSpatialConstraints.insets = new Insets(0, 0, 5, 0);
@@ -175,8 +200,7 @@ public class SearchPanel extends JPanel implements ItemListener {
     spatOpCombo.setEnabled(false);
     spatOpCombo.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
-        JComboBox<String> cb = (JComboBox<String>) e.getSource();
-        String pname = (String) cb.getSelectedItem();
+        String pname = e.getItemSelectable().getSelectedObjects()[0].toString();
         paramsLayout.show(spatialParamsPanels, pname);
       }
     });
@@ -230,13 +254,6 @@ public class SearchPanel extends JPanel implements ItemListener {
     gbc_pSearchButtons.gridx = 1;
     gbc_pSearchButtons.gridy = 10;
     add(pSearchButtons, gbc_pSearchButtons);
-  }
-
-  @Override
-  public void itemStateChanged(ItemEvent e) {
-    JComboBox<String> cb = (JComboBox<String>) e.getSource();
-    String pname = (String) cb.getSelectedItem();
-    paramsLayout.show(spatialParamsPanels, pname);
   }
 
   public void setCollections(String[] coll) {
@@ -413,7 +430,24 @@ public class SearchPanel extends JPanel implements ItemListener {
   private void addTemporalConstraintsBlock(XmlCursor xc, String constraintType, Date from, Date to) {
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     if (constraintType.equalsIgnoreCase("Overlaps")) {
-      // TODO implementare
+      xc.beginElement("PropertyIsGreaterThanOrEqualTo", "http://www.opengis.net/ogc");
+      xc.toEndToken();
+      xc.beginElement("PropertyName", "http://www.opengis.net/ogc");
+      xc.insertChars("/rim:ExtrinsicObject/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:endPosition\"]/rim:ValueList/rim:Value[1]");
+      xc.toNextToken();
+      xc.beginElement("Literal", "http://www.opengis.net/ogc");
+      xc.insertChars(df.format(from));
+      xc.toNextToken();
+      xc.toNextToken();
+      xc.beginElement("PropertyIsLessThanOrEqualTo", "http://www.opengis.net/ogc");
+      xc.toEndToken();
+      xc.beginElement("PropertyName", "http://www.opengis.net/ogc");
+      xc.insertChars("/rim:ExtrinsicObject/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:beginPosition\"]/rim:ValueList/rim:Value[1]");
+      xc.toNextToken();
+      xc.beginElement("Literal", "http://www.opengis.net/ogc");
+      xc.insertChars(df.format(to));
+      xc.toNextToken();
+      xc.toNextToken();
     } else if (constraintType.equalsIgnoreCase("Contained in")) {
       xc.beginElement("PropertyIsGreaterThanOrEqualTo", "http://www.opengis.net/ogc");
       xc.toEndToken();
@@ -434,9 +468,25 @@ public class SearchPanel extends JPanel implements ItemListener {
       xc.toNextToken();
       xc.toNextToken();
     } else if (constraintType.equalsIgnoreCase("After")) {
-      // TODO implementare
+      xc.beginElement("PropertyIsGreaterThanOrEqualTo", "http://www.opengis.net/ogc");
+      xc.toEndToken();
+      xc.beginElement("PropertyName", "http://www.opengis.net/ogc");
+      xc.insertChars("/rim:ExtrinsicObject/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:beginPosition\"]/rim:ValueList/rim:Value[1]");
+      xc.toNextToken();
+      xc.beginElement("Literal", "http://www.opengis.net/ogc");
+      xc.insertChars(df.format(from));
+      xc.toNextToken();
+      xc.toNextToken();
     } else if (constraintType.equalsIgnoreCase("Before")) {
-      // TODO implementare
+      xc.beginElement("PropertyIsLessThanOrEqualTo", "http://www.opengis.net/ogc");
+      xc.toEndToken();
+      xc.beginElement("PropertyName", "http://www.opengis.net/ogc");
+      xc.insertChars("/rim:ExtrinsicObject/rim:Slot[@name=\"urn:ogc:def:ebRIM-Slot:OGC-06-131:endPosition\"]/rim:ValueList/rim:Value[1]");
+      xc.toNextToken();
+      xc.beginElement("Literal", "http://www.opengis.net/ogc");
+      xc.insertChars(df.format(to));
+      xc.toNextToken();
+      xc.toNextToken();
     }
   }
 
