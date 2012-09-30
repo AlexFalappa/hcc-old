@@ -13,6 +13,7 @@ import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -173,35 +174,13 @@ public class SearchBtnsPanel extends JPanel {
             JOptionPane.INFORMATION_MESSAGE);
       }
     } catch (RemoteException e1) {
+      logger.log(Level.WARNING, "Remote exception in hits operation", e1);
       e1.printStackTrace();
     } catch (ServiceExceptionReportFault e1) {
       JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport()
           .getExceptionArray(0).getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
-      logger.warning("Catalogue error message: " + e1.getFaultMessage());
+      logger.log(Level.WARNING, "Catalogue server error message: " + e1.getFaultMessage(), e1);
     }
-    // 20 random circles
-    // for (int i = 0; i < 20; i++) {
-    // double lon = -180.0 + r.nextDouble() * 360.0;
-    // double lat = -90.0 + r.nextDouble() * 180.0;
-    // double rad = 10000.0 + r.nextDouble() * 100000.0;
-    // logger.info(String.valueOf(i) + " lat:" + String.valueOf(lat) +
-    // " lon:" + String.valueOf(lon) + " rad:"
-    // + String.valueOf(rad));
-    // App.frame.footprints.addSurfCircle(lat, lon, rad);
-    // }
-    // path crossing the date line
-    // List<Position> coords = new ArrayList<Position>(5);
-    // coords.add(Position.fromDegrees(60, 175, 10000));
-    // coords.add(Position.fromDegrees(60, -175, 10000));
-    // coords.add(Position.fromDegrees(70, -175, 10000));
-    // coords.add(Position.fromDegrees(70, 175, 10000));
-    // coords.add(Position.fromDegrees(60, 175, 10000));
-    // logger.info("Coords:" + coords.toString());
-    // App.frame.footprints.addPath(coords, "Percorso");
-    // App.frame.footprints.addSurfSect(-10, -170, 10, 170);
-    // App.frame.footprints.addSurfSect(-10, -70, 10, 70);
-    // App.frame.footprints.addSurfSect(-90, -180, 80, 180);
-    // App.frame.footprints.addSurfSect(80, -180, 90, 180);
     App.frame.redrawGlobe();
   }
 
@@ -244,33 +223,13 @@ public class SearchBtnsPanel extends JPanel {
         App.frame.footprints.addSurfPoly(geopoints);
       }
       logger.info(String.format("Received %d footprints", res.length));
-      // polygon crossing the date line
-      // List<Position> coords = new ArrayList<Position>(5);
-      // coords.add(Position.fromDegrees(60, 175, 100000));
-      // coords.add(Position.fromDegrees(60, -175, 100000));
-      // coords.add(Position.fromDegrees(70, -175, 100000));
-      // coords.add(Position.fromDegrees(70, 175, 100000));
-      // coords.add(Position.fromDegrees(60, 175, 100000));
-      // logger.info("Coords:" + coords.toString());
-      // App.frame.footprints.addPoly(coords, "Poligono");
-
-      // 20 random quads
-      // for (int i = 0; i < 100; i++) {
-      // double lon = -180.0 + r.nextDouble() * 360.0;
-      // double lat = -90.0 + r.nextDouble() * 180.0;
-      // double wid = 100000.0 + r.nextDouble() * 100000.0;
-      // double hei = 100000.0 + r.nextDouble() * 100000.0;
-      // String tip = String.format("%11.6f", lon) + ";" +
-      // String.format("%10.6f", lat);
-      // App.frame.footprints.addSurfQuad(lat, lon, wid, hei, tip);
-      // }
       App.frame.redrawGlobe();
     } catch (RemoteException e1) {
-      e1.printStackTrace();
+      logger.log(Level.WARNING, "Remote exception in results operation", e1);
     } catch (ServiceExceptionReportFault e1) {
       JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage().getExceptionReport()
           .getExceptionArray(0).getExceptionTextArray(0), "Error!", JOptionPane.WARNING_MESSAGE);
-      logger.warning("Catalogue error message: " + e1.getFaultMessage());
+      logger.log(Level.WARNING, "Catalogue server error message: " + e1.getFaultMessage(), e1);
     }
   }
 
