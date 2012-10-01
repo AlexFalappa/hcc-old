@@ -23,4 +23,4 @@ h2. Features
 
 h2. Screenshot
 
-!hcc/hcc_v0.6.png!
+!https://github.com/AlexFalappa/hcc/raw/master/hcc_v0.6.png!
