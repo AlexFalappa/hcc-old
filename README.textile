@@ -23,4 +23,4 @@ h2. Features
 
 h2. Screenshot
 
-!hcc_v0.6.png!
+!hcc/hcc_v0.6.png!
