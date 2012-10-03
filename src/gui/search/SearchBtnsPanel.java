@@ -110,8 +110,23 @@ public class SearchBtnsPanel extends JPanel {
 		bResults.setEnabled(false);
 		bResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO invocare getrecords results in swingworker
-				doResults();
+				GetRecordsDocument reqDoc = searchPanel.extractFromPanel();
+				if (reqDoc == null) {
+					JOptionPane.showMessageDialog(App.frame,
+							"No collection selected!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				GetRecordsType root = reqDoc.getGetRecords();
+				root.setResultType(ResultType.RESULTS);
+				int max = (Integer) spinMaxRecord.getValue();
+				root.setMaxRecords(BigInteger.valueOf(max));
+				int start = (Integer) spinFromRecord.getValue();
+				root.setStartPosition(BigInteger.valueOf(start));
+				bResults.setEnabled(false);
+				bHits.setEnabled(false);
+				ResultsWorker rw = new ResultsWorker(reqDoc);
+				rw.execute();
 			}
 		});
 		panel.add(bResults);
@@ -159,125 +174,6 @@ public class SearchBtnsPanel extends JPanel {
 		this.searchPanel = searchPanel;
 	}
 
-	private void doHits() {
-		// try {
-		// GetRecordsDocument reqDoc = searchPanel.extractFromPanel();
-		// if (reqDoc == null) {
-		// JOptionPane.showMessageDialog(App.frame, "No collection selected!",
-		// "Error", JOptionPane.ERROR_MESSAGE);
-		// return;
-		// }
-		// GetRecordsType root = reqDoc.getGetRecords();
-		// root.setResultType(ResultType.HITS);
-		// int max = (Integer) spinMaxRecord.getValue();
-		// root.setMaxRecords(BigInteger.valueOf(max));
-		// int start = (Integer) spinFromRecord.getValue();
-		// root.setStartPosition(BigInteger.valueOf(start));
-		// hw = new HitsWorker(reqDoc);
-		// bHits.setEnabled(false);
-		// bResults.setEnabled(false);
-		// hw.execute();
-		// logger.info("Sending GetRecords HITS request");
-		// logger.finer("Request message:");
-		// logger.finer(reqDoc.xmlText(new
-		// XmlOptions().setSavePrettyPrint()));
-		// CatalogueStub st = App.frame.getWebServStub();
-		// GetRecordsResponseDocument respDoc = st.getRecords(reqDoc);
-		// logger.info("Received GetRecords HITS response");
-		// logger.fine("Response saved in:" + dumpToTempFile(respDoc,
-		// "hits-"));
-		// extract hits
-		// BigInteger hits = respDoc.getGetRecordsResponse()
-		// .getSearchResults().getNumberOfRecordsMatched();
-		// if (hits.intValue() > 0) {
-		// // present hits and ask if user wants to retrieve them
-		// int choice = JOptionPane
-		// .showConfirmDialog(App.frame, "Search would return "
-		// + String.valueOf(hits)
-		// + " products.\nRetrieve them?", "Hits",
-		// JOptionPane.YES_NO_OPTION,
-		// JOptionPane.QUESTION_MESSAGE);
-		// if (choice == JOptionPane.YES_OPTION) {
-		// spinMaxRecord.setValue(hits.intValue());
-		// doResults();
-		// }
-		// } else {
-		// // present a simple information dialog
-		// JOptionPane.showMessageDialog(App.frame,
-		// "Search would return no hits!", "Hits",
-		// JOptionPane.INFORMATION_MESSAGE);
-		// }
-		// } catch (RemoteException e1) {
-		// logger.log(Level.WARNING, "Remote exception in hits operation", e1);
-		// } catch (ServiceExceptionReportFault e1) {
-		// JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage()
-		// .getExceptionReport().getExceptionArray(0)
-		// .getExceptionTextArray(0), "Error!",
-		// JOptionPane.WARNING_MESSAGE);
-		// logger.log(Level.WARNING,
-		// "Catalogue server error message: " + e1.getFaultMessage(),
-		// e1);
-		// }
-		// App.frame.redrawGlobe();
-	}
-
-	private void doResults() {
-		try {
-			GetRecordsDocument reqDoc = searchPanel.extractFromPanel();
-			if (reqDoc == null) {
-				JOptionPane.showMessageDialog(App.frame,
-						"No collection selected!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			GetRecordsType root = reqDoc.getGetRecords();
-			root.setResultType(ResultType.RESULTS);
-			int max = (Integer) spinMaxRecord.getValue();
-			root.setMaxRecords(BigInteger.valueOf(max));
-			int start = (Integer) spinFromRecord.getValue();
-			root.setStartPosition(BigInteger.valueOf(start));
-
-			logger.info("Sending GetRecords RESULTS request");
-			logger.finer("Request message:");
-			logger.finer(reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
-			CatalogueStub st = App.frame.getWebServStub();
-			GetRecordsResponseDocument respDoc = st.getRecords(reqDoc);
-			logger.info("Received GetRecords RESULTS response");
-			logger.fine("Response saved in:"
-					+ dumpToTempFile(respDoc, "results-"));
-			XmlObject[] res = respDoc
-					.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
-			if (res.length > 0) {
-				App.frame.footprints.removeAllRenderables();
-			}
-			for (XmlObject xo : res) {
-				XmlCursor xc = xo.newCursor();
-				String[] coords = xc.getTextValue().split("\\s");
-				xc.dispose();
-				List<LatLon> geopoints = new ArrayList<LatLon>();
-				for (int i = 0; i < coords.length; i += 2) {
-					double lat = Double.valueOf(coords[i]);
-					double lon = Double.valueOf(coords[i + 1]);
-					geopoints.add(LatLon.fromDegrees(lat, lon));
-				}
-				App.frame.footprints.addSurfPoly(geopoints);
-			}
-			logger.info(String.format("Received %d footprints", res.length));
-			App.frame.redrawGlobe();
-		} catch (RemoteException e1) {
-			logger.log(Level.WARNING, "Remote exception in results operation",
-					e1);
-		} catch (ServiceExceptionReportFault e1) {
-			JOptionPane.showMessageDialog(App.frame, e1.getFaultMessage()
-					.getExceptionReport().getExceptionArray(0)
-					.getExceptionTextArray(0), "Error!",
-					JOptionPane.WARNING_MESSAGE);
-			logger.log(Level.WARNING,
-					"Catalogue server error message: " + e1.getFaultMessage(),
-					e1);
-		}
-	}
-
 	private String dumpToTempFile(XmlObject xob, String tag) {
 		try {
 			// Create temp file.
@@ -313,6 +209,7 @@ public class SearchBtnsPanel extends JPanel {
 
 		@Override
 		protected void done() {
+			ResultsWorker rw=null;
 			try {
 				// extract hits
 				GetRecordsResponseDocument respDoc = get();
@@ -326,8 +223,16 @@ public class SearchBtnsPanel extends JPanel {
 							JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					if (choice == JOptionPane.YES_OPTION) {
+						GetRecordsType root = _reqDoc.getGetRecords();
+						root.setResultType(ResultType.RESULTS);
 						spinMaxRecord.setValue(hits.intValue());
-						doResults();
+						root.setMaxRecords(hits);
+						int start = (Integer) spinFromRecord.getValue();
+						root.setStartPosition(BigInteger.valueOf(start));
+						bResults.setEnabled(false);
+						bHits.setEnabled(false);
+						rw = new ResultsWorker(_reqDoc);
+						rw.execute();
 					}
 				} else {
 					// present a simple information dialog
@@ -335,6 +240,64 @@ public class SearchBtnsPanel extends JPanel {
 							"Search would return no hits!", "Hits",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
+			} catch (InterruptedException | CancellationException e) {
+				logger.fine("Operation interrupted or cancelled");
+			} catch (ExecutionException e) {
+				JOptionPane.showMessageDialog(App.frame,
+						"Error:\n" + e.getMessage(), "Error!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (rw==null) {
+				App.frame.redrawGlobe();
+				bHits.setEnabled(true);
+				bResults.setEnabled(true);
+			}
+		}
+	}
+
+	class ResultsWorker extends SwingWorker<GetRecordsResponseDocument, Void> {
+		final GetRecordsDocument _reqDoc;
+
+		ResultsWorker(GetRecordsDocument reqDoc) {
+			_reqDoc = reqDoc;
+		}
+
+		@Override
+		protected GetRecordsResponseDocument doInBackground() throws Exception {
+			logger.info("Sending GetRecords RESULTS request");
+			logger.finer("Request message:");
+			logger.finer(_reqDoc.xmlText(new XmlOptions().setSavePrettyPrint()));
+			CatalogueStub st = App.frame.getWebServStub();
+			GetRecordsResponseDocument respDoc = st.getRecords(_reqDoc);
+			logger.info("Received GetRecords RESULTS response");
+			logger.fine("Response saved in:"
+					+ dumpToTempFile(respDoc, "results-"));
+			return respDoc;
+		}
+
+		@Override
+		protected void done() {
+			try {
+				// extract footprints
+				GetRecordsResponseDocument respDoc = get();
+				XmlObject[] res = respDoc
+						.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
+				if (res.length > 0) {
+					App.frame.footprints.removeAllRenderables();
+				}
+				for (XmlObject xo : res) {
+					XmlCursor xc = xo.newCursor();
+					String[] coords = xc.getTextValue().split("\\s");
+					xc.dispose();
+					List<LatLon> geopoints = new ArrayList<LatLon>();
+					for (int i = 0; i < coords.length; i += 2) {
+						double lat = Double.valueOf(coords[i]);
+						double lon = Double.valueOf(coords[i + 1]);
+						geopoints.add(LatLon.fromDegrees(lat, lon));
+					}
+					App.frame.footprints.addSurfPoly(geopoints);
+				}
+				logger.info(String.format("Received %d footprints", res.length));
 				App.frame.redrawGlobe();
 			} catch (InterruptedException | CancellationException e) {
 				logger.fine("Operation interrupted or cancelled");
@@ -346,21 +309,6 @@ public class SearchBtnsPanel extends JPanel {
 			bHits.setEnabled(true);
 			bResults.setEnabled(true);
 		}
-
-		private String dumpToTempFile(XmlObject xob, String tag) {
-			try {
-				// Create temp file.
-				File temp = File.createTempFile(tag, ".xml");
-				// Write to temp file
-				xob.save(temp, new XmlOptions().setSavePrettyPrint());
-				return temp.getAbsolutePath();
-			} catch (IOException e) {
-				logger.warning("Problem dumping soap message file!");
-				logger.throwing(getClass().getName(), "dumpToTempFile", e);
-			}
-			return "no dump";
-		}
-
 	}
 
 }
