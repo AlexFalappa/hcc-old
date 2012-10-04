@@ -125,8 +125,8 @@ public class CapabilitiesDialog extends JDialog {
         CapabilitiesDocument capDoc = null;
         try {
           CatalogueStub stub = App.frame.getWebServStub();
-          GetCapabilitiesDocument capReq = GetCapabilitiesDocument.Factory.parse(this.getClass().getResourceAsStream(
-              "xml/capabilities.xml"));
+          GetCapabilitiesDocument capReq = GetCapabilitiesDocument.Factory.parse(this.getClass()
+              .getResourceAsStream("res/xml/capabilities.xml"));
           capDoc = stub.getCapabilities(capReq);
         } catch (RemoteException e) {
           e.printStackTrace();
