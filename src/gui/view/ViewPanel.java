@@ -3,6 +3,7 @@ package gui.view;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
+import gov.nasa.worldwindx.examples.util.StatusLayer;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -31,6 +32,7 @@ public class ViewPanel extends JPanel {
   private JCheckBox chckbxPlaceNames;
   private JCheckBox chckbxFootprints;
   private JCheckBox chckbxAreaOfInterest;
+  private JCheckBox chckbxStatus;
   private Component verticalGlue;
   private JPanel pProjection;
   private JLabel lblMode;
@@ -40,8 +42,11 @@ public class ViewPanel extends JPanel {
    */
   public ViewPanel() {
     GridBagLayout gridBagLayout = new GridBagLayout();
-    gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        0.0, 0.0, 1.0 };
+    gridBagLayout.rowWeights = new double[] {
+    		0.0, 0.0, 0.0, 0.0, 0.0,
+    		0.0, 0.0, 0.0, 0.0, 0.0,
+    		0.0, 0.0, 0.0, 0.0, 0.0,
+    		0.0, 0.0, 0.0, 0.0, 1.0 };
     gridBagLayout.columnWidths = new int[] { 20, 0 };
     gridBagLayout.columnWeights = new double[] { 0.0, 1.0 };
     setLayout(gridBagLayout);
@@ -64,12 +69,12 @@ public class ViewPanel extends JPanel {
     add(chckbxFootprints, gbc_chckbxFootprints);
 
     chckbxAreaOfInterest = new JCheckBox("Area of interest N/A");
-    GridBagConstraints gbc_chckbxSpatialConstraintsArea = new GridBagConstraints();
-    gbc_chckbxSpatialConstraintsArea.anchor = GridBagConstraints.WEST;
-    gbc_chckbxSpatialConstraintsArea.insets = new Insets(0, 0, 5, 0);
-    gbc_chckbxSpatialConstraintsArea.gridx = 1;
-    gbc_chckbxSpatialConstraintsArea.gridy = 2;
-    add(chckbxAreaOfInterest, gbc_chckbxSpatialConstraintsArea);
+    GridBagConstraints gbc_chckbxArea = new GridBagConstraints();
+    gbc_chckbxArea.anchor = GridBagConstraints.WEST;
+    gbc_chckbxArea.insets = new Insets(0, 0, 5, 0);
+    gbc_chckbxArea.gridx = 1;
+    gbc_chckbxArea.gridy = 2;
+    add(chckbxAreaOfInterest, gbc_chckbxArea);
 
     JLabel lblCarto = new JLabel("Cartography:");
     GridBagConstraints gbc_lblCarto = new GridBagConstraints();
@@ -176,11 +181,20 @@ public class ViewPanel extends JPanel {
     gbc_chckbxScale.gridx = 1;
     gbc_chckbxScale.gridy = 15;
     add(chckbxScale, gbc_chckbxScale);
+
+    chckbxStatus = new JCheckBox("Status N/A");
+    GridBagConstraints gbc_chckbxStatus = new GridBagConstraints();
+    gbc_chckbxStatus.insets = new Insets(0, 0, 5, 0);
+    gbc_chckbxStatus.anchor = GridBagConstraints.WEST;
+    gbc_chckbxStatus.gridx = 1;
+    gbc_chckbxStatus.gridy = 16;
+    add(chckbxStatus, gbc_chckbxStatus);
+
     lblMode = new JLabel("Mode:");
     GridBagConstraints gbc_lblMode = new GridBagConstraints();
     gbc_lblMode.insets = new Insets(0, 0, 5, 5);
     gbc_lblMode.gridx = 0;
-    gbc_lblMode.gridy = 16;
+    gbc_lblMode.gridy = 17;
     add(lblMode, gbc_lblMode);
 
     verticalGlue = Box.createVerticalGlue();
@@ -219,13 +233,19 @@ public class ViewPanel extends JPanel {
     layer = layers.getLayerByName("MS Virtual Earth Aerial");
     link(chckbxMsVirtualEarth, wwd, layer);
 
+    StatusLayer slayer = new StatusLayer();
+    slayer.setEventSource(wwd);
+    wwd.getModel().getLayers().add(slayer);
+    chckbxStatus.setSelected(slayer.isEnabled());
+    chckbxStatus.setAction(new ToggleAction(slayer, wwd));
+
     pProjection = new WorldModePanel(wwd);
     GridBagConstraints gbc_pProjection = new GridBagConstraints();
     gbc_pProjection.gridwidth = 2;
     gbc_pProjection.insets = new Insets(0, 0, 5, 0);
     gbc_pProjection.fill = GridBagConstraints.NONE;
     gbc_pProjection.gridx = 0;
-    gbc_pProjection.gridy = 17;
+    gbc_pProjection.gridy = 18;
     add(pProjection, gbc_pProjection);
   }
 

@@ -11,12 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Box;
@@ -36,7 +34,6 @@ import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsType;
 import net.opengis.www.cat.csw._2_0_2.ResultType;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
-import net.opengis.www.cat.wrs._1_0.ServiceExceptionReportFault;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
@@ -125,6 +122,8 @@ public class SearchBtnsPanel extends JPanel {
 				root.setStartPosition(BigInteger.valueOf(start));
 				bResults.setEnabled(false);
 				bHits.setEnabled(false);
+				App.frame.setStatus("Sending GetRecords RESULTS request...");
+				App.frame.setGlobalBusyCursor(true);
 				ResultsWorker rw = new ResultsWorker(reqDoc);
 				rw.execute();
 			}
@@ -151,9 +150,11 @@ public class SearchBtnsPanel extends JPanel {
 				root.setMaxRecords(BigInteger.valueOf(max));
 				int start = (Integer) spinFromRecord.getValue();
 				root.setStartPosition(BigInteger.valueOf(start));
-				HitsWorker hw = new HitsWorker(reqDoc);
 				bHits.setEnabled(false);
 				bResults.setEnabled(false);
+				App.frame.setStatus("Sending GetRecords HITS request...");
+				App.frame.setGlobalBusyCursor(true);
+				HitsWorker hw = new HitsWorker(reqDoc);
 				hw.execute();
 			}
 		});
@@ -209,7 +210,7 @@ public class SearchBtnsPanel extends JPanel {
 
 		@Override
 		protected void done() {
-			ResultsWorker rw=null;
+			ResultsWorker rw = null;
 			try {
 				// extract hits
 				GetRecordsResponseDocument respDoc = get();
@@ -231,13 +232,14 @@ public class SearchBtnsPanel extends JPanel {
 						root.setStartPosition(BigInteger.valueOf(start));
 						bResults.setEnabled(false);
 						bHits.setEnabled(false);
+						App.frame.setStatus("Sending GetRecords RESULTS request...");
 						rw = new ResultsWorker(_reqDoc);
 						rw.execute();
 					}
 				} else {
 					// present a simple information dialog
 					JOptionPane.showMessageDialog(App.frame,
-							"Search would return no hits!", "Hits",
+							"Search would return no hits!", "Notice",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} catch (InterruptedException | CancellationException e) {
@@ -247,7 +249,9 @@ public class SearchBtnsPanel extends JPanel {
 						"Error:\n" + e.getMessage(), "Error!",
 						JOptionPane.ERROR_MESSAGE);
 			}
-			if (rw==null) {
+			if (rw == null) {
+				App.frame.setStatus("Received response");
+				App.frame.setGlobalBusyCursor(false);
 				App.frame.redrawGlobe();
 				bHits.setEnabled(true);
 				bResults.setEnabled(true);
@@ -297,7 +301,11 @@ public class SearchBtnsPanel extends JPanel {
 					}
 					App.frame.footprints.addSurfPoly(geopoints);
 				}
-				logger.info(String.format("Received %d footprints", res.length));
+				String mex = String
+						.format("Received %d footprints", res.length);
+				logger.info(mex);
+				App.frame.setStatus(mex);
+				App.frame.setGlobalBusyCursor(false);
 				App.frame.redrawGlobe();
 			} catch (InterruptedException | CancellationException e) {
 				logger.fine("Operation interrupted or cancelled");
