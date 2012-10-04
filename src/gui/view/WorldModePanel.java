@@ -1,8 +1,7 @@
 /*
-Copyright (C) 2001, 2008 United States Government
-as represented by the Administrator of the
-National Aeronautics and Space Administration.
-All Rights Reserved.
+ * Copyright (C) 2001, 2008 United States Government as represented by the
+ * Administrator of the National Aeronautics and Space Administration. All
+ * Rights Reserved.
  */
 package gui.view;
 
@@ -14,15 +13,14 @@ import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.SkyColorLayer;
 import gov.nasa.worldwind.layers.SkyGradientLayer;
+import gov.nasa.worldwind.layers.StarsLayer;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwind.view.orbit.FlatOrbitView;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -91,7 +89,8 @@ public class WorldModePanel extends JPanel {
     add(flatRadioButton, gbc_flatRadioButton);
     group.add(flatRadioButton);
 
-    projectionCombo = new JComboBox<String>(new String[] { "Mercator", "Lat-Lon", "Modified Sin.", "Sinusoidal" });
+    projectionCombo = new JComboBox<String>(new String[] { "Mercator", "Lat-Lon", "Modified Sin.",
+        "Sinusoidal" });
     projectionCombo.setEnabled(isFlatGlobe());
     projectionCombo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {
@@ -145,11 +144,13 @@ public class WorldModePanel extends JPanel {
       orbitView.setHeading(flatOrbitView.getHeading());
       orbitView.setPitch(flatOrbitView.getPitch());
       wwd.setView(orbitView);
-      // Change sky layer
+      // Change sky layer and enable the star layer
       LayerList layers = wwd.getModel().getLayers();
       for (int i = 0; i < layers.size(); i++) {
         if (layers.get(i) instanceof SkyColorLayer)
           layers.set(i, new SkyGradientLayer());
+        if (layers.get(i) instanceof StarsLayer)
+          layers.get(i).setEnabled(false);
       }
     } else {
       // Switch to flat globe
@@ -163,11 +164,13 @@ public class WorldModePanel extends JPanel {
       flatOrbitView.setHeading(orbitView.getHeading());
       flatOrbitView.setPitch(orbitView.getPitch());
       wwd.setView(flatOrbitView);
-      // Change sky layer
+      // Change sky layer and disable star layer
       LayerList layers = wwd.getModel().getLayers();
       for (int i = 0; i < layers.size(); i++) {
         if (layers.get(i) instanceof SkyGradientLayer)
           layers.set(i, new SkyColorLayer());
+        if (layers.get(i) instanceof StarsLayer)
+          layers.get(i).setEnabled(false);
       }
     }
     wwd.redraw();
