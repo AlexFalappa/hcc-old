@@ -4,13 +4,11 @@ import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -42,11 +40,8 @@ public class ViewPanel extends JPanel {
    */
   public ViewPanel() {
     GridBagLayout gridBagLayout = new GridBagLayout();
-    gridBagLayout.rowWeights = new double[] {
-    		0.0, 0.0, 0.0, 0.0, 0.0,
-    		0.0, 0.0, 0.0, 0.0, 0.0,
-    		0.0, 0.0, 0.0, 0.0, 0.0,
-    		0.0, 0.0, 0.0, 0.0, 1.0 };
+    gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
     gridBagLayout.columnWidths = new int[] { 20, 0 };
     gridBagLayout.columnWeights = new double[] { 0.0, 1.0 };
     setLayout(gridBagLayout);
@@ -235,6 +230,7 @@ public class ViewPanel extends JPanel {
 
     StatusLayer slayer = new StatusLayer();
     slayer.setEventSource(wwd);
+    slayer.setDefaultFont(lblMode.getFont());
     wwd.getModel().getLayers().add(slayer);
     chckbxStatus.setSelected(slayer.isEnabled());
     chckbxStatus.setAction(new ToggleAction(slayer, wwd));
