@@ -1,4 +1,4 @@
-package gui;
+package gui.util;
 
 /*
  * Copyright 2007-2008 Sun Microsystems, Inc.  All Rights Reserved.
@@ -31,7 +31,6 @@ package gui;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import gui.util.ArrowIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
