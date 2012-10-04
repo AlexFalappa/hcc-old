@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -121,15 +123,18 @@ public class MainFrame extends JFrame {
     Component horizontalGlue = Box.createHorizontalGlue();
     horizontalBox.add(horizontalGlue);
 
-    JButton button = new JButton("?");
-    button.addActionListener(new ActionListener() {
+    JButton bInfo = new JButton(new ImageIcon(this.getClass().getResource(
+        "res/icons/information.png")));
+    bInfo.setMargin(new Insets(1, 1, 1, 1));
+    bInfo.setToolTipText("Information");
+    bInfo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         AboutDialog dlg = new AboutDialog();
         dlg.setLocationRelativeTo(MainFrame.this);
         dlg.setVisible(true);
       }
     });
-    horizontalBox.add(button);
+    horizontalBox.add(bInfo);
 
     tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 

@@ -260,7 +260,6 @@ public class ViewPanel extends JPanel {
 
     public ToggleAction(Layer layer, WorldWindow wwd) {
       super(layer.getName());
-      this.putValue(SHORT_DESCRIPTION, "Toggle visibility of " + layer.getName());
       this.wwd = wwd;
       this.layer = layer;
     }
