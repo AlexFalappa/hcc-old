@@ -50,7 +50,6 @@ import wwind.AOILayer;
 import wwind.FootprintsLayer;
 
 public class MainFrame extends JFrame {
-  final static Logger logger = Logger.getLogger(App.LOGGER_GUI);
   private CatalogueStub catServiceStub = null;
   private JPanel contentPane;
   private SearchPanel searchPanel;
@@ -60,6 +59,7 @@ public class MainFrame extends JFrame {
   private JTabbedPane tabbedPane;
   private JScrollPane scroller;
 
+  public final static Logger logger = Logger.getLogger("hcc.gui");
   public FootprintsLayer footprints;
   public AOILayer aois;
 

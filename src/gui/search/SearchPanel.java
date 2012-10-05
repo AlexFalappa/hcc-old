@@ -1,6 +1,7 @@
 package gui.search;
 
 import gov.nasa.worldwind.WorldWindow;
+import gui.MainFrame;
 import gui.search.params.CirclePanel;
 import gui.search.params.DateTimePanel;
 import gui.search.params.LonLatRangePanel;
@@ -16,7 +17,6 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
@@ -35,7 +34,6 @@ import org.apache.xmlbeans.XmlObject;
 import wwind.AOILayer;
 
 public class SearchPanel extends JPanel {
-  final static Logger logger = Logger.getLogger(App.LOGGER_GUI);
   final String[] paramsPanels = new String[] { "Polygon", "Lat/Lon range", "Circle" };
   private CardLayout paramsLayout;
   private JPanel spatialParamsPanels;
@@ -280,7 +278,7 @@ public class SearchPanel extends JPanel {
       StringBuilder sb = new StringBuilder("Selected collections: ");
       for (Object ob : selectedValues)
         sb.append(ob).append(',');
-      logger.fine(sb.toString());
+      MainFrame.logger.fine(sb.toString());
       if (selectedValues.length > 1) {
         // multicollection
         req = GetRecordsDocument.Factory.parse(this.getClass().getResourceAsStream(
@@ -319,14 +317,14 @@ public class SearchPanel extends JPanel {
         Date to = dtpTo.getDateTime();
         sb = new StringBuilder("Temporal constraints: from ");
         sb.append(dtpFrom).append(" to ").append(dtpTo);
-        logger.finer(sb.toString());
+        MainFrame.logger.finer(sb.toString());
         addTemporalConstraintsBlock(xc, (String) timeOpCombo.getSelectedItem(), from, to);
       }
       if (chckbxSpatialConstraints.isSelected()) {
         sb = new StringBuilder("Spatial constraints: ");
         sb.append(spatOpCombo.getSelectedItem()).append(" coords ");
         sb.append(polygonPanel.getPosList());
-        logger.finer(sb.toString());
+        MainFrame.logger.finer(sb.toString());
         addSpatialConstraintsBlock(xc, (String) spatOpCombo.getSelectedItem());
       }
       xc.dispose();

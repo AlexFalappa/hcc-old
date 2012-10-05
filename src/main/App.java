@@ -22,10 +22,8 @@ public class App {
   public static final String APP_FRAME_TITLE = "HMA Catalogue Client";
   public static final String PREFS_ROOT = "alexfalappa.hcc";
   public static final String PREFS_KEY_SERVICES = "catalogues";
-  public static final String LOGGER_GUI = "hcc.gui";
-  public static final String LOGGER_MAIN = "hcc.main";
+  public static final Logger logger = Logger.getLogger("hcc.main");
   public static MainFrame frame = null;
-  final static Logger logger = Logger.getLogger(App.LOGGER_MAIN);
 
   static {
     System.setProperty("gov.nasa.worldwind.app.config.document", "conf/hcc.worldwind.xml");
@@ -86,8 +84,8 @@ public class App {
 
   private static void configureLoggers() {
     // configure java.util.logging
-    Logger.getLogger(LOGGER_MAIN).setLevel(Level.FINE);
-    Logger.getLogger(LOGGER_GUI).setLevel(Level.FINE);
+    logger.setLevel(Level.FINEST);
+    MainFrame.logger.setLevel(Level.FINEST);
     Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
     Logger.getLogger("").getHandlers()[0].setFormatter(new OneLineFormatter());
     // silence log4j (used in the axis2 web service client)

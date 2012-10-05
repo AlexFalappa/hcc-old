@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,7 +32,6 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 
 public class CapabilitiesDialog extends JDialog {
-  final Logger logger = Logger.getLogger(App.LOGGER_GUI);
   private final JPanel contentPanel = new JPanel();
   private final JTextArea taCapabilities = new JTextArea(10, 60);
   private SearchPanel searchPane;
@@ -133,11 +131,11 @@ public class CapabilitiesDialog extends JDialog {
               .getResourceAsStream("res/xml/capabilities.xml"));
           capDoc = stub.getCapabilities(capReq);
         } catch (RemoteException | ServiceExceptionReportFault e) {
-          logger.severe("Could not connect to the catalogue service!");
-          logger.throwing(getClass().getName(), "connect", e);
+          MainFrame.logger.severe("Could not connect to the catalogue service!");
+          MainFrame.logger.throwing(getClass().getName(), "connect", e);
         } catch (XmlException | IOException e) {
-          logger.severe("Could not load the capabilities document template!");
-          logger.throwing(getClass().getName(), "connect", e);
+          MainFrame.logger.severe("Could not load the capabilities document template!");
+          MainFrame.logger.throwing(getClass().getName(), "connect", e);
         }
         return capDoc;
       }
@@ -157,7 +155,7 @@ public class CapabilitiesDialog extends JDialog {
           }
           btnCancel.setEnabled(true);
         } catch (InterruptedException | ExecutionException e) {
-          logger.warning("Problems while capabilities retrieval!");
+          MainFrame.logger.warning("Problems while capabilities retrieval!");
         }
       }
     };
