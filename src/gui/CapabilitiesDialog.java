@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -30,7 +33,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 
 public class CapabilitiesDialog extends JDialog {
-
+  final Logger logger = Logger.getLogger(App.LOGGER_GUI);
   private final JPanel contentPanel = new JPanel();
   private final JTextArea taCapabilities = new JTextArea(10, 60);
   private SearchPanel searchPane;
@@ -43,7 +46,6 @@ public class CapabilitiesDialog extends JDialog {
    */
   public CapabilitiesDialog() {
     setTitle("Connect to catalogue");
-    setSize(400, 300);
     setModal(true);
 
     contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -112,9 +114,11 @@ public class CapabilitiesDialog extends JDialog {
     buttonPanel.add(btnAquire);
 
     getRootPane().setDefaultButton(btnAquire);
+    getRootPane().setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(contentPanel, BorderLayout.CENTER);
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    pack();
   }
 
   public void connect(SearchPanel pane) {
@@ -128,14 +132,12 @@ public class CapabilitiesDialog extends JDialog {
           GetCapabilitiesDocument capReq = GetCapabilitiesDocument.Factory.parse(this.getClass()
               .getResourceAsStream("res/xml/capabilities.xml"));
           capDoc = stub.getCapabilities(capReq);
-        } catch (RemoteException e) {
-          e.printStackTrace();
-        } catch (ServiceExceptionReportFault e) {
-          e.printStackTrace();
-        } catch (XmlException e) {
-          e.printStackTrace();
-        } catch (IOException e) {
-          e.printStackTrace();
+        } catch (RemoteException | ServiceExceptionReportFault e) {
+          logger.severe("Could not connect to the catalogue service!");
+          logger.throwing(getClass().getName(), "connect", e);
+        } catch (XmlException | IOException e) {
+          logger.severe("Could not load the capabilities document template!");
+          logger.throwing(getClass().getName(), "connect", e);
         }
         return capDoc;
       }
@@ -146,14 +148,16 @@ public class CapabilitiesDialog extends JDialog {
           capDoc = get();
           if (capDoc != null) {
             taCapabilities.setText(capDoc.xmlText());
+            btnAquire.setEnabled(true);
+            taCapabilities.setEnabled(true);
+          } else {
+            taCapabilities.setText("Not available");
+            JOptionPane.showMessageDialog(CapabilitiesDialog.this,
+                "Could not connect to the catalogue service!", "Error", JOptionPane.ERROR_MESSAGE);
           }
-          taCapabilities.setEnabled(true);
-          btnAquire.setEnabled(true);
           btnCancel.setEnabled(true);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+          logger.warning("Problems while capabilities retrieval!");
         }
       }
     };

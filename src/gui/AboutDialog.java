@@ -60,12 +60,13 @@ public class AboutDialog extends JDialog {
     });
     bOk.setActionCommand("OK");
     pButton.add(bOk);
-    getRootPane().setDefaultButton(bOk);
 
     JLabel lblLogo = new JLabel();
     lblLogo.setIcon(new ImageIcon(AboutDialog.class.getResource("res/icons/information.png")));
     lblLogo.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 
+    getRootPane().setDefaultButton(bOk);
+    getRootPane().setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(lblLogo, BorderLayout.WEST);
     getContentPane().add(pMessages, BorderLayout.CENTER);
