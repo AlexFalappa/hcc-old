@@ -26,7 +26,7 @@ import java.awt.event.*;
  * #getSector()}.
  *
  * @author tag
- * @version $Id: SectorSelector.java 1 2011-07-16 23:22:47Z dcollins $
+ * @version $Id: SectorSelector.java 22 2011-07-29 22:15:38Z tgaskins $
  */
 public class SectorSelector extends WWObjectImpl
     implements SelectListener, MouseListener, MouseMotionListener, RenderingListener
@@ -356,7 +356,7 @@ public class SectorSelector extends WWObjectImpl
         }
 
         if (this.getOperation() == NONE
-            && event.getTopObject() != null && !(event.getTopObject() instanceof RegionShape))
+            && event.getTopObject() != null && !(event.getTopPickedObject().getParentLayer() == this.layer))
         {
             this.setCursor(null);
             return;
@@ -373,7 +373,7 @@ public class SectorSelector extends WWObjectImpl
             if (topObject == null)
                 return;
 
-            RegionShape dragObject = (RegionShape) topObject;
+            RegionShape dragObject = this.getShape();
 
             if (this.getOperation() == SIZING)
             {
