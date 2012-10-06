@@ -107,6 +107,7 @@ public class CapabilitiesDialog extends JDialog {
         searchPane.setCollections(collections.toArray(new String[] {}));
         setVisible(false);
         App.currServiceInPrefs();
+        App.frame.setStatus("Collections acquired");
       }
     });
     buttonPanel.add(btnAquire);
@@ -154,6 +155,7 @@ public class CapabilitiesDialog extends JDialog {
                 "Could not connect to the catalogue service!", "Error", JOptionPane.ERROR_MESSAGE);
           }
           btnCancel.setEnabled(true);
+          App.frame.setStatus("Successful connection to catalogue");
         } catch (InterruptedException | ExecutionException e) {
           MainFrame.logger.warning("Problems while capabilities retrieval!");
         }

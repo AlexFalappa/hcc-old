@@ -6,6 +6,9 @@ package main;
 import gov.nasa.worldwind.Configuration;
 import gui.MainFrame;
 import java.awt.EventQueue;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -24,6 +27,7 @@ public class App {
   public static final String PREFS_KEY_SERVICES = "catalogues";
   public static final Logger logger = Logger.getLogger("hcc.main");
   public static MainFrame frame = null;
+  static Set<String> servicesUrls = new HashSet<>();
 
   static {
     System.setProperty("gov.nasa.worldwind.app.config.document", "conf/hcc.worldwind.xml");
@@ -94,10 +98,15 @@ public class App {
   }
 
   public static void currServiceInPrefs() {
+    App.servicesUrls.add(frame.getWebServEdp());
+    StringBuilder sb = new StringBuilder();
+    Iterator<String> it = App.servicesUrls.iterator();
+    sb.append(it.next());
+    while (it.hasNext())
+      sb.append(',').append(it.next());
     Preferences prefs = Preferences.userRoot().node(PREFS_ROOT);
-    StringBuilder sb = new StringBuilder(prefs.get(PREFS_KEY_SERVICES, ""));
-    sb.append(frame.getWebServEdp()).append(',');
     prefs.put(PREFS_KEY_SERVICES, sb.toString());
+    logger.info("Adding to known catalogues: " + frame.getWebServEdp());
   }
 
 }
