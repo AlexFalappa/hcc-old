@@ -19,6 +19,7 @@ public class AOILayer extends RenderableLayer {
     // properties of layer
     setName("Area of interest");
     setEnabled(true);
+    setPickEnabled(false);
     // painting attributes for footprints
     attr.setOutlineMaterial(new Material(new Color(0, 127, 0)));
     attr.setOutlineWidth(2);

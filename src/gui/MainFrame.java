@@ -3,10 +3,12 @@ package gui;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
+import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.placename.PlaceNameLayer;
+import gov.nasa.worldwindx.examples.util.HighlightController;
 import gov.nasa.worldwindx.examples.util.ToolTipController;
 import gui.search.SearchPanel;
 import gui.view.ViewPanel;
@@ -22,6 +24,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
@@ -51,10 +55,14 @@ import wwind.FootprintsLayer;
 
 public class MainFrame extends JFrame {
   private CatalogueStub catServiceStub = null;
+  private WorldWindowGLCanvas wwCanvas;
+  @SuppressWarnings("unused")
+  private HighlightController highlightController;
+  @SuppressWarnings("unused")
+  private ToolTipController ttController;
+  private JLabel lStatus;
   private JPanel contentPane;
   private SearchPanel searchPanel;
-  private WorldWindowGLCanvas wwCanvas;
-  private JLabel lStatus;
   private JComboBox<String> catalogueCombo;
   private JTabbedPane tabbedPane;
   private JScrollPane scroller;
@@ -70,6 +78,12 @@ public class MainFrame extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle(App.APP_FRAME_TITLE);
     setGlassPane(new BusyPane());
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        MainFrame.logger.info("Finished");
+      }
+    });
 
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -168,7 +182,8 @@ public class MainFrame extends JFrame {
   private void setupWorldWind() {
     BasicModel model = new BasicModel();
     wwCanvas.setModel(model);
-    ToolTipController ttController = new ToolTipController(wwCanvas);
+    highlightController = new HighlightController(wwCanvas, SelectEvent.ROLLOVER);
+    ttController = new ToolTipController(wwCanvas);
     // Register a rendering exception listener that's notified when
     // exceptions occur during rendering.
     wwCanvas.addRenderingExceptionListener(new RenderingExceptionListener() {
@@ -198,9 +213,9 @@ public class MainFrame extends JFrame {
     // create footprints and AOI layers and add them before the place names
     // layer
     footprints = new FootprintsLayer();
+    layers.add(position, footprints);
     aois = new AOILayer();
     layers.add(position, aois);
-    layers.add(position, footprints);
   }
 
   public void redrawGlobe() {
@@ -239,7 +254,7 @@ public class MainFrame extends JFrame {
 
     @Override
     protected void paintComponent(Graphics g) {
-      g.setColor(new Color(0, 0, 0, 166));
+      g.setColor(new Color(0, 0, 0, 50));
       g.fillRect(0, 0, getSize().width, getSize().height);
     }
 

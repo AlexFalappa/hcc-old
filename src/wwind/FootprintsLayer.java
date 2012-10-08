@@ -14,11 +14,11 @@ import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
-
 import java.util.List;
 
 public class FootprintsLayer extends RenderableLayer {
   private BasicShapeAttributes attr = new BasicShapeAttributes();
+  private BasicShapeAttributes attrHigh = new BasicShapeAttributes();
 
   public FootprintsLayer() {
     // properties of layer
@@ -29,11 +29,16 @@ public class FootprintsLayer extends RenderableLayer {
     attr.setOutlineWidth(1);
     attr.setInteriorMaterial(Material.ORANGE);
     attr.setInteriorOpacity(0.4f);
+    // painting attributes for hihglighted footprints
+    attrHigh.setOutlineMaterial(Material.BLACK);
+    attrHigh.setOutlineWidth(2);
+    attrHigh.setInteriorMaterial(Material.WHITE);
+    attrHigh.setInteriorOpacity(0.7f);
   }
 
   public void addSurfCircle(double lat, double lon, double rad, String tooltip) {
     SurfaceCircle shape = new SurfaceCircle(attr, LatLon.fromDegrees(lat, lon), rad);
-    shape.setValue(AVKey.DISPLAY_NAME, tooltip);
+    shape.setValue(AVKey.HOVER_TEXT, tooltip);
     addRenderable(shape);
   }
 
@@ -42,14 +47,23 @@ public class FootprintsLayer extends RenderableLayer {
     addRenderable(shape);
   }
 
+  public void addSurfPoly(List<LatLon> coords, String tooltip) {
+    SurfacePolygon shape = new SurfacePolygon(coords);
+    shape.setAttributes(attr);
+    shape.setHighlightAttributes(attrHigh);
+    shape.setValue(AVKey.HOVER_TEXT, tooltip);
+    addRenderable(shape);
+  }
+
   public void addSurfQuad(double lat, double lon, double w, double h, String tooltip) {
     SurfaceQuad shape = new SurfaceQuad(attr, LatLon.fromDegrees(lat, lon), w, h);
-    shape.setValue(AVKey.DISPLAY_NAME, tooltip);
+    shape.setValue(AVKey.HOVER_TEXT, tooltip);
     addRenderable(shape);
   }
 
   public void addSurfSect(double minlat, double minlon, double maxlat, double maxlon) {
-    SurfaceSector shape = new SurfaceSector(attr, Sector.fromDegrees(minlat, maxlat, minlon, maxlon));
+    SurfaceSector shape = new SurfaceSector(attr,
+        Sector.fromDegrees(minlat, maxlat, minlon, maxlon));
     shape.setPathType(AVKey.LINEAR);
     addRenderable(shape);
   }

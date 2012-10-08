@@ -14,9 +14,9 @@
 			actuate="onRequest" />
 		<Layer className="gov.nasa.worldwind.layers.Earth.CountryBoundariesLayer"
 			actuate="onRequest" />
-		<Layer className="gov.nasa.worldwind.layers.LatLonGraticuleLayer"
-			actuate="onRequest" />
 		<Layer className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer"
+			actuate="onRequest" />
+		<Layer className="gov.nasa.worldwind.layers.LatLonGraticuleLayer"
 			actuate="onRequest" />
 		<Layer className="gov.nasa.worldwind.layers.WorldMapLayer" />
 		<Layer className="gov.nasa.worldwind.layers.ScalebarLayer" />

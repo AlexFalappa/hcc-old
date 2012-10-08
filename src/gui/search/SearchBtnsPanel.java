@@ -25,6 +25,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+import javax.xml.namespace.QName;
 import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
@@ -273,12 +274,21 @@ public class SearchBtnsPanel extends JPanel {
         // extract footprints
         GetRecordsResponseDocument respDoc = get();
         XmlObject[] res = respDoc
-            .selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
+            .selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
         if (res.length > 0) {
           App.frame.footprints.removeAllRenderables();
         }
         for (XmlObject xo : res) {
+          // extract pid
           XmlCursor xc = xo.newCursor();
+          String pid = xc.getAttributeText(new QName("id"));
+          xc.dispose();
+          // extract footprint coordinates
+          XmlObject[] xpos = xo
+              .selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
+          if (xpos.length == 0)
+            continue;
+          xc = xpos[0].newCursor();
           String[] coords = xc.getTextValue().split("\\s");
           xc.dispose();
           List<LatLon> geopoints = new ArrayList<LatLon>();
@@ -287,7 +297,7 @@ public class SearchBtnsPanel extends JPanel {
             double lon = Double.valueOf(coords[i + 1]);
             geopoints.add(LatLon.fromDegrees(lat, lon));
           }
-          App.frame.footprints.addSurfPoly(geopoints);
+          App.frame.footprints.addSurfPoly(geopoints, pid);
         }
         String mex = String.format("Received %d footprints", res.length);
         MainFrame.logger.info(mex);
