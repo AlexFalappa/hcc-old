@@ -9,7 +9,6 @@ import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceSector;
-
 import java.awt.Color;
 
 public class AOILayer extends RenderableLayer {
@@ -36,7 +35,8 @@ public class AOILayer extends RenderableLayer {
   public void setSurfPoly(Iterable<? extends LatLon> coords) {
     if (current != null)
       removeRenderable(current);
-    current = new SurfacePolygon(attr, coords);
+    SurfacePolygon shape = new SurfacePolygon(attr, coords);
+    current = shape;
     addRenderable(current);
   }
 
@@ -49,7 +49,8 @@ public class AOILayer extends RenderableLayer {
   public void setSurfSect(double minlat, double minlon, double maxlat, double maxlon) {
     if (current != null)
       removeRenderable(current);
-    SurfaceSector shape = new SurfaceSector(attr, Sector.fromDegrees(minlat, maxlat, minlon, maxlon));
+    SurfaceSector shape = new SurfaceSector(attr,
+        Sector.fromDegrees(minlat, maxlat, minlon, maxlon));
     shape.setPathType(AVKey.LINEAR);
     current = shape;
     addRenderable(current);
