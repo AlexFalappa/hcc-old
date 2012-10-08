@@ -3,6 +3,8 @@ package gui.view;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
+import gov.nasa.worldwind.layers.ViewControlsLayer;
+import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -31,6 +33,7 @@ public class ViewPanel extends JPanel {
   private JCheckBox chckbxFootprints;
   private JCheckBox chckbxAreaOfInterest;
   private JCheckBox chckbxStatus;
+  private JCheckBox chckbxControls;
   private Component verticalGlue;
   private JPanel pProjection;
   private JLabel lblMode;
@@ -185,17 +188,25 @@ public class ViewPanel extends JPanel {
     gbc_chckbxStatus.gridy = 16;
     add(chckbxStatus, gbc_chckbxStatus);
 
+    chckbxControls = new JCheckBox("Controls N/A");
+    GridBagConstraints gbc_chckbxControls = new GridBagConstraints();
+    gbc_chckbxControls.insets = new Insets(0, 0, 5, 0);
+    gbc_chckbxControls.anchor = GridBagConstraints.WEST;
+    gbc_chckbxControls.gridx = 1;
+    gbc_chckbxControls.gridy = 17;
+    add(chckbxControls, gbc_chckbxControls);
+
     lblMode = new JLabel("Mode:");
     GridBagConstraints gbc_lblMode = new GridBagConstraints();
     gbc_lblMode.insets = new Insets(0, 0, 5, 5);
     gbc_lblMode.gridx = 0;
-    gbc_lblMode.gridy = 17;
+    gbc_lblMode.gridy = 18;
     add(lblMode, gbc_lblMode);
 
     verticalGlue = Box.createVerticalGlue();
     GridBagConstraints gbc_verticalGlue = new GridBagConstraints();
     gbc_verticalGlue.gridx = 1;
-    gbc_verticalGlue.gridy = 19;
+    gbc_verticalGlue.gridy = 20;
     add(verticalGlue, gbc_verticalGlue);
   }
 
@@ -235,13 +246,21 @@ public class ViewPanel extends JPanel {
     chckbxStatus.setSelected(slayer.isEnabled());
     chckbxStatus.setAction(new ToggleAction(slayer, wwd));
 
+    // Create and install the view controls layer and register a controller
+    // for it with the World Window.
+    ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
+    wwd.getModel().getLayers().add(viewControlsLayer);
+    wwd.addSelectListener(new ViewControlsSelectListener(wwd, viewControlsLayer));
+    chckbxControls.setSelected(viewControlsLayer.isEnabled());
+    chckbxControls.setAction(new ToggleAction(viewControlsLayer, wwd));
+
     pProjection = new WorldModePanel(wwd);
     GridBagConstraints gbc_pProjection = new GridBagConstraints();
     gbc_pProjection.gridwidth = 2;
     gbc_pProjection.insets = new Insets(0, 0, 5, 0);
     gbc_pProjection.fill = GridBagConstraints.NONE;
     gbc_pProjection.gridx = 0;
-    gbc_pProjection.gridy = 18;
+    gbc_pProjection.gridy = 19;
     add(pProjection, gbc_pProjection);
   }
 
