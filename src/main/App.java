@@ -21,8 +21,11 @@ import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
  * 
  */
 public class App {
-  public static final String APP_NAME = "HCC";
-  public static final String APP_FRAME_TITLE = "HMA Catalogue Client";
+  public static final String NAME = "HCC";
+  public static final String VERSION_MAJOR = "0";
+  public static final String VERSION_MINOR = "6";
+  public static final String VERSION = VERSION_MAJOR + "." + VERSION_MINOR;
+  public static final String FRAME_TITLE = "HMA Catalogue Client";
   public static final String PREFS_ROOT = "alexfalappa.hcc";
   public static final String PREFS_KEY_SERVICES = "catalogues";
   public static final Logger logger = Logger.getLogger("hcc.main");
@@ -33,7 +36,7 @@ public class App {
     System.setProperty("gov.nasa.worldwind.app.config.document", "conf/hcc.worldwind.xml");
     if (Configuration.isMacOS()) {
       System.setProperty("apple.laf.useScreenMenuBar", "true");
-      System.setProperty("com.apple.mrj.application.apple.menu.about.name", App.APP_FRAME_TITLE);
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name", App.FRAME_TITLE);
       System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
       // System.setProperty("apple.awt.brushMetalLook", "true");// provokes
       // flashing
@@ -49,6 +52,7 @@ public class App {
   public static void main(String[] args) {
     // configure logging
     configureLoggers();
+    logger.info(NAME + " version " + VERSION + " starting");
     // show the main application window
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -56,13 +60,12 @@ public class App {
           // set the jgoodies Looks look and feel
           UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
           // create and pack main window
-          logger.info("Creating and showing ui...");
+          logger.info("Creating and showing ui");
           frame = new MainFrame();
           frame.pack();
           // center on screen and show
           frame.setLocationRelativeTo(null);
           frame.setVisible(true);
-          logger.info("...done");
         } catch (Exception e) {
           logger.severe("Could not create main window!");
           logger.throwing(App.class.getName(), "main", e);

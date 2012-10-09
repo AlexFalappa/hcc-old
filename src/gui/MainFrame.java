@@ -76,7 +76,7 @@ public class MainFrame extends JFrame {
    */
   public MainFrame() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle(App.APP_FRAME_TITLE);
+    setTitle(App.FRAME_TITLE);
     setGlassPane(new BusyPane());
     addWindowListener(new WindowAdapter() {
       @Override

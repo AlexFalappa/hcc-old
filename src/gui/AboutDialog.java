@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import main.App;
 
 public class AboutDialog extends JDialog {
 
@@ -36,7 +37,7 @@ public class AboutDialog extends JDialog {
     lblAppName.setFont(new Font("Dialog", Font.BOLD, 18));
     pMessages.add(lblAppName);
 
-    JLabel lblVersion = new JLabel("version 0.6");
+    JLabel lblVersion = new JLabel("version " + App.VERSION);
     pMessages.add(lblVersion);
 
     Component verticalStrut = Box.createVerticalStrut(20);
