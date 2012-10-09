@@ -169,9 +169,8 @@ public class WorldModePanel extends JPanel {
       for (int i = 0; i < layers.size(); i++) {
         if (layers.get(i) instanceof SkyGradientLayer)
           layers.set(i, new SkyColorLayer());
-        if (layers.get(i) instanceof StarsLayer)
-          layers.get(i).setEnabled(false);
       }
+      ViewPanel.chckbxStars.setSelected(false);
     }
     wwd.redraw();
   }

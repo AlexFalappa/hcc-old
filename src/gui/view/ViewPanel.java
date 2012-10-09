@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 public class ViewPanel extends JPanel {
 
-  private JCheckBox chckbxStars;
+  public static JCheckBox chckbxStars;
   private JCheckBox chckbxAtmosphere;
   private JCheckBox chckbxBlueMarbleImage;
   private JCheckBox chckbxWorldMap;
