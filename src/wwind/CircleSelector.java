@@ -1,16 +1,9 @@
-/*
- * Copyright (C) 2001, 2009 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration. All
- * Rights Reserved.
- */
-
-package gov.nasa.worldwindx.examples.util;
+package wwind;
 
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WWObjectImpl;
 import gov.nasa.worldwind.WorldWindow;
-import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.DragSelectEvent;
 import gov.nasa.worldwind.event.RenderingEvent;
 import gov.nasa.worldwind.event.RenderingListener;
@@ -18,11 +11,13 @@ import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Intersection;
+import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.EllipsoidalGlobe;
+import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.RenderableLayer;
@@ -32,6 +27,7 @@ import gov.nasa.worldwind.render.BasicShapeAttributes;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.ShapeAttributes;
+import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwind.util.Logging;
 import java.awt.Color;
@@ -42,17 +38,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Provides an interactive region selector. To use, construct and call
- * enable/disable. Register a property listener to receive changes to the sector
- * as they occur, or just wait until the user is done and then query the result
- * via {@link #getSector()}.
+ * Provides an interactive circular region selector. To use, construct and call
+ * enable/disable. It registers a property listener to receive changes to the
+ * sector as they occur, or just wait until the user is done and then query the
+ * result via {@link #getCircle()}.
  * 
- * @author tag
- * @version $Id: SectorSelector.java 22 2011-07-29 22:15:38Z tgaskins $
+ * @author Alessandro Falappa
  */
-public class SectorSelector extends WWObjectImpl implements SelectListener, MouseListener,
+public class CircleSelector extends WWObjectImpl implements SelectListener, MouseListener,
     MouseMotionListener, RenderingListener {
-  public final static String SECTOR_PROPERTY = "gov.nasa.worldwind.SectorSelector";
+  public final static String CIRCLE_PROPERTY = "wwind.CircleSelector";
 
   protected static final int NONE = 0;
 
@@ -68,9 +63,9 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
   protected static final int SOUTHWEST = SOUTH + WEST;
   protected static final int SOUTHEAST = SOUTH + EAST;
 
-  private final WorldWindow wwd;
+  protected final WorldWindow wwd;
   private final Layer layer;
-  private final RegionShape shape;
+  private final CircularRegionShape shape;
 
   private double edgeFactor = 0.10;
 
@@ -79,9 +74,9 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
   private int operation = NONE;
   private int side = NONE;
   private Position previousPosition = null;
-  private Sector previousSector = null;
+  private Circle previousCircle = null;
 
-  public SectorSelector(WorldWindow worldWindow) {
+  public CircleSelector(WorldWindow worldWindow) {
     if (worldWindow == null) {
       String msg = Logging.getMessage("nullValue.WorldWindow");
       Logging.logger().log(java.util.logging.Level.SEVERE, msg);
@@ -91,33 +86,8 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     this.wwd = worldWindow;
 
     this.layer = new RenderableLayer();
-    this.shape = new RegionShape(Sector.EMPTY_SECTOR);
+    this.shape = new CircularRegionShape(this.wwd.getModel().getGlobe(), new Circle());
     ((RenderableLayer) this.layer).addRenderable(this.shape);
-  }
-
-  protected SectorSelector(WorldWindow worldWindow, RegionShape shape, RenderableLayer rLayer) {
-    if (worldWindow == null) {
-      String msg = Logging.getMessage("nullValue.WorldWindow");
-      Logging.logger().log(java.util.logging.Level.SEVERE, msg);
-      throw new IllegalArgumentException(msg);
-    }
-
-    if (shape == null) {
-      String msg = Logging.getMessage("nullValue.Shape");
-      Logging.logger().log(java.util.logging.Level.SEVERE, msg);
-      throw new IllegalArgumentException(msg);
-    }
-
-    if (rLayer == null) {
-      String msg = Logging.getMessage("nullValue.Layer");
-      Logging.logger().log(java.util.logging.Level.SEVERE, msg);
-      throw new IllegalArgumentException(msg);
-    }
-
-    this.wwd = worldWindow;
-    this.shape = shape;
-    this.layer = rLayer;
-    rLayer.addRenderable(this.shape);
   }
 
   public WorldWindow getWwd() {
@@ -160,8 +130,8 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     this.getShape().clear();
   }
 
-  public Sector getSector() {
-    return this.getShape().hasSelection() ? this.getShape().getSector() : null;
+  public Circle getCircle() {
+    return this.getShape().hasSelection() ? this.getShape().getCircle() : null;
     // TODO: Determine how to handle date-line spanning sectors.
   }
 
@@ -205,7 +175,7 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     this.getShape().setBorderWidth(width);
   }
 
-  protected RegionShape getShape() {
+  protected CircularRegionShape getShape() {
     return shape;
   }
 
@@ -257,14 +227,14 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     // updated within the region shape's
     // render method.
 
-    this.notifySectorChanged();
+    this.notifyCircleChanged();
   }
 
-  protected void notifySectorChanged() {
-    if (this.getShape().hasSelection() && this.getSector() != null
-        && !this.getSector().equals(this.previousSector)) {
-      this.firePropertyChange(SECTOR_PROPERTY, this.previousSector, this.getShape().getSector());
-      this.previousSector = this.getSector();
+  protected void notifyCircleChanged() {
+    if (this.getShape().hasSelection() && this.getCircle() != null
+        && !this.getCircle().equals(this.previousCircle)) {
+      this.firePropertyChange(CIRCLE_PROPERTY, this.previousCircle, this.getShape().getCircle());
+      this.previousCircle = this.getCircle();
     }
   }
 
@@ -303,7 +273,7 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
 
     mouseEvent.consume(); // prevent view operations
 
-    this.firePropertyChange(SECTOR_PROPERTY, this.previousSector, null);
+    this.firePropertyChange(CIRCLE_PROPERTY, this.previousCircle, null);
   }
 
   public void mouseDragged(MouseEvent mouseEvent) {
@@ -351,30 +321,36 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
       if (topObject == null)
         return;
 
-      RegionShape dragObject = this.getShape();
+      CircularRegionShape dragObject = this.getShape();
 
       if (this.getOperation() == SIZING) {
-        Sector newSector = this.resizeShape(dragObject, this.getSide());
-        if (newSector != null)
-          dragObject.setSector(newSector);
+        System.out.println("SIZING");
+        Circle newCircle = this.resizeShape(dragObject);
+        if (newCircle != null) {
+          dragObject.setCenter(newCircle.getCenter());
+          dragObject.setRadius(newCircle.getRadius());
+        }
         event.consume();
       } else {
+        System.out.println("NOT SIZING");
         this.setSide(this.determineAdjustmentSide(dragObject, this.getEdgeFactor()));
-
         if (this.getSide() == NONE || this.getOperation() == MOVING) {
+
           this.setOperation(MOVING);
           this.dragWholeShape(dragEvent, dragObject);
         } else {
-          Sector newSector = this.resizeShape(dragObject, this.getSide());
-          if (newSector != null)
-            dragObject.setSector(newSector);
+          Circle newCircle = this.resizeShape(dragObject);
+          if (newCircle != null) {
+            dragObject.setCenter(newCircle.getCenter());
+            dragObject.setRadius(newCircle.getRadius());
+          };
           this.setOperation(SIZING);
         }
         event.consume();
       }
 
       this.setPreviousPosition(this.getWwd().getCurrentPosition());
-      this.notifySectorChanged();
+      this.notifyCircleChanged();
     } else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
       this.setOperation(NONE);
       this.setPreviousPosition(null);
@@ -432,6 +408,20 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     }
 
     return NONE;
+  }
+
+  protected Circle resizeShape(Movable dragObject) {
+    if (dragObject instanceof SurfaceCircle) {
+      SurfaceCircle circ = (SurfaceCircle) dragObject;
+      Position p = this.getWwd().getCurrentPosition();
+      if (p == null) {
+        return null;
+      }
+      double globRad = wwd.getModel().getGlobe().getRadiusAt(p);
+      double newRadius = LatLon.greatCircleDistance(circ.getCenter(), p).radians * globRad;
+      return new Circle(circ.getCenter(), newRadius);
+    }
+    return null;
   }
 
   protected Sector resizeShape(Movable dragObject, int side) {
@@ -555,22 +545,22 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     ((Component) this.getWwd()).setCursor(cursor != null ? cursor : Cursor.getDefaultCursor());
   }
 
-  protected static class RegionShape extends SurfaceSector {
+  protected static class CircularRegionShape extends SurfaceCircle {
     private boolean resizeable = false;
     private Position startPosition;
     private Position endPosition;
-    private SurfaceSector borderShape;
+    private SurfaceCircle borderShape;
+    private Circle circle;
+    private Globe globe;
 
-    protected RegionShape(Sector sector) {
-      super(sector);
+    protected CircularRegionShape(Globe globe, Circle circle) {
+      this.globe = globe;
+      this.circle = circle;
 
-      // Create the default border shape.
-      this.setBorder(new SurfaceSector(sector));
-
-      // The edges of the region shape should be constant lines of latitude and
-      // longitude.
-      this.setPathType(AVKey.LINEAR);
-      this.getBorder().setPathType(AVKey.LINEAR);
+      // Set center and radius and create the border shape.
+      this.setCenter(circle.getCenter());
+      this.setRadius(circle.getRadius());
+      this.setBorder(new SurfaceCircle(circle.getCenter(), circle.getRadius()));
 
       // Setup default interior rendering attributes. Note that the interior
       // rendering attributes are
@@ -592,6 +582,10 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
       borderAttrs.setOutlineWidth(3);
       this.getBorder().setAttributes(borderAttrs);
       this.getBorder().setHighlightAttributes(borderAttrs);
+    }
+
+    public Circle getCircle() {
+      return circle;
     }
 
     public Color getInteriorColor() {
@@ -644,11 +638,6 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
       this.getBorder().setAttributes(attr);
     }
 
-    public void setSector(Sector sector) {
-      super.setSector(sector);
-      this.getBorder().setSector(sector);
-    }
-
     protected boolean isResizeable() {
       return resizeable;
     }
@@ -673,17 +662,16 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
       this.endPosition = endPosition;
     }
 
-    protected SurfaceSector getBorder() {
+    protected SurfaceCircle getBorder() {
       return borderShape;
     }
 
-    protected void setBorder(SurfaceSector shape) {
+    protected void setBorder(SurfaceCircle shape) {
       if (shape == null) {
         String message = Logging.getMessage("nullValue.Shape");
         Logging.logger().severe(message);
         throw new IllegalArgumentException(message);
       }
-
       this.borderShape = shape;
     }
 
@@ -694,7 +682,8 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
     protected void clear() {
       this.setStartPosition(null);
       this.setEndPosition(null);
-      this.setSector(Sector.EMPTY_SECTOR);
+      this.borderShape = new SurfaceCircle();
+      this.circle = new Circle();
     }
 
     public void preRender(DrawContext dc) {
@@ -747,7 +736,9 @@ public class SectorSelector extends WWObjectImpl implements SelectListener, Mous
         Position end = terrainObject.getPosition();
         if (!this.getStartPosition().equals(end)) {
           this.setEndPosition(end);
-          this.setSector(Sector.boundingSector(this.getStartPosition(), this.getEndPosition()));
+          this.setCenter(this.startPosition);
+          this.setRadius(LatLon.greatCircleDistance(startPosition, endPosition).getRadians()
+              * globe.getRadiusAt(endPosition));
           this.doRender(dc);
         }
       } else {

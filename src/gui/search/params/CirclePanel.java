@@ -1,19 +1,29 @@
 package gui.search.params;
 
+import gov.nasa.worldwind.WorldWindow;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import main.App;
+import wwind.Circle;
+import wwind.CircleSelector;
 
 public class CirclePanel extends JPanel {
   private JSpinner spCenterLon;
   private JSpinner spCenterLat;
   private JSpinner spRadius;
+  private JButton btnGraphicalSelection;
+  private boolean selecting = false;
+  private CircleSelector selector;
 
   /**
    * Create the panel.
@@ -71,7 +81,8 @@ public class CirclePanel extends JPanel {
     add(lblRadius, gbc_lblRadius);
 
     spRadius = new JSpinner();
-    spRadius.setModel(new SpinnerNumberModel(new Double(1000), new Double(0), null, new Double(100)));
+    spRadius
+        .setModel(new SpinnerNumberModel(new Double(1000), new Double(0), null, new Double(100)));
     lblRadius.setLabelFor(spRadius);
     GridBagConstraints gbc_txRadius = new GridBagConstraints();
     gbc_txRadius.insets = new Insets(0, 0, 5, 0);
@@ -79,9 +90,28 @@ public class CirclePanel extends JPanel {
     gbc_txRadius.gridx = 1;
     gbc_txRadius.gridy = 2;
     add(spRadius, gbc_txRadius);
-    JButton btnGraphicalSelection = new JButton("Graphical selection");
-    btnGraphicalSelection.setEnabled(false);
-    btnGraphicalSelection.setToolTipText("To implement");
+
+    btnGraphicalSelection = new JButton("Graphical selection");
+    btnGraphicalSelection.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (selector == null)
+          return;
+        if (selecting) {
+          btnGraphicalSelection.setText("Graphical selection");
+          setSpinnersEnabled(true);
+          Circle c = selector.getCircle();
+          updateCenRad(c);
+          App.frame.aois.setSurfCircle(c);
+          selector.disable();
+          selecting = false;
+        } else {
+          btnGraphicalSelection.setText("Accept");
+          setSpinnersEnabled(false);
+          selector.enable();
+          selecting = true;
+        }
+      }
+    });
     GridBagConstraints gbc_btnGraphicalSelection = new GridBagConstraints();
     gbc_btnGraphicalSelection.gridwidth = 2;
     gbc_btnGraphicalSelection.insets = new Insets(20, 0, 0, 0);
@@ -92,6 +122,11 @@ public class CirclePanel extends JPanel {
 
   @Override
   public void setEnabled(boolean enabled) {
+    btnGraphicalSelection.setEnabled(enabled);
+    setSpinnersEnabled(enabled);
+  }
+
+  private void setSpinnersEnabled(boolean enabled) {
     spCenterLat.setEnabled(enabled);
     spCenterLon.setEnabled(enabled);
     spRadius.setEnabled(enabled);
@@ -104,4 +139,27 @@ public class CirclePanel extends JPanel {
   public String getRadius() {
     return spRadius.getValue().toString();
   }
+
+  private void updateCenRad(Circle c) {
+    if (c != null) {
+      spCenterLat.setValue(c.getCenter().latitude.degrees);
+      spCenterLon.setValue(c.getCenter().longitude.degrees);
+      spRadius.setValue(c.getRadius());
+    }
+  }
+
+  public void linkTo(WorldWindow wwd) {
+    selector = new CircleSelector(wwd);
+    selector.addPropertyChangeListener(CircleSelector.CIRCLE_PROPERTY,
+        new PropertyChangeListener() {
+          public void propertyChange(PropertyChangeEvent evt) {
+            Circle circ = (Circle) evt.getNewValue();
+            System.out.println(circ.getCenter());
+            System.out.println(circ.getRadius());
+            System.out.println();
+            // EventQueue.invokeLater(new RangeUpdater(circ));
+          }
+        });
+  }
+
 }

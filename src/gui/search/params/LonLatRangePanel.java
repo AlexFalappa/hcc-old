@@ -3,7 +3,6 @@ package gui.search.params;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwindx.examples.util.SectorSelector;
-
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,13 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-
 import main.App;
 
 public class LonLatRangePanel extends JPanel {
@@ -26,7 +23,7 @@ public class LonLatRangePanel extends JPanel {
   private JSpinner spMaxLon;
   private JSpinner spMinLat;
   private JSpinner spMaxLat;
-  private JButton btnStartGraphicalSelection;
+  private JButton btnGraphicalSelection;
   private boolean selecting = false;
   private SectorSelector selector;
 
@@ -108,13 +105,14 @@ public class LonLatRangePanel extends JPanel {
     gbc_txMaxLat.gridx = 1;
     gbc_txMaxLat.gridy = 3;
     add(spMaxLat, gbc_txMaxLat);
-    btnStartGraphicalSelection = new JButton("Graphical selection");
-    btnStartGraphicalSelection.addActionListener(new ActionListener() {
+
+    btnGraphicalSelection = new JButton("Graphical selection");
+    btnGraphicalSelection.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if (selector == null)
           return;
         if (selecting) {
-          btnStartGraphicalSelection.setText("Graphical selection");
+          btnGraphicalSelection.setText("Graphical selection");
           setSpinnersEnabled(true);
           Sector s = selector.getSector();
           updateRanges(s);
@@ -122,7 +120,7 @@ public class LonLatRangePanel extends JPanel {
           selector.disable();
           selecting = false;
         } else {
-          btnStartGraphicalSelection.setText("Accept");
+          btnGraphicalSelection.setText("Accept");
           setSpinnersEnabled(false);
           selector.enable();
           selecting = true;
@@ -134,13 +132,13 @@ public class LonLatRangePanel extends JPanel {
     gbc_btnStartGraphicalSelection.gridwidth = 2;
     gbc_btnStartGraphicalSelection.gridx = 0;
     gbc_btnStartGraphicalSelection.gridy = 4;
-    add(btnStartGraphicalSelection, gbc_btnStartGraphicalSelection);
+    add(btnGraphicalSelection, gbc_btnStartGraphicalSelection);
   }
 
   @Override
   public void setEnabled(boolean enabled) {
     setSpinnersEnabled(enabled);
-    btnStartGraphicalSelection.setEnabled(enabled);
+    btnGraphicalSelection.setEnabled(enabled);
   }
 
   private void setSpinnersEnabled(boolean enabled) {
@@ -161,12 +159,13 @@ public class LonLatRangePanel extends JPanel {
 
   public void linkTo(WorldWindow wwd) {
     selector = new SectorSelector(wwd);
-    selector.addPropertyChangeListener(SectorSelector.SECTOR_PROPERTY, new PropertyChangeListener() {
-      public void propertyChange(PropertyChangeEvent evt) {
-        Sector sec = (Sector) evt.getNewValue();
-        EventQueue.invokeLater(new RangeUpdater(sec));
-      }
-    });
+    selector.addPropertyChangeListener(SectorSelector.SECTOR_PROPERTY,
+        new PropertyChangeListener() {
+          public void propertyChange(PropertyChangeEvent evt) {
+            Sector sec = (Sector) evt.getNewValue();
+            EventQueue.invokeLater(new RangeUpdater(sec));
+          }
+        });
   }
 
   class RangeUpdater implements Runnable {

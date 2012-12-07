@@ -8,7 +8,6 @@ import gui.search.params.LonLatRangePanel;
 import gui.search.params.PolygonPanel;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,7 +21,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -175,16 +173,16 @@ public class SearchPanel extends JPanel {
     add(dtpTo, gbc_dtpTo);
 
     chckbxSpatialConstraints = new JCheckBox("Spatial constraints:");
-    chckbxSpatialConstraints.setEnabled(false);
-    chckbxSpatialConstraints.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-        spatOpCombo.setEnabled(enabled);
-        lonLatRangePanel.setEnabled(enabled);
-        circlePanel.setEnabled(enabled);
-        polygonPanel.setEnabled(enabled);
-      }
-    });
+    // chckbxSpatialConstraints.setEnabled(false);
+    // chckbxSpatialConstraints.addItemListener(new ItemListener() {
+    // public void itemStateChanged(ItemEvent e) {
+    // boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+    // spatOpCombo.setEnabled(enabled);
+    // lonLatRangePanel.setEnabled(enabled);
+    // circlePanel.setEnabled(enabled);
+    // polygonPanel.setEnabled(enabled);
+    // }
+    // });
     GridBagConstraints gbc_chckbxSpatialConstraints = new GridBagConstraints();
     gbc_chckbxSpatialConstraints.anchor = GridBagConstraints.NORTHWEST;
     gbc_chckbxSpatialConstraints.insets = new Insets(0, 0, 5, 0);
@@ -195,7 +193,7 @@ public class SearchPanel extends JPanel {
 
     spatOpCombo = new JComboBox<String>();
     spatOpCombo.setMaximumRowCount(3);
-    spatOpCombo.setEnabled(false);
+    // sspatOpCombo.setEnabled(false);
     spatOpCombo.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         String pname = e.getItemSelectable().getSelectedObjects()[0].toString();
@@ -232,7 +230,7 @@ public class SearchPanel extends JPanel {
     spatialParamsPanels.add(lonLatRangePanel, paramsPanels[1]);
 
     circlePanel = new CirclePanel();
-    circlePanel.setEnabled(false);
+    // circlePanel.setEnabled(false);
     spatialParamsPanels.add(circlePanel, paramsPanels[2]);
 
     JLabel lblSearch = new JLabel("Get:");
@@ -265,6 +263,7 @@ public class SearchPanel extends JPanel {
   public void linkTo(WorldWindow wwd, AOILayer aoi) {
     lonLatRangePanel.linkTo(wwd);
     polygonPanel.linkTo(wwd, aoi);
+    circlePanel.linkTo(wwd);
   }
 
   public GetRecordsDocument extractFromPanel() {
@@ -499,22 +498,13 @@ public class SearchPanel extends JPanel {
     xc.toNextToken();
     xc.toNextToken();
   }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          JFrame f = new JFrame("test");
-          f.setContentPane(new SearchPanel());
-          f.pack();
-          f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          f.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
+  /*
+   * public static void main(String[] args) { EventQueue.invokeLater(new
+   * Runnable() { public void run() { try { JFrame f = new JFrame("test");
+   * f.setContentPane(new SearchPanel()); f.pack();
+   * f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); f.setVisible(true); }
+   * catch (Exception e) { e.printStackTrace(); } } }); }
+   */
 }
 
 class CollectionListModel extends AbstractListModel<String> {

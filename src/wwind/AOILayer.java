@@ -7,6 +7,7 @@ import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.BasicShapeAttributes;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Renderable;
+import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceSector;
 import java.awt.Color;
@@ -27,11 +28,10 @@ public class AOILayer extends RenderableLayer {
     attr.setInteriorOpacity(0.2f);
   }
 
-  // public void addSurfCircle(double lat, double lon, double rad) {
-  // SurfaceCircle shape = new SurfaceCircle(attr, LatLon.fromDegrees(lat, lon),
-  // rad);
-  // addRenderable(shape);
-  // }
+  public void setSurfCircle(Circle circ) {
+    SurfaceCircle shape = new SurfaceCircle(attr, circ.getCenter(), circ.getRadius());
+    addRenderable(shape);
+  }
 
   public void setSurfPoly(Iterable<? extends LatLon> coords) {
     if (current != null)
