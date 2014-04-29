@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alessandro Falappa.
+ * Copyright 2014 Alessandro Falappa <alex.falappa@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import main.App;
 
 /**
  *
- * @author Alessandro Falappa
+ * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class SearchButtonsPanel extends javax.swing.JPanel {
 

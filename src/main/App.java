@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alessandro Falappa <alex.falappa@gmail.com>.
+ * Copyright 2014 Alessandro Falappa <alex.falappa@gmail.com> <alex.falappa@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import gov.nasa.worldwind.Configuration;
 import gui.MainWindow;
 
 /**
- * Application entry point
+ * Application entry point.
  *
- * @author Alessandro Falappa <alex.falappa@gmail.com>
+ * @author Alessandro Falappa <alex.falappa@gmail.com> <alex.falappa@gmail.com>
  */
 public class App {
 

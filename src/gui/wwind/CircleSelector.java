@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Alessandro Falappa <alex.falappa@gmail.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package gui.wwind;
 
 import java.awt.Color;
@@ -44,7 +59,7 @@ import gov.nasa.worldwind.util.Logging;
  * sector as they occur, or just wait until the user is done and then query the
  * result via {@link #getCircle()}.
  *
- * @author Alessandro Falappa
+ * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class CircleSelector extends WWObjectImpl implements SelectListener, MouseListener,
         MouseMotionListener, RenderingListener {
@@ -228,7 +243,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
             return;
         }
 
-    // We notify of changes during this rendering stage because the sector is
+        // We notify of changes during this rendering stage because the sector is
         // updated within the region shape's
         // render method.
         this.notifyCircleChanged();
@@ -242,7 +257,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
         }
     }
 
-  //
+    //
     // Mouse events are used to initiate and track initial drawing of the region.
     // When the selector is enabled it is
     // "armed", meaning that the next mouse press on the globe will initiate the
@@ -305,7 +320,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
     public void mouseMoved(MouseEvent e) {
     }
 
-  //
+    //
     // Selection events are used to resize and move the region
     //
     public void selected(SelectEvent event) {
@@ -518,7 +533,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
         Intersection inters[] = globe.intersect(ray, refPos.getElevation());
 
         if (inters != null) {
-      // Intersection with globe. Move reference point to the intersection
+            // Intersection with globe. Move reference point to the intersection
             // point.
             Position p = globe.computePositionFromPoint(inters[0].getIntersectionPoint());
             dragObject.moveTo(p);
@@ -583,7 +598,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
             this.setRadius(circle.getRadius());
             this.setBorder(new SurfaceCircle(circle.getCenter(), circle.getRadius()));
 
-      // Setup default interior rendering attributes. Note that the interior
+            // Setup default interior rendering attributes. Note that the interior
             // rendering attributes are
             // configured so only the SurfaceSector's interior is rendered.
             ShapeAttributes interiorAttrs = new BasicShapeAttributes();
@@ -593,7 +608,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
             this.setAttributes(interiorAttrs);
             this.setHighlightAttributes(interiorAttrs);
 
-      // Setup default border rendering attributes. Note that the border
+            // Setup default border rendering attributes. Note that the border
             // rendering attributes are configured
             // so that only the SurfaceSector's outline is rendered.
             ShapeAttributes borderAttrs = new BasicShapeAttributes();
@@ -708,7 +723,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
         }
 
         public void preRender(DrawContext dc) {
-      // This is called twice: once during normal rendering, then again during
+            // This is called twice: once during normal rendering, then again during
             // ordered surface rendering. During
             // normal renering we pre-render both the interior and border shapes.
             // During ordered surface rendering, both
@@ -729,7 +744,7 @@ public class CircleSelector extends WWObjectImpl implements SelectListener, Mous
                 return;
             }
 
-      // This is called twice: once during normal rendering, then again during
+            // This is called twice: once during normal rendering, then again during
             // ordered surface rendering. During
             // normal renering we render both the interior and border shapes. During
             // ordered surface rendering, both
