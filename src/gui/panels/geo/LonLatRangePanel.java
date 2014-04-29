@@ -106,6 +106,7 @@ public class LonLatRangePanel extends javax.swing.JPanel {
         lMaxLat.setText("Max Lat");
 
         bDraw.setText("Draw");
+        bDraw.setEnabled(false);
         bDraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bDrawActionPerformed(evt);
