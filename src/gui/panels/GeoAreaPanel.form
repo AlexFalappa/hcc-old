@@ -80,11 +80,11 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="5">
-            <StringItem index="0" value="Lat Lon Range"/>
-            <StringItem index="1" value="Polygon"/>
-            <StringItem index="2" value="Circle"/>
-            <StringItem index="3" value="Line String"/>
-            <StringItem index="4" value="Point"/>
+            <StringItem index="0" value="Polygon"/>
+            <StringItem index="1" value="Circle"/>
+            <StringItem index="2" value="Line String"/>
+            <StringItem index="3" value="Point"/>
+            <StringItem index="4" value="Lat Lon Range"/>
           </StringArray>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
@@ -100,17 +100,10 @@
         <Property name="verticalGap" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="gui.panels.geo.LonLatRangePanel" name="pRangePane">
+        <Component class="gui.panels.geo.PolygonPanel" name="pPolyPane">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-              <CardConstraints cardName="Lat Lon Range"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="gui.panels.geo.PolygonPanel" name="pPolyPane">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="Polygon"/>
@@ -141,6 +134,16 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="Point"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="gui.panels.geo.LonLatRangePanel" name="pRangePane">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="Lat Lon Range"/>
             </Constraint>
           </Constraints>
         </Component>

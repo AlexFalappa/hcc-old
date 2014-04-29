@@ -55,11 +55,11 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         cbOper = new javax.swing.JComboBox();
         cbPrimitive = new javax.swing.JComboBox();
         pCards = new javax.swing.JPanel();
-        pRangePane = new gui.panels.geo.LonLatRangePanel();
         pPolyPane = new gui.panels.geo.PolygonPanel();
         pCirclePane = new gui.panels.geo.CirclePanel();
         pLinePane = new gui.panels.geo.LineStringPanel();
         pPointPane = new gui.panels.geo.PointPanel();
+        pRangePane = new gui.panels.geo.LonLatRangePanel();
 
         chGeoEnable.setText("Spatial constraints");
         chGeoEnable.addItemListener(new java.awt.event.ItemListener() {
@@ -71,7 +71,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         cbOper.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Overlaps", "Contains", "Intersect", "Is contained" }));
         cbOper.setEnabled(false);
 
-        cbPrimitive.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Lat Lon Range", "Polygon", "Circle", "Line String", "Point" }));
+        cbPrimitive.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Polygon", "Circle", "Line String", "Point", "Lat Lon Range" }));
         cbPrimitive.setEnabled(false);
         cbPrimitive.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -81,8 +81,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
 
         pCards.setLayout(new java.awt.CardLayout(1, 1));
 
-        pRangePane.setEnabled(false);
-        pCards.add(pRangePane, "Lat Lon Range");
+        pPolyPane.setEnabled(false);
         pCards.add(pPolyPane, "Polygon");
         pCards.add(pCirclePane, "Circle");
 
@@ -91,6 +90,9 @@ public class GeoAreaPanel extends javax.swing.JPanel {
 
         pPointPane.setEnabled(false);
         pCards.add(pPointPane, "Point");
+
+        pRangePane.setEnabled(false);
+        pCards.add(pRangePane, "Lat Lon Range");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
