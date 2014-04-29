@@ -31,7 +31,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="bGraphSel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="24" max="32767" attributes="0"/>
                               <Component id="bDraw" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -66,6 +66,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bGraphSel">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_097_vector_path_line.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Graphical Selection"/>
       </Properties>
       <Events>

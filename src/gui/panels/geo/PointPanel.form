@@ -88,6 +88,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bGraphSel">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_185_screenshot.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Graphical Selection"/>
       </Properties>
       <Events>

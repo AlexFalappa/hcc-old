@@ -94,6 +94,7 @@ public class PointPanel extends javax.swing.JPanel {
         lLon.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lLon.setText("Lon");
 
+        bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_185_screenshot.png"))); // NOI18N
         bGraphSel.setText("Graphical Selection");
         bGraphSel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

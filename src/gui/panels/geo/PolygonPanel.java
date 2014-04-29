@@ -75,6 +75,7 @@ public class PolygonPanel extends javax.swing.JPanel {
 
         lblCoords.setText("Coordinates (deg.)");
 
+        bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_096_vector_path_polygon.png"))); // NOI18N
         bGraphSel.setText("Graphical Selection");
         bGraphSel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

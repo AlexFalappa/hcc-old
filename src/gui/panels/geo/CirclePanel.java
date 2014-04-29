@@ -80,6 +80,7 @@ public class CirclePanel extends javax.swing.JPanel {
 
         spRadius.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(500.0d)));
 
+        bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_095_vector_path_circle.png"))); // NOI18N
         bGraphSel.setText("Graphical Selection");
         bGraphSel.setEnabled(false);
         bGraphSel.addActionListener(new java.awt.event.ActionListener() {
@@ -156,7 +157,7 @@ public class CirclePanel extends javax.swing.JPanel {
                     .addComponent(lRadius)
                     .addComponent(spRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lUom1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bGraphSel)
                     .addComponent(bDraw))
