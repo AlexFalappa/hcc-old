@@ -81,11 +81,11 @@ public class HmaGetRecordsBuilder {
     }
 
     public void setDetailFull() {
-        query.addNewElementSetName().setStringValue("full");
+        query.getElementSetName().setStringValue("full");
     }
 
     public void setDetailSummary() {
-        query.addNewElementSetName().setStringValue("summary");
+        query.getElementSetName().setStringValue("summary");
     }
 
     public void addCollection(String collection) {
