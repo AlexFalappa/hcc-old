@@ -100,6 +100,8 @@ public class MainWindow extends javax.swing.JFrame {
         bAddCat = new javax.swing.JButton();
         bDelCat = new javax.swing.JButton();
         lMexs = new javax.swing.JLabel();
+        bEdit = new javax.swing.JButton();
+        bInfo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HMA Catalogue Client");
@@ -123,14 +125,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         cbCatalogues.setModel(dcmCatalogues);
 
-        bAddCat.setText("+");
+        bAddCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_190_circle_plus.png"))); // NOI18N
         bAddCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bAddCatActionPerformed(evt);
             }
         });
 
-        bDelCat.setText("-");
+        bDelCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_191_circle_minus.png"))); // NOI18N
         bDelCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bDelCatActionPerformed(evt);
@@ -138,12 +140,27 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         lMexs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lMexs.setText("messages");
+
+        bEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_150_edit.png"))); // NOI18N
+        bEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditActionPerformed(evt);
+            }
+        });
+
+        bInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_195_circle_info.png"))); // NOI18N
+        bInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bInfoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pToolBarLayout = new javax.swing.GroupLayout(pToolBar);
         pToolBar.setLayout(pToolBarLayout);
         pToolBarLayout.setHorizontalGroup(
             pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pToolBarLayout.createSequentialGroup()
+            .addGroup(pToolBarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -153,22 +170,27 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bDelCat)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addComponent(bEdit)
+                .addGap(5, 5, 5)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bInfo)
                 .addContainerGap())
         );
-
-        pToolBarLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddCat, bDelCat});
-
         pToolBarLayout.setVerticalGroup(
             pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pToolBarLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bAddCat)
-                    .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lMexs)
-                    .addComponent(jLabel1)
-                    .addComponent(bDelCat))
+                .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(bInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bAddCat)
+                            .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(bDelCat))
+                        .addComponent(bEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(6, 6, 6))
         );
 
@@ -191,6 +213,14 @@ public class MainWindow extends javax.swing.JFrame {
             dcmCatalogues.removeElementAt(cbCatalogues.getSelectedIndex());
         }
     }//GEN-LAST:event_bDelCatActionPerformed
+
+    private void bInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInfoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bInfoActionPerformed
+
+    private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bEditActionPerformed
 
     private void setupWorldWind() {
         BasicModel model = new BasicModel();
@@ -243,6 +273,8 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddCat;
     private javax.swing.JButton bDelCat;
+    private javax.swing.JButton bEdit;
+    private javax.swing.JButton bInfo;
     private javax.swing.JComboBox cbCatalogues;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel lMexs;

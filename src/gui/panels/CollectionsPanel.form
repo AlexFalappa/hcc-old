@@ -22,12 +22,12 @@
                   <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="86" max="32767" attributes="0"/>
-                      <Component id="bAdd" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="68" max="32767" attributes="0"/>
+                      <Component id="bAdd" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="bDel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="bDel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -45,7 +45,7 @@
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane2" pref="154" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="152" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -59,7 +59,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bAdd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="+"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_432_plus.png"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" value="Add collection name"/>
       </Properties>
       <Events>
@@ -68,7 +70,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bDel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="-"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_433_minus.png"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" value="Remove selected collection name"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -99,7 +103,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="?"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_194_circle_question_mark.png"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" value="Discovery collections trough GetCapabilities"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

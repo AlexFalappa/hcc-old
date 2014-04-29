@@ -83,6 +83,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bHits">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_027_search.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Hits"/>
       </Properties>
       <Events>
@@ -91,6 +94,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="bResults">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_027_search.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Results"/>
       </Properties>
       <Events>

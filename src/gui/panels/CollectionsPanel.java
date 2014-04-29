@@ -77,7 +77,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Collections");
 
-        bAdd.setText("+");
+        bAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_432_plus.png"))); // NOI18N
         bAdd.setToolTipText("Add collection name");
         bAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,7 +85,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
             }
         });
 
-        bDel.setText("-");
+        bDel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_433_minus.png"))); // NOI18N
         bDel.setToolTipText("Remove selected collection name");
         bDel.setEnabled(false);
         bDel.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +100,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
         tblColls.setTableHeader(null);
         jScrollPane2.setViewportView(tblColls);
 
-        jButton1.setText("?");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_194_circle_question_mark.png"))); // NOI18N
         jButton1.setToolTipText("Discovery collections trough GetCapabilities");
         jButton1.setEnabled(false);
 
@@ -114,7 +114,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                         .addComponent(bAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bDel)
@@ -122,9 +122,6 @@ public class CollectionsPanel extends javax.swing.JPanel {
                         .addComponent(jButton1)))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAdd, bDel, jButton1});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -135,7 +132,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
                     .addComponent(bDel)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
