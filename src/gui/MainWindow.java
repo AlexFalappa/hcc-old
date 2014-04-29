@@ -17,6 +17,8 @@ package gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -67,6 +69,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         setupWorldWind();
+        loadPrefs();
         try {
             stub = new CatalogueStub();
         } catch (AxisFault ex) {
@@ -105,6 +108,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HMA Catalogue Client");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         pQueryParams.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         pQueryParams.setLayout(new javax.swing.BoxLayout(pQueryParams, javax.swing.BoxLayout.PAGE_AXIS));
@@ -145,7 +153,6 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         lMexs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lMexs.setText("messages");
 
         bEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_150_edit.png"))); // NOI18N
         bEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -238,6 +245,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void cbCataloguesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCataloguesMouseEntered
         cbCatalogues.setToolTipText(getCatalogueTooltip());
     }//GEN-LAST:event_cbCataloguesMouseEntered
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        storePrefs();
+    }//GEN-LAST:event_formWindowClosing
 
     private void setupWorldWind() {
         BasicModel model = new BasicModel();
@@ -514,6 +525,43 @@ public class MainWindow extends javax.swing.JFrame {
             return sb.toString();
         } else {
             return "No catalogue";
+        }
+    }
+
+    private void storePrefs() {
+        // save catalogue definitions via preferences API
+        Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+        for (int i = 0; i < dcmCatalogues.getSize(); i++) {
+            CatalogueDefinition catDef = dcmCatalogues.getElementAt(i);
+            Preferences catPref = prefs.node(catDef.getName());
+            catPref.put("edp", catDef.getEndpoint());
+            catPref.putBoolean("soapv12", catDef.isSoapV12());
+            StringBuilder sb = new StringBuilder();
+            final int arrLen = catDef.getCollections().length;
+            for (int j = 0; j < arrLen; j++) {
+                sb.append(catDef.getCollections()[j]);
+                if (j < arrLen - 1) {
+                    sb.append(' ');
+                }
+            }
+            catPref.put("collections", sb.toString());
+        }
+    }
+
+    private void loadPrefs() {
+        try {
+            // load catalogue definitions via preferences API
+            Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+            final String[] nodes = prefs.childrenNames();
+            for (int i = 0; i < nodes.length; i++) {
+                final String nodeName = nodes[i];
+                Preferences catPref = prefs.node(nodeName);
+                CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false));
+                catDef.setCollections(catPref.get("collections", "").split("\\s"));
+                dcmCatalogues.addElement(catDef);
+            }
+        } catch (BackingStoreException ex) {
+            // no prefs, do nothing
         }
     }
 }
