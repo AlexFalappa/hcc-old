@@ -132,6 +132,11 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1.setText("Catalogue");
 
         cbCatalogues.setModel(dcmCatalogues);
+        cbCatalogues.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbCataloguesItemStateChanged(evt);
+            }
+        });
         cbCatalogues.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 cbCataloguesMouseEntered(evt);
@@ -243,12 +248,20 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bEditActionPerformed
 
     private void cbCataloguesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCataloguesMouseEntered
+        System.out.println("evt = " + evt);
         cbCatalogues.setToolTipText(getCatalogueTooltip());
     }//GEN-LAST:event_cbCataloguesMouseEntered
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         storePrefs();
     }//GEN-LAST:event_formWindowClosing
+
+    private void cbCataloguesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCataloguesItemStateChanged
+        if (cbCatalogues.getSelectedIndex() >= 0) {
+            final CatalogueDefinition selCatDef = (CatalogueDefinition) cbCatalogues.getSelectedItem();
+            pCollections.setCollections(selCatDef.getCollections());
+        }
+    }//GEN-LAST:event_cbCataloguesItemStateChanged
 
     private void setupWorldWind() {
         BasicModel model = new BasicModel();
