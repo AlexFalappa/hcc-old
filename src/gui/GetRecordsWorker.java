@@ -15,13 +15,17 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
+import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
+import net.opengis.www.cat.wrs._1_0.ServiceExceptionReportFault;
+import net.opengis.www.ows.ExceptionType;
 
 /**
  * SwingWorker to make the GetRecords request.
@@ -45,13 +49,21 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
         publish("Building request...");
         GetRecordsDocument req = mw.buildReq(isResults);
         publish("Sending request...");
-        Thread.sleep(2000);
-//        final GetRecordsResponseDocument resp = stub.getRecords(req);
-        publish("Processing response...");
-        Thread.sleep(1000);
-//        int recs = mw.processResponse(resp);
-        int recs = mw.processResponse(null);
-        publish("Done");
+        int recs = 0;
+        try {
+            final GetRecordsResponseDocument resp = stub.getRecords(req);
+            publish("Processing response...");
+            recs = mw.processResponse(resp);
+            publish("Done");
+        } catch (RemoteException remoteException) {
+            remoteException.printStackTrace();
+        } catch (ServiceExceptionReportFault exRep) {
+            final ExceptionType exc = exRep.getFaultMessage().getExceptionReport().getExceptionArray(0);
+            System.err.println(exc.getExceptionCode());
+            System.err.println(exc.getExceptionTextArray(0));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         return recs;
     }
 
