@@ -27,9 +27,31 @@ import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.QueryType;
 import net.opengis.www.cat.csw._2_0_2.ResultType;
 
+/**
+ * Builder for HMA GetRecords XML requests.
+ * <p>
+ * Uses an internal XML template representing a GetRecords RESULTS request with
+ * full detail, max 100 records starting from 1.
+ * <p>
+ * Follows the <i>Builder</i> Design pattern.
+ * <p>
+ * Typical usage is as follows:
+ * <pre>
+ * HmaGetRecordsBuilder builder=new HmaGetRecordsBuilder();
+ * builder.setResults();
+ * builder.setMaxRecords(100);
+ * builder.setDetailFull();
+ * builder.addCollection("Collection1");
+ * builder.addTemporalOverlaps(date1, date2);
+ * GetRecordsDocument req=builder.getRequest();
+ * </pre>
+ * <p>
+ * @author Alessandro Falappa <alex.falappa@gmail.com>
+ */
 public class HmaGetRecordsBuilder {
 
     private static final String NS_OGC = "http://www.opengis.net/ogc";
+    private static final String NS_GML = "http://www.opengis.net/gml";
     private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private GetRecordsDocument reqDoc;
     private QueryType query;
@@ -167,7 +189,6 @@ public class HmaGetRecordsBuilder {
         insertPolygonBlock(xc, coords);
         xc.dispose();
     }
-    public static final String NS_GML = "http://www.opengis.net/gml";
 
     public void addSpatialOverlapsPolyline(String coords) {
         XmlCursor xc = getGlobalAndCur();

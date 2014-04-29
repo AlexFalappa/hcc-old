@@ -49,7 +49,7 @@ import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**
  * HCC main window.
- *
+ * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class MainWindow extends javax.swing.JFrame {

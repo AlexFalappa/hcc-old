@@ -24,7 +24,8 @@ import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**
- *
+ * SwingWorker to make the GetRecords request.
+ * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class GetRecordsWorker extends SwingWorker<Integer, String> {

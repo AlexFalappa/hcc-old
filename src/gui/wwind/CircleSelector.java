@@ -58,7 +58,7 @@ import gov.nasa.worldwind.util.Logging;
  * enable/disable. It registers a property listener to receive changes to the
  * sector as they occur, or just wait until the user is done and then query the
  * result via {@link #getCircle()}.
- *
+ * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class CircleSelector extends WWObjectImpl implements SelectListener, MouseListener,

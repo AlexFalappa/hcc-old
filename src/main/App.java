@@ -22,8 +22,8 @@ import gui.MainWindow;
 
 /**
  * Application entry point.
- *
- * @author Alessandro Falappa <alex.falappa@gmail.com> <alex.falappa@gmail.com>
+ * <p>
+ * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class App {
 
@@ -44,7 +44,7 @@ public class App {
 
     /**
      * Main method.
-     *
+     * <p>
      * @param args the command line arguments
      */
     public static void main(String args[]) {
