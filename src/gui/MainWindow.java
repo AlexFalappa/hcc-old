@@ -124,6 +124,11 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1.setText("Catalogue");
 
         cbCatalogues.setModel(dcmCatalogues);
+        cbCatalogues.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cbCataloguesMouseEntered(evt);
+            }
+        });
 
         bAddCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_190_circle_plus.png"))); // NOI18N
         bAddCat.addActionListener(new java.awt.event.ActionListener() {
@@ -183,14 +188,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(bInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bAddCat)
-                            .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(bDelCat))
-                        .addComponent(bEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(bInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bAddCat)
+                        .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(bDelCat))
+                    .addComponent(bEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
 
@@ -219,8 +223,21 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bInfoActionPerformed
 
     private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
-        // TODO add your handling code here:
+        final int selIdx = cbCatalogues.getSelectedIndex();
+        if (selIdx >= 0) {
+            CatDefinitionDialog d = new CatDefinitionDialog(this, (CatalogueDefinition) cbCatalogues.getSelectedItem());
+            d.setLocationRelativeTo(this);
+            d.setVisible(true);
+            if (d.isOkPressed()) {
+                dcmCatalogues.removeElementAt(selIdx);
+                dcmCatalogues.insertElementAt(d.getDefinedCatalogue(), selIdx);
+            }
+        }
     }//GEN-LAST:event_bEditActionPerformed
+
+    private void cbCataloguesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCataloguesMouseEntered
+        cbCatalogues.setToolTipText(getCatalogueTooltip());
+    }//GEN-LAST:event_cbCataloguesMouseEntered
 
     private void setupWorldWind() {
         BasicModel model = new BasicModel();
@@ -485,5 +502,18 @@ public class MainWindow extends javax.swing.JFrame {
         stub._getServiceClient().setTargetEPR(new EndpointReference(currCatDef.getEndpoint()));
         GetRecordsWorker grw = new GetRecordsWorker(this, stub, isResults);
         grw.execute();
+    }
+
+    private String getCatalogueTooltip() {
+        CatalogueDefinition cat = getCurrentCatalogue();
+        if (cat != null) {
+            StringBuilder sb = new StringBuilder("<html>");
+            sb.append("<b>").append(cat.getName()).append("</b><br>");
+            sb.append("Endpoint: ").append(cat.getEndpoint()).append("<br><i>");
+            sb.append(cat.isSoapV12() ? "SOAP v1.2" : "SOAP V1.1").append("</i></html>");
+            return sb.toString();
+        } else {
+            return "No catalogue";
+        }
     }
 }

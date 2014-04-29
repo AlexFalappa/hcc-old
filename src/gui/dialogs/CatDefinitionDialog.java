@@ -36,6 +36,13 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
         getRootPane().setDefaultButton(bOk);
     }
 
+    public CatDefinitionDialog(java.awt.Frame parent, CatalogueDefinition otherDef) {
+        this(parent);
+        txName.setText(otherDef.getName());
+        txEDP.setText(otherDef.getEndpoint());
+        cbSoapVer.setSelectedIndex(otherDef.isSoapV12() ? 1 : 0);
+    }
+
     public boolean isOkPressed() {
         return okPressed;
     }
