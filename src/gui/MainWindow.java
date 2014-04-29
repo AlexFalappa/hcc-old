@@ -70,7 +70,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             stub = new CatalogueStub();
         } catch (AxisFault ex) {
-            //ignored
+            ex.printStackTrace(System.err);
         }
     }
 
@@ -257,23 +257,31 @@ public class MainWindow extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void execHits() {
-        if (!pCollections.collectionSelected()) {
-            JOptionPane.showMessageDialog(this, "At least one collection must be selected", "Submission error", JOptionPane.ERROR_MESSAGE);
-            return;
+        if (checkCanSubmit()) {
+            pSearchButons.enableButtons(false);
+            builder.reset();
+            startWorker(false);
         }
-        pSearchButons.enableButtons(false);
-        builder.reset();
-        startWorker(false);
     }
 
     public void execResults() {
+        if (checkCanSubmit()) {
+            pSearchButons.enableButtons(false);
+            builder.reset();
+            startWorker(true);
+        }
+    }
+
+    private boolean checkCanSubmit() {
+        if (getCurrentCatalogue() == null) {
+            JOptionPane.showMessageDialog(this, "Select the a catalogue first!", "Submission error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         if (!pCollections.collectionSelected()) {
             JOptionPane.showMessageDialog(this, "At least one collection must be selected", "Submission error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
-        pSearchButons.enableButtons(false);
-        builder.reset();
-        startWorker(true);
+        return true;
     }
 
     GetRecordsDocument buildReq(boolean isResults) {
