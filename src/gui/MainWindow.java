@@ -42,7 +42,7 @@ import gui.wwind.AOILayer;
 import gui.wwind.FootprintsLayer;
 import gui.wwind.MOILayer;
 import main.App;
-import main.HmaGetRecordsBuilder;
+import main.hma.HmaGetRecordsBuilder;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
