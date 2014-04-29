@@ -54,7 +54,7 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
 
         spStartPos.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(5)));
 
-        bHits.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_027_search.png"))); // NOI18N
+        bHits.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_027_search_number.png"))); // NOI18N
         bHits.setText("Hits");
         bHits.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
