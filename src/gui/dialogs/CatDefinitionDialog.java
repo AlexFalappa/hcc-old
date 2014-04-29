@@ -41,6 +41,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
         txName.setText(otherDef.getName());
         txEDP.setText(otherDef.getEndpoint());
         cbSoapVer.setSelectedIndex(otherDef.isSoapV12() ? 1 : 0);
+        pColls.setCollections(otherDef.getCollections());
     }
 
     public boolean isOkPressed() {
@@ -48,7 +49,9 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
     }
 
     public CatalogueDefinition getDefinedCatalogue() {
-        return new CatalogueDefinition(txName.getText(), txEDP.getText(), cbSoapVer.getSelectedIndex() == 1);
+        final CatalogueDefinition newCat = new CatalogueDefinition(txName.getText(), txEDP.getText(), cbSoapVer.getSelectedIndex() == 1);
+        newCat.setCollections(pColls.getCollections());
+        return newCat;
     }
 
     /**
@@ -68,6 +71,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
         txName = new javax.swing.JTextField();
         txEDP = new javax.swing.JTextField();
         cbSoapVer = new javax.swing.JComboBox();
+        pColls = new gui.panels.CollectionsPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("New Catalogue Definition");
@@ -102,11 +106,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(bOk)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bCancel))
+                    .addComponent(pColls, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -114,12 +114,17 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txEDP)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cbSoapVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 146, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txEDP)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bOk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCancel)))
                 .addContainerGap())
         );
 
@@ -127,7 +132,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -140,7 +145,9 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbSoapVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pColls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bCancel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(bOk, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -166,6 +173,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private gui.panels.CollectionsPanel pColls;
     private javax.swing.JTextField txEDP;
     private javax.swing.JTextField txName;
     // End of variables declaration//GEN-END:variables

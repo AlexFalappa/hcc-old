@@ -27,11 +27,13 @@ public class CatalogueDefinition {
     private String name;
     private String endpoint;
     private boolean soapV12;
+    private String[] collections;
 
     public CatalogueDefinition(String name, String endpoint, boolean soapV12) {
         this.name = name;
         this.endpoint = endpoint;
         this.soapV12 = soapV12;
+        this.collections = new String[0];
     }
 
     public String getName() {
@@ -56,6 +58,14 @@ public class CatalogueDefinition {
 
     public void setSoapV12(boolean soapV12) {
         this.soapV12 = soapV12;
+    }
+
+    public String[] getCollections() {
+        return collections;
+    }
+
+    public void setCollections(String[] collections) {
+        this.collections = collections;
     }
 
     @Override

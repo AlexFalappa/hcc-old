@@ -59,6 +59,21 @@ public class CollectionsPanel extends javax.swing.JPanel {
         return ret;
     }
 
+    public String[] getCollections() {
+        String[] ret = new String[dtm.getRowCount()];
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = (String) dtm.getValueAt(i, 0);
+        }
+        return ret;
+    }
+
+    public void setCollections(String[] collections) {
+        dtm.setRowCount(0);
+        for (String c : collections) {
+            dtm.addRow(new String[]{c});
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
