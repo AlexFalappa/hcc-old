@@ -15,19 +15,30 @@
  */
 package gui.dialogs;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rtextarea.RTextScrollPane;
+
 /**
  *
  * @author afalappa
  */
 public class XmlDialog extends javax.swing.JDialog {
 
+    private RSyntaxTextArea staSource;
+
     /**
      * Creates new form XmlDialog
+     * <p>
+     * @param parent
      */
     public XmlDialog(java.awt.Frame parent) {
         super(parent, true);
-        initComponents();
+        staSource = new RSyntaxTextArea(40, 80);
+        staSource.setCodeFoldingEnabled(true);
+        staSource.setAntiAliasingEnabled(true);
         staSource.setHighlightCurrentLine(false);
+        staSource.setSyntaxEditingStyle("text/xml");
+        initComponents();
     }
 
     public void setSourceText(String text) {
@@ -43,18 +54,11 @@ public class XmlDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        staSource = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         bClose = new javax.swing.JButton();
+        rtsScroller = new RTextScrollPane(staSource);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Request Source");
-
-        staSource.setColumns(40);
-        staSource.setRows(10);
-        staSource.setTabSize(2);
-        staSource.setSyntaxEditingStyle("text/xml");
-        jScrollPane1.setViewportView(staSource);
 
         bClose.setText("Close");
         bClose.addActionListener(new java.awt.event.ActionListener() {
@@ -67,20 +71,20 @@ public class XmlDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 528, Short.MAX_VALUE)
                         .addComponent(bClose))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
+                    .addComponent(rtsScroller, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addComponent(rtsScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(bClose)
                 .addContainerGap())
@@ -95,7 +99,6 @@ public class XmlDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bClose;
-    private javax.swing.JScrollPane jScrollPane1;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea staSource;
+    private org.fife.ui.rtextarea.RTextScrollPane rtsScroller;
     // End of variables declaration//GEN-END:variables
 }
