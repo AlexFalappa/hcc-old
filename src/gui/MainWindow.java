@@ -398,76 +398,76 @@ public class MainWindow extends javax.swing.JFrame {
                 case 0:
                     switch (pGeo.getPrimitive()) {
                         case 0:
-                            builder.addSpatialOverlapsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-                            break;
-                        case 1:
                             builder.addSpatialOverlapsPolygon(pGeo.getPolygonCoords());
                             break;
-                        case 2:
+                        case 1:
                             builder.addSpatialOverlapsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
                             break;
-                        case 3:
+                        case 2:
                             builder.addSpatialOverlapsPolyline(pGeo.getPolylineCoords());
                             break;
-                        case 4:
+                        case 3:
                             builder.addSpatialOverlapsPoint(WIDTH, WIDTH);
+                            break;
+                        case 4:
+                            builder.addSpatialOverlapsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
                             break;
                     }
                     break;
                 case 1:
                     switch (pGeo.getPrimitive()) {
                         case 0:
-                            builder.addSpatialContainsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-                            break;
-                        case 1:
                             builder.addSpatialContainsPolygon(pGeo.getPolygonCoords());
                             break;
-                        case 2:
+                        case 1:
                             builder.addSpatialContainsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
                             break;
-                        case 3:
+                        case 2:
                             builder.addSpatialContainsPolyline(pGeo.getPolylineCoords());
                             break;
-                        case 4:
+                        case 3:
                             builder.addSpatialContainsPoint(pGeo.getPointLat(), pGeo.getPointLon());
+                            break;
+                        case 4:
+                            builder.addSpatialContainsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
                             break;
                     }
                     break;
                 case 2:
                     switch (pGeo.getPrimitive()) {
                         case 0:
-                            builder.addSpatialIntersectsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-                            break;
-                        case 1:
                             builder.addSpatialIntersectsPolygon(pGeo.getPolygonCoords());
                             break;
-                        case 2:
+                        case 1:
                             builder.addSpatialIntersectsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
                             break;
-                        case 3:
+                        case 2:
                             builder.addSpatialIntersectsPolyline(pGeo.getPolylineCoords());
                             break;
-                        case 4:
+                        case 3:
                             builder.addSpatialIntersectsPoint(pGeo.getPointLat(), pGeo.getPointLon());
+                            break;
+                        case 4:
+                            builder.addSpatialIntersectsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
                             break;
                     }
                     break;
                 case 3:
                     switch (pGeo.getPrimitive()) {
                         case 0:
-                            builder.addSpatialIsContainedRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-                            break;
-                        case 1:
                             builder.addSpatialIsContainedPolygon(pGeo.getPolygonCoords());
                             break;
-                        case 2:
+                        case 1:
                             builder.addSpatialIsContainedCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
                             break;
-                        case 3:
+                        case 2:
                             builder.addSpatialIsContainedPolyline(pGeo.getPolylineCoords());
                             break;
-                        case 4:
+                        case 3:
                             builder.addSpatialIsContainedPoint(pGeo.getPointLat(), pGeo.getPointLon());
+                            break;
+                        case 4:
+                            builder.addSpatialIsContainedRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
                             break;
                     }
                     break;
