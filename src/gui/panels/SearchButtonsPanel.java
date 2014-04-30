@@ -15,6 +15,7 @@
  */
 package gui.panels;
 
+import gui.dialogs.XmlDialog;
 import main.App;
 
 /**
@@ -22,6 +23,8 @@ import main.App;
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class SearchButtonsPanel extends javax.swing.JPanel {
+
+    private XmlDialog xd;
 
     /**
      * Creates new form SearchButtonsPanel
@@ -45,6 +48,7 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
         spStartPos = new javax.swing.JSpinner();
         bHits = new javax.swing.JButton();
         bResults = new javax.swing.JButton();
+        bShowReq = new javax.swing.JButton();
 
         jLabel1.setText("Max");
 
@@ -70,25 +74,36 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
             }
         });
 
+        bShowReq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_359_file_export.png"))); // NOI18N
+        bShowReq.setToolTipText("Show current request");
+        bShowReq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bShowReqActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spMaxRecs, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spStartPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bResults)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bHits)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spMaxRecs, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spStartPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bShowReq)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bResults)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bHits)))
                 .addContainerGap())
         );
 
@@ -108,7 +123,9 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bHits)
-                    .addComponent(bResults))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bResults)
+                        .addComponent(bShowReq)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -121,9 +138,22 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
         App.frame.execResults();
     }//GEN-LAST:event_bResultsActionPerformed
 
+    private void bShowReqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bShowReqActionPerformed
+        String reqText = App.frame.getReqText();
+        if (reqText != null) {
+            if (xd == null) {
+                xd = new XmlDialog(App.frame);
+            }
+            xd.setSourceText(reqText);
+            xd.setLocationRelativeTo(App.frame);
+            xd.setVisible(true);
+        }
+    }//GEN-LAST:event_bShowReqActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bHits;
     private javax.swing.JButton bResults;
+    private javax.swing.JButton bShowReq;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSpinner spMaxRecs;

@@ -345,6 +345,15 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    public String getReqText() {
+        if (checkCanSubmit()) {
+            builder.reset();
+            GetRecordsDocument req = buildReq(true);
+            return req.xmlText(new XmlOptions().setSavePrettyPrint());
+        }
+        return null;
+    }
+
     private boolean checkCanSubmit() {
         if (getCurrentCatalogue() == null) {
             JOptionPane.showMessageDialog(this, "Select the a catalogue first!", "Submission error", JOptionPane.ERROR_MESSAGE);
