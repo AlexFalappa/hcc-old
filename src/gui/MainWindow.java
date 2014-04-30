@@ -489,11 +489,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     int processResponse(GetRecordsResponseDocument resp) {
-        if (resp == null) {
-            return 500;
-        }
-        System.out.println("********** Response ******************");
-        System.out.println(resp.xmlText(new XmlOptions().setSavePrettyPrint()));
         // extract footprints
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
         if (res.length > 0) {

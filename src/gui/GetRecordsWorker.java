@@ -62,7 +62,7 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             System.err.println(exc.getExceptionCode());
             System.err.println(exc.getExceptionTextArray(0));
         } catch (Throwable e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
         return recs;
     }
