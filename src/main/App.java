@@ -77,7 +77,7 @@ public class App {
             @Override
             public void run() {
                 frame = new MainWindow();
-                frame.setSize(1100, 700);
+                frame.setSize(1200, 800);
                 frame.setVisible(true);
             }
         });
