@@ -332,7 +332,6 @@ public class MainWindow extends javax.swing.JFrame {
     public void execHits() {
         if (checkCanSubmit()) {
             pSearchButons.enableButtons(false);
-            builder.reset();
             startWorker(false);
         }
     }
@@ -340,7 +339,6 @@ public class MainWindow extends javax.swing.JFrame {
     public void execResults() {
         if (checkCanSubmit()) {
             pSearchButons.enableButtons(false);
-            builder.reset();
             startWorker(true);
         }
     }
@@ -367,12 +365,27 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     GetRecordsDocument buildReq(boolean isResults) {
-        builder.setDetailSummary();
+        switch (pSearchButons.getDetail()) {
+            case 0:
+                //brief
+                builder.setDetailBrief();
+                break;
+            case 1:
+                //summary
+                builder.setDetailSummary();
+                break;
+            case 2:
+                //full
+                builder.setDetailFull();
+                break;
+        }
+        // request type
         if (isResults) {
             builder.setResults();
         } else {
             builder.setHits();
         }
+        // max records and start position
         builder.setMaxRecords(pSearchButons.getMaxRecs());
         builder.setStartPosition(pSearchButons.getStartPos());
         //add collections
@@ -528,6 +541,7 @@ public class MainWindow extends javax.swing.JFrame {
             //TODO set soap 1.2 in stub
         }
         stub._getServiceClient().setTargetEPR(new EndpointReference(currCatDef.getEndpoint()));
+        builder.reset();
         GetRecordsWorker grw = new GetRecordsWorker(this, stub, isResults);
         grw.execute();
     }

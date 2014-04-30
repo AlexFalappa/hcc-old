@@ -49,6 +49,8 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
         bHits = new javax.swing.JButton();
         bResults = new javax.swing.JButton();
         bShowReq = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cbDetail = new javax.swing.JComboBox();
 
         jLabel1.setText("Max");
 
@@ -82,6 +84,11 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setText("Detail");
+
+        cbDetail.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Brief", "Summary", "Full" }));
+        cbDetail.setSelectedIndex(1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,6 +96,11 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -98,7 +110,7 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spStartPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(bShowReq)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bResults)
@@ -120,7 +132,11 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
                     .addComponent(spMaxRecs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(spStartPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cbDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bHits)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -154,8 +170,10 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
     private javax.swing.JButton bHits;
     private javax.swing.JButton bResults;
     private javax.swing.JButton bShowReq;
+    private javax.swing.JComboBox cbDetail;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JSpinner spMaxRecs;
     private javax.swing.JSpinner spStartPos;
     // End of variables declaration//GEN-END:variables
@@ -173,4 +191,7 @@ public class SearchButtonsPanel extends javax.swing.JPanel {
         return (int) spMaxRecs.getValue();
     }
 
+    public int getDetail() {
+        return cbDetail.getSelectedIndex();
+    }
 }

@@ -88,6 +88,10 @@ public class HmaGetRecordsBuilder {
         query.getElementSetName().setStringValue("summary");
     }
 
+    public void setDetailBrief() {
+        query.getElementSetName().setStringValue("brief");
+    }
+
     public void addCollection(String collection) {
         final XmlCursor xc = getGlobalAndCur();
         addParentIdXMLBlock(xc, collection);
