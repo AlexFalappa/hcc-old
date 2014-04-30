@@ -15,6 +15,10 @@
  */
 package gui.dialogs;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -38,11 +42,13 @@ public class XmlDialog extends javax.swing.JDialog {
         staSource.setAntiAliasingEnabled(true);
         staSource.setHighlightCurrentLine(false);
         staSource.setSyntaxEditingStyle("text/xml");
+        staSource.setEditable(false);
         initComponents();
     }
 
     public void setSourceText(String text) {
         staSource.setText(text);
+        staSource.setCaretPosition(0);
     }
 
     /**
@@ -56,6 +62,7 @@ public class XmlDialog extends javax.swing.JDialog {
 
         bClose = new javax.swing.JButton();
         rtsScroller = new RTextScrollPane(staSource);
+        bClipCopy = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Request Source");
@@ -67,6 +74,13 @@ public class XmlDialog extends javax.swing.JDialog {
             }
         });
 
+        bClipCopy.setText("Copy to clipboard");
+        bClipCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bClipCopyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,7 +89,8 @@ public class XmlDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 528, Short.MAX_VALUE)
+                        .addComponent(bClipCopy)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
                         .addComponent(bClose))
                     .addComponent(rtsScroller, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -86,7 +101,9 @@ public class XmlDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(rtsScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(bClose)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bClose)
+                    .addComponent(bClipCopy))
                 .addContainerGap())
         );
 
@@ -97,7 +114,14 @@ public class XmlDialog extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_bCloseActionPerformed
 
+    private void bClipCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClipCopyActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection strSel = new StringSelection(staSource.getText());
+        clipboard.setContents(strSel, null);
+    }//GEN-LAST:event_bClipCopyActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bClipCopy;
     private javax.swing.JButton bClose;
     private org.fife.ui.rtextarea.RTextScrollPane rtsScroller;
     // End of variables declaration//GEN-END:variables
