@@ -39,6 +39,7 @@ import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.placename.PlaceNameLayer;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
+import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.wwind.AOILayer;
 import gui.wwind.FootprintsLayer;
@@ -144,6 +145,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         bAddCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_190_circle_plus.png"))); // NOI18N
+        bAddCat.setToolTipText("Create catalogue definition");
         bAddCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bAddCatActionPerformed(evt);
@@ -151,6 +153,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         bDelCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_191_circle_minus.png"))); // NOI18N
+        bDelCat.setToolTipText("Remove current catalogue definition");
         bDelCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bDelCatActionPerformed(evt);
@@ -160,6 +163,7 @@ public class MainWindow extends javax.swing.JFrame {
         lMexs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         bEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_150_edit.png"))); // NOI18N
+        bEdit.setToolTipText("Edit current catalogue definition");
         bEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bEditActionPerformed(evt);
@@ -167,6 +171,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         bInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_195_circle_info.png"))); // NOI18N
+        bInfo.setToolTipText("About this application");
         bInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bInfoActionPerformed(evt);
@@ -231,7 +236,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bDelCatActionPerformed
 
     private void bInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInfoActionPerformed
-        // TODO add your handling code here:
+        AboutDialog ad = new AboutDialog(this);
+        ad.setLocationRelativeTo(this);
+        ad.setVisible(true);
     }//GEN-LAST:event_bInfoActionPerformed
 
     private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
