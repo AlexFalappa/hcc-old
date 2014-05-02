@@ -100,7 +100,7 @@ public class MainWindow extends javax.swing.JFrame {
         bAddCat = new javax.swing.JButton();
         bDelCat = new javax.swing.JButton();
         lMexs = new javax.swing.JLabel();
-        bEdit = new javax.swing.JButton();
+        bEditCat = new javax.swing.JButton();
         bInfo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -158,11 +158,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         lMexs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        bEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_150_edit.png"))); // NOI18N
-        bEdit.setToolTipText("Edit current catalogue definition");
-        bEdit.addActionListener(new java.awt.event.ActionListener() {
+        bEditCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_150_edit.png"))); // NOI18N
+        bEditCat.setToolTipText("Edit current catalogue definition");
+        bEditCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bEditActionPerformed(evt);
+                bEditCatActionPerformed(evt);
             }
         });
 
@@ -188,7 +188,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bDelCat)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bEdit)
+                .addComponent(bEditCat)
                 .addGap(5, 5, 5)
                 .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -207,7 +207,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
                         .addComponent(bDelCat))
-                    .addComponent(bEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bEditCat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
 
@@ -237,18 +237,18 @@ public class MainWindow extends javax.swing.JFrame {
         ad.setVisible(true);
     }//GEN-LAST:event_bInfoActionPerformed
 
-    private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
+    private void bEditCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditCatActionPerformed
         final int selIdx = cbCatalogues.getSelectedIndex();
         if (selIdx >= 0) {
             CatDefinitionDialog d = new CatDefinitionDialog(this, (CatalogueDefinition) cbCatalogues.getSelectedItem());
             d.setLocationRelativeTo(this);
             d.setVisible(true);
             if (d.isOkPressed()) {
+                dcmCatalogues.insertElementAt(d.getDefinedCatalogue(), selIdx + 1);
                 dcmCatalogues.removeElementAt(selIdx);
-                dcmCatalogues.insertElementAt(d.getDefinedCatalogue(), selIdx);
             }
         }
-    }//GEN-LAST:event_bEditActionPerformed
+    }//GEN-LAST:event_bEditCatActionPerformed
 
     private void cbCataloguesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCataloguesMouseEntered
         cbCatalogues.setToolTipText(getCatalogueTooltip());
@@ -314,7 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddCat;
     private javax.swing.JButton bDelCat;
-    private javax.swing.JButton bEdit;
+    private javax.swing.JButton bEditCat;
     private javax.swing.JButton bInfo;
     private javax.swing.JComboBox cbCatalogues;
     private javax.swing.JLabel jLabel1;

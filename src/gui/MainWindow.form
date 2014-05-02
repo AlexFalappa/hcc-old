@@ -103,7 +103,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="bDelCat" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bEdit" min="-2" max="-2" attributes="0"/>
+                  <Component id="bEditCat" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="lMexs" pref="377" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -125,7 +125,7 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="bDelCat" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="bEdit" alignment="0" max="32767" attributes="0"/>
+                      <Component id="bEditCat" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
@@ -179,7 +179,7 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="bEdit">
+        <Component class="javax.swing.JButton" name="bEditCat">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/gui/images_16x16/glyphicons_150_edit.png"/>
@@ -187,7 +187,7 @@
             <Property name="toolTipText" type="java.lang.String" value="Edit current catalogue definition"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bEditActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bEditCatActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bInfo">
