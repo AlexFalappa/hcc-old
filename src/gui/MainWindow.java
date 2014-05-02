@@ -502,7 +502,7 @@ public class MainWindow extends javax.swing.JFrame {
         return request;
     }
 
-    int processResponse(GetRecordsResponseDocument resp) {
+    int processResults(GetRecordsResponseDocument resp) {
         // extract footprints
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
         if (res.length > 0) {
@@ -528,8 +528,13 @@ public class MainWindow extends javax.swing.JFrame {
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
             App.frame.footprints.addSurfPoly(geopoints, pid);
+            App.frame.wwCanvas.redraw();
         }
         return res.length;
+    }
+
+    int processHits(GetRecordsResponseDocument resp) {
+        return resp.getGetRecordsResponse().getSearchResults().getNumberOfRecordsMatched().intValue();
     }
 
     void enableSearchButtons(boolean enabled) {

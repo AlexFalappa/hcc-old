@@ -18,9 +18,8 @@ package gui;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
@@ -52,11 +51,15 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
         int recs = 0;
         try {
             final GetRecordsResponseDocument resp = stub.getRecords(req);
-            publish("Processing response...");
-            recs = mw.processResponse(resp);
+            if (isResults) {
+                publish("Processing response...");
+                recs = mw.processResults(resp);
+            } else {
+                recs = mw.processHits(resp);
+            }
             publish("Done");
         } catch (RemoteException remoteException) {
-            remoteException.printStackTrace();
+            remoteException.printStackTrace(System.err);
         } catch (ServiceExceptionReportFault exRep) {
             final ExceptionType exc = exRep.getFaultMessage().getExceptionReport().getExceptionArray(0);
             System.err.println(exc.getExceptionCode());
@@ -69,14 +72,19 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
 
     @Override
     protected void process(List<String> chunks) {
-        mw.lMexs.setText(chunks.get(0));
+        mw.lMexs.setText(chunks.get(chunks.size() - 1));
     }
 
     @Override
     protected void done() {
         mw.enableSearchButtons(true);
         try {
-            mw.lMexs.setText(String.format("Retrieved %d records", this.get()));
+            final Integer records = this.get();
+            if (isResults) {
+                mw.lMexs.setText(String.format("Retrieved %d records", records));
+            } else {
+                JOptionPane.showMessageDialog(mw, String.format("Query will give %d records", records), "Hits", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (InterruptedException | ExecutionException ex) {
         }
     }
