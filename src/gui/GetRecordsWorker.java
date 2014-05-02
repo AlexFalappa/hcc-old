@@ -18,7 +18,6 @@ package gui;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
@@ -83,9 +82,11 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             if (isResults) {
                 mw.lMexs.setText(String.format("Retrieved %d records", records));
             } else {
-                JOptionPane.showMessageDialog(mw, String.format("Query will give %d records", records), "Hits", JOptionPane.INFORMATION_MESSAGE);
+                mw.showInfoDialog("Hits", String.format("Query will give %d records", records));
             }
-        } catch (InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException ignored) {
+        } catch (ExecutionException ex) {
+            mw.showErrorDialog("Request error", ex.getMessage());
         }
     }
 

@@ -42,6 +42,7 @@ import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
@@ -66,13 +67,14 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        setupWorldWind();
-        loadPrefs();
         try {
             stub = new CatalogueStub();
+            pCollections.setStub(stub);
         } catch (AxisFault ex) {
             ex.printStackTrace(System.err);
         }
+        setupWorldWind();
+        loadPrefs();
     }
 
     public CatalogueDefinition getCurrentCatalogue() {
@@ -260,8 +262,18 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void cbCataloguesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCataloguesItemStateChanged
         if (cbCatalogues.getSelectedIndex() >= 0) {
-            final CatalogueDefinition selCatDef = (CatalogueDefinition) cbCatalogues.getSelectedItem();
+            final CatalogueDefinition selCatDef = getCurrentCatalogue();
+            // rewrite collection list
             pCollections.setCollections(selCatDef.getCollections());
+            if (selCatDef.isSoapV12()) {
+                //set soap 1.2 in stub
+                stub._getServiceClient().getOptions().setSoapVersionURI(Constants.URI_SOAP12_ENV);
+            } else {
+                //set soap 1.1 in stub
+                stub._getServiceClient().getOptions().setSoapVersionURI(Constants.URI_SOAP11_ENV);
+            }
+            // set endpoint url in stub
+            stub._getServiceClient().setTargetEPR(new EndpointReference(selCatDef.getEndpoint()));
         }
     }//GEN-LAST:event_cbCataloguesItemStateChanged
 
@@ -278,7 +290,7 @@ public class MainWindow extends javax.swing.JFrame {
                     message.append("Please install up-to-date graphics driver and try again.\n");
                     message.append("Reason: ").append(t.getMessage());
                     message.append("\nThis program will end when you press OK.");
-                    JOptionPane.showMessageDialog(MainWindow.this, message, "Unable to Start Program", JOptionPane.ERROR_MESSAGE);
+                    showErrorDialog("Unable to Start Program", message.toString());
                     System.exit(-1);
                 } else {
                     System.err.println("WorldWind library rendering problem!");
@@ -352,13 +364,21 @@ public class MainWindow extends javax.swing.JFrame {
         return null;
     }
 
+    public void showErrorDialog(String title, String message) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showInfoDialog(String title, String message) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private boolean checkCanSubmit() {
         if (getCurrentCatalogue() == null) {
-            JOptionPane.showMessageDialog(this, "Select the a catalogue first!", "Submission error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("Submission error", "Select a catalogue first!");
             return false;
         }
         if (!pCollections.collectionSelected()) {
-            JOptionPane.showMessageDialog(this, "At least one collection must be selected", "Submission error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("Submission error", "At least one collection must be selected");
             return false;
         }
         return true;
@@ -541,11 +561,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void startWorker(boolean isResults) {
-        final CatalogueDefinition currCatDef = getCurrentCatalogue();
-        if (currCatDef.isSoapV12()) {
-            //TODO set soap 1.2 in stub
-        }
-        stub._getServiceClient().setTargetEPR(new EndpointReference(currCatDef.getEndpoint()));
         builder.reset();
         GetRecordsWorker grw = new GetRecordsWorker(this, stub, isResults);
         grw.execute();
