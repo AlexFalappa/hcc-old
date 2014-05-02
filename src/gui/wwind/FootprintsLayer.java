@@ -33,8 +33,8 @@ import java.util.List;
 
 public class FootprintsLayer extends RenderableLayer {
 
-    private BasicShapeAttributes attr = new BasicShapeAttributes();
-    private BasicShapeAttributes attrHigh = new BasicShapeAttributes();
+    private final BasicShapeAttributes attr = new BasicShapeAttributes();
+    private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
 
     public FootprintsLayer() {
         // properties of layer
@@ -42,7 +42,7 @@ public class FootprintsLayer extends RenderableLayer {
         setEnabled(true);
         // painting attributes for footprints
         attr.setOutlineMaterial(Material.ORANGE);
-        attr.setOutlineWidth(1);
+        attr.setOutlineWidth(1.5);
         attr.setInteriorMaterial(Material.ORANGE);
         attr.setInteriorOpacity(0.4f);
         // painting attributes for hihglighted footprints

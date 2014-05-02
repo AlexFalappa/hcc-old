@@ -38,7 +38,7 @@ public class MOILayer extends MarkerLayer {
         setPickEnabled(false);
         // painting attributes for markers
         attr.setShapeType(BasicMarkerShape.SPHERE);
-        attr.setMaterial(new Material(new Color(0, 127, 0)));
+        attr.setMaterial(new Material(new Color(245, 66, 0)));
         attr.setMarkerPixels(8);
         attr.setMinMarkerSize(3);
     }

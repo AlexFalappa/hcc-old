@@ -15,9 +15,6 @@
  */
 package gui.wwind;
 
-import java.awt.Color;
-import java.util.List;
-
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.LatLon;
@@ -31,6 +28,8 @@ import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceSector;
+import java.awt.Color;
+import java.util.List;
 
 public class AOILayer extends RenderableLayer {
 
@@ -43,10 +42,10 @@ public class AOILayer extends RenderableLayer {
         setEnabled(true);
         setPickEnabled(false);
         // painting attributes for footprints
-        attr.setOutlineMaterial(new Material(new Color(0, 127, 0)));
+        attr.setOutlineMaterial(new Material(new Color(245, 66, 0)));
         attr.setOutlineWidth(2);
-        attr.setInteriorMaterial(new Material(new Color(127, 255, 127)));
-        attr.setInteriorOpacity(0.2f);
+        attr.setInteriorMaterial(new Material(new Color(245, 127, 127)));
+        attr.setInteriorOpacity(0.1f);
     }
 
     public void setSurfCircle(Circle circ) {
