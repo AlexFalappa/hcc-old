@@ -251,7 +251,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bEditActionPerformed
 
     private void cbCataloguesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbCataloguesMouseEntered
-        System.out.println("evt = " + evt);
         cbCatalogues.setToolTipText(getCatalogueTooltip());
     }//GEN-LAST:event_cbCataloguesMouseEntered
 
