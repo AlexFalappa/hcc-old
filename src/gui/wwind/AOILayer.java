@@ -15,6 +15,9 @@
  */
 package gui.wwind;
 
+import java.awt.Color;
+import java.util.List;
+
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.LatLon;
@@ -28,8 +31,6 @@ import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceSector;
-import java.awt.Color;
-import java.util.List;
 
 public class AOILayer extends RenderableLayer {
 
@@ -56,14 +57,13 @@ public class AOILayer extends RenderableLayer {
 
     public void setSurfCircle(LatLon center, double radius) {
         removeOldAoI();
-        SurfaceCircle shape = new SurfaceCircle(attr, center, radius);
-        addRenderable(shape);
+        current = new SurfaceCircle(attr, center, radius);
+        addRenderable(current);
     }
 
     public void setSurfPoly(Iterable<? extends LatLon> coords) {
         removeOldAoI();
-        SurfacePolygon shape = new SurfacePolygon(attr, coords);
-        current = shape;
+        current = new SurfacePolygon(attr, coords);
         addRenderable(current);
     }
 
@@ -94,6 +94,10 @@ public class AOILayer extends RenderableLayer {
         shape.setTerrainConformance(40);
         current = shape;
         addRenderable(current);
+    }
+
+    public void clear() {
+        removeAllRenderables();
     }
 
     private void removeOldAoI() {
