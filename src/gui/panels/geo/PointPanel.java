@@ -172,10 +172,14 @@ public class PointPanel extends javax.swing.JPanel {
         if (selecting) {
             this.wwd.getInputHandler().removeMouseListener(ma);
             bGraphSel.setText("Graphical Selection");
+            spLat.setEnabled(true);
+            spLon.setEnabled(true);
             selecting = false;
         } else {
             this.wwd.getInputHandler().addMouseListener(ma);
             bGraphSel.setText("Accept");
+            spLat.setEnabled(false);
+            spLon.setEnabled(false);
             selecting = true;
         }
     }//GEN-LAST:event_bGraphSelActionPerformed
