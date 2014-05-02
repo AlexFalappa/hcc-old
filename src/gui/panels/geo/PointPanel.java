@@ -59,7 +59,7 @@ public class PointPanel extends javax.swing.JPanel {
         lLon.setEnabled(enabled);
         spLon.setEnabled(enabled);
         bGraphSel.setEnabled(enabled);
-        bDraw.setEnabled(enabled);
+//        bDraw.setEnabled(enabled);
         lUom1.setEnabled(enabled);
         lUom2.setEnabled(enabled);
     }
