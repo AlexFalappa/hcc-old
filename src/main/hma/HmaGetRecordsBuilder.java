@@ -19,19 +19,17 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.apache.xmlbeans.XmlCursor;
-import org.apache.xmlbeans.XmlException;
-
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.QueryType;
 import net.opengis.www.cat.csw._2_0_2.ResultType;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlException;
 
 /**
  * Builder for HMA GetRecords XML requests.
  * <p>
- * Uses an internal XML template representing a GetRecords RESULTS request with
- * full detail, max 100 records starting from 1.
+ * Uses an internal XML template representing a GetRecords RESULTS request with full detail, max 100
+ * records starting from 1.
  * <p>
  * Follows the <i>Builder</i> Design pattern.
  * <p>
@@ -441,6 +439,7 @@ public class HmaGetRecordsBuilder {
         xc.insertChars(String.format("%f %f", centerLat, centerLon));
         xc.toNextToken();
         xc.beginElement("radius", NS_GML);
+        xc.insertAttributeWithValue("uom", "m");
         xc.insertChars(String.valueOf(radius));
         xc.toNextToken();
     }
