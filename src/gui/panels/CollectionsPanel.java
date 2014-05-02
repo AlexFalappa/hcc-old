@@ -181,6 +181,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
         dtm.addRow(new String[]{"collection"});
+        tblColls.scrollRectToVisible(tblColls.getCellRect(dtm.getRowCount() - 1, 0, true));
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelActionPerformed
