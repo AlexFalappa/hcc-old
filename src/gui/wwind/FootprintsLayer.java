@@ -16,6 +16,7 @@
 package gui.wwind;
 
 import gov.nasa.worldwind.WorldWind;
+import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
@@ -29,10 +30,13 @@ import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
+import gov.nasa.worldwindx.examples.util.ToolTipController;
 import java.util.List;
 
 public class FootprintsLayer extends RenderableLayer {
 
+//    private HighlightController highlighter;
+    private ToolTipController tooltipper;
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
 
@@ -50,6 +54,11 @@ public class FootprintsLayer extends RenderableLayer {
         attrHigh.setOutlineWidth(2);
         attrHigh.setInteriorMaterial(Material.WHITE);
         attrHigh.setInteriorOpacity(0.7f);
+    }
+
+    public void linkTo(WorldWindow wwd) {
+//        highlighter = new HighlightController(wwd, SelectEvent.LEFT_CLICK);
+        tooltipper = new ToolTipController(wwd);
     }
 
     public void addSurfCircle(double lat, double lon, double rad, String tooltip) {

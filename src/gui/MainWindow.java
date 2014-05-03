@@ -347,6 +347,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
         // create footprints and AOI layers and add them before the place names
         footprints = new FootprintsLayer();
+        footprints.linkTo(wwCanvas);
         layers.add(position, footprints);
         aois = new AOILayer();
         layers.add(position, aois);
@@ -606,8 +607,7 @@ public class MainWindow extends javax.swing.JFrame {
             // load catalogue definitions via preferences API
             Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
             final String[] nodes = prefs.childrenNames();
-            for (int i = 0; i < nodes.length; i++) {
-                final String nodeName = nodes[i];
+            for (String nodeName : nodes) {
                 Preferences catPref = prefs.node(nodeName);
                 CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false));
                 catDef.setCollections(catPref.get("collections", "").split("\\s"));
