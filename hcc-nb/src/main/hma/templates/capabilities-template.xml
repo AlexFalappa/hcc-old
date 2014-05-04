@@ -1,5 +1,5 @@
 <cat:GetCapabilities service="CSW-ebRIM" xmlns:cat="http://www.opengis.net/cat/csw/2.0.2" xmlns:ows="http://www.opengis.net/ows">
- <ows:AcceptVersions>
-    <ows:Version>1.0.0</ows:Version>
- </ows:AcceptVersions>
+    <ows:AcceptVersions>
+        <ows:Version>1.0.0</ows:Version>
+    </ows:AcceptVersions>
 </cat:GetCapabilities>

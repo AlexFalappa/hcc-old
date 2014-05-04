@@ -18,8 +18,7 @@ package main.hma;
 import java.util.HashMap;
 
 /**
- * Utility class to support conversion of metadata names to HMA requests and
- * responses slot names.
+ * Utility class to support conversion of metadata names to HMA requests and responses slot names.
  * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */

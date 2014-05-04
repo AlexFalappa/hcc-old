@@ -28,8 +28,7 @@ import org.apache.xmlbeans.XmlException;
 /**
  * Builder for HMA GetRecords XML requests.
  * <p>
- * Uses an internal XML template representing a GetRecords RESULTS request with full detail, max 100
- * records starting from 1.
+ * Uses an internal XML template representing a GetRecords RESULTS request with full detail, max 100 records starting from 1.
  * <p>
  * Follows the <i>Builder</i> Design pattern.
  * <p>
