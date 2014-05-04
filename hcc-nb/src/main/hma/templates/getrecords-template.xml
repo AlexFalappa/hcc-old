@@ -1,0 +1,27 @@
+<GetRecords service="CSW" version="2.0.2" requestId="ignored"
+            resultType="results" outputFormat="application/xml"
+            outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+            startPosition="1" maxRecords="100" xmlns="http://www.opengis.net/cat/csw/2.0.2"
+            xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:gml="http://www.opengis.net/gml"
+            xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis.net/ows"
+            xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+    <ResponseHandler>ignored</ResponseHandler>
+    <csw:Query
+        typeNames="rim:RegistryPackage   rim:ExtrinsicObject   rim:ExtrinsicObject_acquisitionPlatform   rim:Association_acquisitionPlatAsso   rim:Classification   rim:ClassificationNode">
+        <ElementSetName>full</ElementSetName>
+        <Constraint version="1.1.0">
+            <ogc:Filter>
+                <ogc:And>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:RegistryPackage/rim:RegistryObjectList[*]/rim:RegistryObject/@id</ogc:PropertyName>
+                        <ogc:PropertyName>/rim:ExtrinsicObject/@id</ogc:PropertyName>
+                    </ogc:PropertyIsEqualTo>
+                    <ogc:PropertyIsEqualTo>
+                        <ogc:PropertyName>/rim:ExtrinsicObject/@objectType</ogc:PropertyName>
+                        <ogc:Literal>urn:x-ogc:specification:csw-ebrim:ObjectType:EO:EOProduct</ogc:Literal>
+                    </ogc:PropertyIsEqualTo>
+                </ogc:And>
+            </ogc:Filter>
+        </Constraint>
+    </csw:Query>
+</GetRecords>
