@@ -53,7 +53,7 @@ public class LineStringPanel extends javax.swing.JPanel {
     public void linkTo(WorldWindow wwd, AOILayer aoi) {
         this.wwd = wwd;
         this.aoi = aoi;
-        lineBuilder = new LineBuilder(wwd, aoi, null);
+        lineBuilder = new LineBuilder(wwd, null, null);
     }
 
     /**

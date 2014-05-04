@@ -7,8 +7,8 @@
         <Layer className="gov.nasa.worldwind.layers.SkyGradientLayer" />
         <Layer className="gov.nasa.worldwind.layers.Earth.BMNGOneImage" />
         <Layer href="config/Earth/BMNGWMSLayer.xml" actuate="onLoad" />
-        <Layer href="config/Earth/MSVirtualEarthAerialLayer.xml" actuate="onRequest" />
-        <Layer href="config/Earth/BingImagery.xml" actuate="onRequest"/>
+        <Layer href="config/Earth/MSVirtualEarthAerialLayer.xml" actuate="onLoad" />
+        <Layer href="config/Earth/BingImagery.xml" actuate="onLoad"/>
         <Layer className="gov.nasa.worldwind.layers.Earth.CountryBoundariesLayer" actuate="onRequest" />
         <Layer className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer" actuate="onRequest" />
         <Layer className="gov.nasa.worldwind.layers.LatLonGraticuleLayer" actuate="onRequest" />

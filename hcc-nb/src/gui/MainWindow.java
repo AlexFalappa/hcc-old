@@ -20,9 +20,11 @@ import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.layers.LatLonGraticuleLayer;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
-import gov.nasa.worldwind.layers.placename.PlaceNameLayer;
+import gov.nasa.worldwind.layers.ViewControlsLayer;
+import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
@@ -124,6 +126,7 @@ public class MainWindow extends javax.swing.JFrame {
         pSearchButons = new gui.panels.SearchButtonsPanel();
         pGlobe = new javax.swing.JPanel();
         wwCanvas = new gov.nasa.worldwind.awt.WorldWindowGLCanvas();
+        pViewSettings = new gui.panels.ViewSettingsPanel();
         pToolBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cbCatalogues = new javax.swing.JComboBox();
@@ -153,6 +156,7 @@ public class MainWindow extends javax.swing.JFrame {
         pGlobe.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 6, 6));
         pGlobe.setLayout(new java.awt.BorderLayout());
         pGlobe.add(wwCanvas, java.awt.BorderLayout.CENTER);
+        pGlobe.add(pViewSettings, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(pGlobe, java.awt.BorderLayout.CENTER);
 
@@ -220,7 +224,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEditCat)
                 .addGap(5, 5, 5)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bInfo)
                 .addContainerGap())
@@ -328,30 +332,49 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         });
-        // add a StatusLayer
-        StatusLayer slayer = new StatusLayer();
-        slayer.setEventSource(wwCanvas);
-        slayer.setDefaultFont(bAddCat.getFont());
-        wwCanvas.getModel().getLayers().add(slayer);
-        // get position of place names layer
+        // get position of graticule layer
         LayerList layers = model.getLayers();
         int position = 0;
         for (Layer l : layers) {
-            if (l instanceof PlaceNameLayer) {
+            if (l instanceof LatLonGraticuleLayer) {
                 position = layers.indexOf(l);
                 break;
             }
         }
+        // add a StatusLayer
+        StatusLayer slayer = new StatusLayer();
+        slayer.setEventSource(wwCanvas);
+        slayer.setDefaultFont(bAddCat.getFont());
+        layers.add(slayer);
+        // add a view controls layer and register a controller for it.
+        ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
+        layers.add(viewControlsLayer);
+        wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
         // create footprints and AOI layers and add them before the place names
         footprints = new FootprintsLayer();
         footprints.linkTo(wwCanvas);
-        layers.add(position, footprints);
+        layers.add(footprints);
         aois = new AOILayer();
-        layers.add(position, aois);
+        layers.add(aois);
         mois = new MOILayer();
-        layers.add(position, mois);
+        layers.add(mois);
+
+        for (Layer l : layers) {
+            System.out.println(l.getName());
+        }
+        System.out.println("layers count = " + layers.size());
+
         // link panels to globe
         pGeo.linkTo(wwCanvas, aois, mois);
+
+        System.out.println("****************");
+        for (Layer l : layers) {
+            System.out.println(l.getName());
+        }
+        System.out.println("layers count = " + layers.size());
+
+        // link view settings panel
+        pViewSettings.linkTo(wwCanvas);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -369,6 +392,7 @@ public class MainWindow extends javax.swing.JFrame {
     private gui.panels.SearchButtonsPanel pSearchButons;
     private gui.panels.TimeWindowPanel pTime;
     private javax.swing.JPanel pToolBar;
+    private gui.panels.ViewSettingsPanel pViewSettings;
     public gov.nasa.worldwind.awt.WorldWindowGLCanvas wwCanvas;
     // End of variables declaration//GEN-END:variables
 
