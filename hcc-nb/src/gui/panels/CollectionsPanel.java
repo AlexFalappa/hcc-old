@@ -15,7 +15,6 @@
  */
 package gui.panels;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
@@ -26,7 +25,6 @@ import main.App;
 import main.hma.HmaGetCapabilitiesBuilder;
 import net.opengis.www.cat.wrs._1_0.CapabilitiesDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
-import net.opengis.www.cat.wrs._1_0.ServiceExceptionReportFault;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 
@@ -204,14 +202,12 @@ public class CollectionsPanel extends javax.swing.JPanel {
 
     class CapRetriever extends SwingWorker<CapabilitiesDocument, Void> {
 
+        private HmaGetCapabilitiesBuilder builder = new HmaGetCapabilitiesBuilder();
+
         @Override
-        public CapabilitiesDocument doInBackground() {
+        public CapabilitiesDocument doInBackground() throws Exception {
             CapabilitiesDocument capDoc = null;
-            HmaGetCapabilitiesBuilder builder = new HmaGetCapabilitiesBuilder();
-            try {
-                capDoc = stub.getCapabilities(builder.getRequest());
-            } catch (RemoteException | ServiceExceptionReportFault ex) {
-            }
+            capDoc = stub.getCapabilities(builder.getRequest());
             return capDoc;
         }
 
@@ -238,7 +234,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
                     setCollections(collections.toArray(new String[]{}));
                 }
             } catch (InterruptedException | ExecutionException e) {
-                App.frame.showErrorDialog("Error", "Collection discovery failed!");
+                App.frame.showErrorDialog("Error", "Collection discovery failed!", e);
             }
         }
     };

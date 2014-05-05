@@ -102,7 +102,15 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void showErrorDialog(String title, String message) {
-        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+        showErrorDialog(title, message, null);
+    }
+
+    public void showErrorDialog(String title, String message, Exception ex) {
+        StringBuilder sb = new StringBuilder(message);
+        if (ex != null) {
+            sb.append("\n\nException:\n").append(ex.getMessage());
+        }
+        JOptionPane.showMessageDialog(this, sb.toString(), title, JOptionPane.ERROR_MESSAGE);
     }
 
     public void showInfoDialog(String title, String message) {
