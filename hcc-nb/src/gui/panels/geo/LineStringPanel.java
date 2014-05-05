@@ -24,7 +24,6 @@ import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
-import javax.swing.DefaultListModel;
 
 /**
  *
@@ -35,7 +34,6 @@ public class LineStringPanel extends javax.swing.JPanel {
     private LineBuilder lineBuilder;
     private WorldWindow wwd;
     private AOILayer aoi;
-    private final DefaultListModel<String> dlm = new DefaultListModel<>();
     private final StringBuilder posList = new StringBuilder(200);
 
     public LineStringPanel() {
@@ -97,21 +95,17 @@ public class LineStringPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jScrollPane2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblCoords)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(bGraphSel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                                .addComponent(bDraw)))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lblCoords)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(bGraphSel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bDraw)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -155,23 +149,19 @@ public class LineStringPanel extends javax.swing.JPanel {
         // clear line and stringbuilder
         lineBuilder.clear();
         posList.setLength(0);
+        taCoords.setText("");
         // display coordinates
         Iterator<Position> it = perimeter.iterator();
-        Position first = it.next();
-        dlm.removeAllElements();
-        final double latitu = first.getLatitude().getDegrees();
-        final double longitu = first.getLongitude().getDegrees();
-        taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", latitu, longitu));
-        posList.append(latitu).append(' ').append(longitu).append(' ');
         while (it.hasNext()) {
             Position pos = it.next();
             final double lat = pos.getLatitude().getDegrees();
             final double lon = pos.getLongitude().getDegrees();
             taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
-            posList.append(lat).append(' ').append(lon).append(' ');
+            posList.append(lat).append(' ').append(lon);
+            if (it.hasNext()) {
+                posList.append(' ');
+            }
         }
-        taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f", latitu, longitu));
-        posList.append(latitu).append(' ').append(longitu);
         // add polyline area of interest
         aoi.setSurfLine(perimeter);
         wwd.redraw();
