@@ -24,7 +24,6 @@ import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
-import javax.swing.DefaultListModel;
 
 /**
  *
@@ -35,7 +34,6 @@ public class PolygonPanel extends javax.swing.JPanel {
     private LineBuilder lineBuilder;
     private WorldWindow wwd;
     private AOILayer aoi;
-    private final DefaultListModel<String> dlm = new DefaultListModel<>();
     private final StringBuilder posList = new StringBuilder(200);
 
     public PolygonPanel() {
@@ -97,16 +95,14 @@ public class PolygonPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jScrollPane2))
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblCoords)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(bGraphSel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bDraw)))
@@ -150,29 +146,31 @@ public class PolygonPanel extends javax.swing.JPanel {
         for (Position pos : lineBuilder.getLine().getPositions()) {
             perimeter.add(pos);
         }
-        // clear line and stringbuilder
-        lineBuilder.clear();
-        posList.setLength(0);
-        // display coordinates
         Iterator<Position> it = perimeter.iterator();
-        Position first = it.next();
-        dlm.removeAllElements();
-        final double latitu = first.getLatitude().getDegrees();
-        final double longitu = first.getLongitude().getDegrees();
-        taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", latitu, longitu));
-        posList.append(latitu).append(' ').append(longitu).append(' ');
-        while (it.hasNext()) {
-            Position pos = it.next();
-            final double lat = pos.getLatitude().getDegrees();
-            final double lon = pos.getLongitude().getDegrees();
-            taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
-            posList.append(lat).append(' ').append(lon).append(' ');
+        if (!perimeter.isEmpty()) {
+            // clear line and stringbuilder
+            lineBuilder.clear();
+            posList.setLength(0);
+            taCoords.setText("");
+            // build coordinates list
+            Position first = it.next();
+            final double latitu = first.getLatitude().getDegrees();
+            final double longitu = first.getLongitude().getDegrees();
+            taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", latitu, longitu));
+            posList.append(latitu).append(' ').append(longitu).append(' ');
+            while (it.hasNext()) {
+                Position pos = it.next();
+                final double lat = pos.getLatitude().getDegrees();
+                final double lon = pos.getLongitude().getDegrees();
+                taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
+                posList.append(lat).append(' ').append(lon).append(' ');
+            }
+            taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f", latitu, longitu));
+            posList.append(latitu).append(' ').append(longitu);
+            // add polygonal area of interest
+            aoi.setSurfPoly(perimeter);
+            wwd.redraw();
         }
-        taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f", latitu, longitu));
-        posList.append(latitu).append(' ').append(longitu);
-        // add polygonal area of interest
-        aoi.setSurfPoly(perimeter);
-        wwd.redraw();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
