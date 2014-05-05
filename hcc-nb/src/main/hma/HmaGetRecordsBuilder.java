@@ -180,7 +180,11 @@ public class HmaGetRecordsBuilder {
     }
 
     public void addSpatialOverlapsPoint(double lat, double lon) {
-
+        XmlCursor xc = getGlobalAndCur();
+        xc.beginElement("Overlaps", NS_OGC);
+        xc.toEndToken();
+        insertPointBlock(xc, lat, lon);
+        xc.dispose();
     }
 
     public void addSpatialOverlapsPolygon(String coords) {

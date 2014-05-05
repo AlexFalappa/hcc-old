@@ -458,7 +458,7 @@ public class MainWindow extends javax.swing.JFrame {
                             builder.addSpatialOverlapsPolyline(pGeo.getPolylineCoords());
                             break;
                         case 3:
-                            builder.addSpatialOverlapsPoint(WIDTH, WIDTH);
+                            builder.addSpatialOverlapsPoint(pGeo.getPointLat(), pGeo.getPointLon());
                             break;
                         case 4:
                             builder.addSpatialOverlapsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
