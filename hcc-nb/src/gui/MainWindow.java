@@ -20,8 +20,6 @@ import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.geom.LatLon;
-import gov.nasa.worldwind.layers.LatLonGraticuleLayer;
-import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
@@ -332,15 +330,7 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         });
-        // get position of graticule layer
         LayerList layers = model.getLayers();
-        int position = 0;
-        for (Layer l : layers) {
-            if (l instanceof LatLonGraticuleLayer) {
-                position = layers.indexOf(l);
-                break;
-            }
-        }
         // add a StatusLayer
         StatusLayer slayer = new StatusLayer();
         slayer.setEventSource(wwCanvas);
@@ -358,21 +348,8 @@ public class MainWindow extends javax.swing.JFrame {
         layers.add(aois);
         mois = new MOILayer();
         layers.add(mois);
-
-        for (Layer l : layers) {
-            System.out.println(l.getName());
-        }
-        System.out.println("layers count = " + layers.size());
-
         // link panels to globe
         pGeo.linkTo(wwCanvas, aois, mois);
-
-        System.out.println("****************");
-        for (Layer l : layers) {
-            System.out.println(l.getName());
-        }
-        System.out.println("layers count = " + layers.size());
-
         // link view settings panel
         pViewSettings.linkTo(wwCanvas);
     }
