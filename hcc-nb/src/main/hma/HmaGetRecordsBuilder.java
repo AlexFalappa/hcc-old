@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.QueryType;
 import net.opengis.www.cat.csw._2_0_2.ResultType;
@@ -414,7 +415,7 @@ public class HmaGetRecordsBuilder {
         xc.insertChars(String.format("%f %f", minlat, minlon));
         xc.toNextToken();
         xc.beginElement("upperCorner", NS_GML);
-        xc.insertChars(String.format("%f %f", maxlat, maxlon));
+        xc.insertChars(String.format(Locale.ENGLISH, "%f %f", maxlat, maxlon));
         xc.toNextToken();
     }
 
@@ -426,7 +427,7 @@ public class HmaGetRecordsBuilder {
         xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("pos", NS_GML);
-        xc.insertChars(String.format("%f %f", lat, lon));
+        xc.insertChars(String.format(Locale.ENGLISH, "%f %f", lat, lon));
         xc.toNextToken();
     }
 
@@ -439,7 +440,7 @@ public class HmaGetRecordsBuilder {
         xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("pos", NS_GML);
-        xc.insertChars(String.format("%f %f", centerLat, centerLon));
+        xc.insertChars(String.format(Locale.ENGLISH, "%f %f", centerLat, centerLon));
         xc.toNextToken();
         xc.beginElement("radius", NS_GML);
         xc.insertAttributeWithValue("uom", "m");
