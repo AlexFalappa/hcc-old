@@ -15,18 +15,11 @@
  */
 package gui.panels;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import javax.swing.SwingWorker;
+import gui.CapabilitiesWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import main.App;
-import main.hma.HmaGetCapabilitiesBuilder;
-import net.opengis.www.cat.wrs._1_0.CapabilitiesDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
-import org.apache.xmlbeans.XmlCursor;
-import org.apache.xmlbeans.XmlObject;
 
 /**
  *
@@ -187,7 +180,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bDelActionPerformed
 
     private void bDiscoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDiscoverActionPerformed
-        CapRetriever worker = new CapRetriever();
+        CapabilitiesWorker worker = new CapabilitiesWorker(stub, this);
         worker.execute();
     }//GEN-LAST:event_bDiscoverActionPerformed
 
@@ -199,44 +192,4 @@ public class CollectionsPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblColls;
     // End of variables declaration//GEN-END:variables
-
-    class CapRetriever extends SwingWorker<CapabilitiesDocument, Void> {
-
-        private HmaGetCapabilitiesBuilder builder = new HmaGetCapabilitiesBuilder();
-
-        @Override
-        public CapabilitiesDocument doInBackground() throws Exception {
-            CapabilitiesDocument capDoc = null;
-            capDoc = stub.getCapabilities(builder.getRequest());
-            return capDoc;
-        }
-
-        @Override
-        public void done() {
-            try {
-                CapabilitiesDocument capDoc = get();
-                if (capDoc != null) {
-                    ArrayList<String> collections = new ArrayList<>();
-                    XmlObject[] res = capDoc.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot");
-                    if (res.length > 0) {
-                        XmlCursor xc = res[0].newCursor();
-                        xc.toChild("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ValueList");
-                        if (xc.toFirstChild()) {
-                            // at first <Value> tag
-                            collections.add(xc.getTextValue());
-                            // iterate on sibling <Value> tags
-                            while (xc.toNextSibling()) {
-                                collections.add(xc.getTextValue());
-                            }
-                        }
-                        xc.dispose();
-                    }
-                    setCollections(collections.toArray(new String[]{}));
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                App.frame.showErrorDialog("Error", "Collection discovery failed!", e);
-            }
-        }
-    };
-
 }
