@@ -372,13 +372,13 @@ public class HmaGetRecordsBuilder {
         xc.insertChars(Slots.meta2req.get(MetadataNames.FOOTPRINT.toString()));
         xc.toNextToken();
         xc.beginElement("Polygon", NS_GML);
+        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("exterior", NS_GML);
         xc.toEndToken();
         xc.beginElement("LinearRing", NS_GML);
         xc.toEndToken();
         xc.beginElement("posList", NS_GML);
-        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.insertChars(coords);
         xc.toNextToken();
         xc.toNextToken();
@@ -391,9 +391,9 @@ public class HmaGetRecordsBuilder {
         xc.insertChars(Slots.meta2req.get(MetadataNames.FOOTPRINT.toString()));
         xc.toNextToken();
         xc.beginElement("LineString", NS_GML);
+        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("posList", NS_GML);
-        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.insertChars(coords);
         xc.toNextToken();
         xc.toNextToken();
@@ -419,9 +419,9 @@ public class HmaGetRecordsBuilder {
         xc.insertChars(Slots.meta2req.get(MetadataNames.FOOTPRINT.toString()));
         xc.toNextToken();
         xc.beginElement("Point", NS_GML);
+        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("pos", NS_GML);
-        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.insertChars(String.format("%f %f", lat, lon));
         xc.toNextToken();
     }
@@ -432,9 +432,9 @@ public class HmaGetRecordsBuilder {
         xc.toNextToken();
         xc.beginElement("CircleByCenterPoint", NS_GML);
         xc.insertAttributeWithValue("numArc", "1");
+        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.toEndToken();
         xc.beginElement("pos", NS_GML);
-        xc.insertAttributeWithValue("srsName", "urn:ogc:def:crs:EPSG:6.3:4326");
         xc.insertChars(String.format("%f %f", centerLat, centerLon));
         xc.toNextToken();
         xc.beginElement("radius", NS_GML);
