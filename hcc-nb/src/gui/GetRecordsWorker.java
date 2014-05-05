@@ -15,7 +15,6 @@
  */
 package gui;
 
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
@@ -48,24 +47,14 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
         GetRecordsDocument req = mw.buildReq(isResults);
         publish("Sending request...");
         int recs = 0;
-        try {
-            final GetRecordsResponseDocument resp = stub.getRecords(req);
-            if (isResults) {
-                publish("Processing response...");
-                recs = mw.processResults(resp);
-            } else {
-                recs = mw.processHits(resp);
-            }
-            publish("Done");
-        } catch (RemoteException remoteException) {
-            remoteException.printStackTrace(System.err);
-        } catch (ServiceExceptionReportFault exRep) {
-            final ExceptionType exc = exRep.getFaultMessage().getExceptionReport().getExceptionArray(0);
-            System.err.println(exc.getExceptionCode());
-            System.err.println(exc.getExceptionTextArray(0));
-        } catch (Throwable e) {
-            e.printStackTrace(System.err);
+        final GetRecordsResponseDocument resp = stub.getRecords(req);
+        if (isResults) {
+            publish("Processing response...");
+            recs = mw.processResults(resp);
+        } else {
+            recs = mw.processHits(resp);
         }
+        publish("Done");
         return recs;
     }
 
@@ -86,7 +75,13 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             }
         } catch (InterruptedException ignored) {
         } catch (ExecutionException ex) {
-            mw.showErrorDialog("Request error", ex.getMessage());
+            if (ex.getCause() instanceof ServiceExceptionReportFault) {
+                final ServiceExceptionReportFault serf = (ServiceExceptionReportFault) ex.getCause();
+                final ExceptionType exc = serf.getFaultMessage().getExceptionReport().getExceptionArray(0);
+                mw.showErrorDialog("Request error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(), exc.getExceptionTextArray(0)));
+            } else {
+                mw.showErrorDialog("Request error", "Could not perform request!", ex);
+            }
         }
     }
 
