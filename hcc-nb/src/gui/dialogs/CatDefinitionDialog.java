@@ -45,7 +45,7 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
     }
 
     public CatalogueDefinition getDefinedCatalogue() {
-        final CatalogueDefinition newCat = new CatalogueDefinition(txName.getText(), txEDP.getText(), cbSoapVer.getSelectedIndex() == 1);
+        final CatalogueDefinition newCat = new CatalogueDefinition(txName.getText(), txEDP.getText(), cbSoapVer.getSelectedIndex() == 1, (int) spTimeout.getValue());
         newCat.setCollections(pColls.getCollections());
         return newCat;
     }
@@ -71,6 +71,9 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
         txEDP = new javax.swing.JTextField();
         cbSoapVer = new javax.swing.JComboBox();
         pColls = new gui.panels.CollectionsPanel();
+        jLabel4 = new javax.swing.JLabel();
+        spTimeout = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("New Catalogue Definition");
@@ -98,6 +101,12 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
         cbSoapVer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "v 1.1", "v 1.2" }));
         cbSoapVer.setSelectedIndex(1);
 
+        jLabel4.setText("Timeout");
+
+        spTimeout.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(20000), Integer.valueOf(1), null, Integer.valueOf(1000)));
+
+        jLabel5.setText("ms");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,15 +119,20 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txEDP)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cbSoapVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txEDP)))
+                                    .addComponent(txName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(spTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel5)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(bOk)
@@ -144,7 +158,12 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbSoapVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(spTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pColls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,7 +191,10 @@ public class CatDefinitionDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private gui.panels.CollectionsPanel pColls;
+    private javax.swing.JSpinner spTimeout;
     private javax.swing.JTextField txEDP;
     private javax.swing.JTextField txName;
     // End of variables declaration//GEN-END:variables

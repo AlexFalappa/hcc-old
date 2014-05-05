@@ -44,6 +44,7 @@ import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -312,6 +313,10 @@ public class MainWindow extends javax.swing.JFrame {
                 //set soap 1.1 in stub
                 stub._getServiceClient().getOptions().setSoapVersionURI(Constants.URI_SOAP11_ENV);
             }
+            //set timeout in stub
+            Integer to = new Integer(selCatDef.getTimeoutMillis());
+            stub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, to);
+            stub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, to);
             // set endpoint url in stub
             stub._getServiceClient().setTargetEPR(new EndpointReference(selCatDef.getEndpoint()));
         }
@@ -596,6 +601,7 @@ public class MainWindow extends javax.swing.JFrame {
             Preferences catPref = prefs.node(catDef.getName());
             catPref.put("edp", catDef.getEndpoint());
             catPref.putBoolean("soapv12", catDef.isSoapV12());
+            catPref.putInt("timeout", catDef.getTimeoutMillis());
             StringBuilder sb = new StringBuilder();
             final int arrLen = catDef.getCollections().length;
             for (int j = 0; j < arrLen; j++) {
@@ -615,7 +621,7 @@ public class MainWindow extends javax.swing.JFrame {
             final String[] nodes = prefs.childrenNames();
             for (String nodeName : nodes) {
                 Preferences catPref = prefs.node(nodeName);
-                CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false));
+                CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false), catPref.getInt("timeout", 20000));
                 catDef.setCollections(catPref.get("collections", "").split("\\s"));
                 dcmCatalogues.addElement(catDef);
             }

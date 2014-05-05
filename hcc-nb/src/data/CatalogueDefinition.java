@@ -27,13 +27,15 @@ public class CatalogueDefinition {
     private String name;
     private String endpoint;
     private boolean soapV12;
+    private int timeoutMillis;
     private String[] collections;
 
-    public CatalogueDefinition(String name, String endpoint, boolean soapV12) {
+    public CatalogueDefinition(String name, String endpoint, boolean soapV12, int timeout) {
         this.name = name;
         this.endpoint = endpoint;
         this.soapV12 = soapV12;
         this.collections = new String[0];
+        this.timeoutMillis = timeout;
     }
 
     public String getName() {
@@ -66,6 +68,14 @@ public class CatalogueDefinition {
 
     public void setCollections(String[] collections) {
         this.collections = collections;
+    }
+
+    public int getTimeoutMillis() {
+        return timeoutMillis;
+    }
+
+    public void setTimeoutMillis(int timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
     }
 
     @Override
