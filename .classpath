@@ -26,7 +26,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/TimingFramework.jar"/>
-	<classpathentry kind="lib" path="lib/worldwind.jar" sourcepath="/worldwind/src"/>
+	<classpathentry kind="lib" path="lib/worldwind.jar" sourcepath="/home/afalappa/Scaricati/worldwind-1.4.0.zip"/>
 	<classpathentry kind="lib" path="lib/axis2/axiom-api-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/axis2/axiom-dom-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/axis2/axiom-impl-1.2.13.jar"/>

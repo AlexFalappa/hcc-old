@@ -3,7 +3,6 @@ package gui.search.params;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwindx.examples.LineBuilder;
-
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -15,15 +14,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.TitledBorder;
-
 import wwind.AOILayer;
 
 public class PolygonPanel extends JPanel {
@@ -66,12 +62,13 @@ public class PolygonPanel extends JPanel {
     add(scrollPane, gbc_scrollPane);
 
     taCoords = new JTextArea(2, 22);
-    taCoords.setFont(new Font("Monospaced", taCoords.getFont().getStyle(), taCoords.getFont().getSize()));
+    taCoords.setFont(new Font("Monospaced", taCoords.getFont().getStyle(), taCoords.getFont()
+        .getSize()));
     taCoords.setEditable(false);
     // taCoords.setLineWrap(true);
     // taCoords.setWrapStyleWord(true);
     scrollPane.setViewportView(taCoords);
-    
+
     lblGraphicalSelection = new JLabel("Graphical selection");
     GridBagConstraints gbc_lblGraphicalSelection = new GridBagConstraints();
     gbc_lblGraphicalSelection.anchor = GridBagConstraints.WEST;
@@ -142,7 +139,8 @@ public class PolygonPanel extends JPanel {
         posList.append(firstLat).append(' ');
         taCoords.append(firstLat);
         taCoords.append(" ");
-        String firstLon = String.format(Locale.ENGLISH, "%11.6f", first.getLongitude().getDegrees());
+        String firstLon = String
+            .format(Locale.ENGLISH, "%11.6f", first.getLongitude().getDegrees());
         posList.append(firstLon).append(' ');
         taCoords.append(firstLon);
         taCoords.append("\n");
