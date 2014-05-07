@@ -63,6 +63,7 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom2 = new javax.swing.JLabel();
         lUom3 = new javax.swing.JLabel();
         bDrawPoly = new javax.swing.JButton();
+        lCorners = new javax.swing.JLabel();
 
         lCenterLat.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lCenterLat.setText("Center Lat");
@@ -101,7 +102,7 @@ public class CirclePanel extends javax.swing.JPanel {
 
         lUom3.setText("deg.");
 
-        bDrawPoly.setText("Draw polygonal approximation");
+        bDrawPoly.setText("Draw polygonal approx.");
         bDrawPoly.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bDrawPolyActionPerformed(evt);
@@ -115,10 +116,10 @@ public class CirclePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(bGraphSel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bDraw))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bDrawPoly)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lCorners, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -139,10 +140,11 @@ public class CirclePanel extends javax.swing.JPanel {
                                 .addComponent(spRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lUom1)))
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(bDrawPoly)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bGraphSel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bDraw)))
                 .addContainerGap())
         );
 
@@ -167,8 +169,10 @@ public class CirclePanel extends javax.swing.JPanel {
                     .addComponent(spRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lUom1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bDrawPoly)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lCorners, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bDrawPoly, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bGraphSel)
                     .addComponent(bDraw))
@@ -202,20 +206,19 @@ public class CirclePanel extends javax.swing.JPanel {
      * @return The polygon in WKT string
      */
     public ArrayList<LatLon> circleToPolygon(double lon, double lat, double radius) {
-        int n_corners = (int) Math.round(2 * Math.PI * radius / 100000);
+        int n_corners = (int) Math.round(2 * Math.PI * radius / 10000);
         int n_cornersRound = 0;
-        if (n_corners > 180) {
+        if (n_corners > 800) {
             n_cornersRound = 360;
         }
-        if (n_corners <= 180 && n_corners > 90) {
+        if (n_corners <= 800 && n_corners > 100) {
             n_cornersRound = 180;
-        } else if (n_corners <= 90 && n_corners > 36) {
+        } else if (n_corners <= 100 && n_corners > 20) {
             n_cornersRound = 90;
-        } else if (n_corners <= 36 && n_corners > 10) {
+        } else if (n_corners <= 20) {
             n_cornersRound = 36;
-        } else if (n_corners <= 10) {
-            n_cornersRound = 10;
         }
+        lCorners.setText(String.format("%d corners", n_cornersRound));
         ArrayList<LatLon> output = new ArrayList<>(n_cornersRound + 1);
         Point2D.Double center = new Point2D.Double(lon, lat);
         // add the first point (0° bearing or heading north)
@@ -246,6 +249,7 @@ public class CirclePanel extends javax.swing.JPanel {
      * @param point
      * @param brng
      * @param distance
+     * @return
      */
     public Point2D.Double directVincenty(Point2D.Double point, double brng, double distance) {
         // WGS-84 ellipsoid parameters
@@ -300,8 +304,7 @@ public class CirclePanel extends javax.swing.JPanel {
                 * (cos2SigmaM + C * cosSigma
                 * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
         // var revAz = Math.atan2(sinAlpha, -tmp); // final bearing
-        return new Point2D.Double(point.x + (L * 180 / Math.PI), lat2 * 180
-                / Math.PI);
+        return new Point2D.Double(point.x + (L * 180 / Math.PI), lat2 * 180 / Math.PI);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -310,6 +313,7 @@ public class CirclePanel extends javax.swing.JPanel {
     private javax.swing.JButton bGraphSel;
     private javax.swing.JLabel lCenterLat;
     private javax.swing.JLabel lCenterLon;
+    private javax.swing.JLabel lCorners;
     private javax.swing.JLabel lRadius;
     private javax.swing.JLabel lUom1;
     private javax.swing.JLabel lUom2;
