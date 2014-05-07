@@ -17,9 +17,13 @@ package gui;
 
 import data.CatalogueDefinition;
 import gov.nasa.worldwind.BasicModel;
+import gov.nasa.worldwind.View;
+import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
@@ -116,6 +120,23 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void showInfoDialog(String title, String message) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void zoomToSector(Sector sector) {
+        double delta_x = sector.getDeltaLonRadians();
+        double delta_y = sector.getDeltaLatRadians();
+        double earthRadius = wwCanvas.getModel().getGlobe().getRadius();
+        double horizDistance = earthRadius * delta_x;
+        double vertDistance = earthRadius * delta_y;
+        // Form a triangle consisting of the longest distance on the ground and the ray from the eye to the center point
+        // The ray from the eye to the midpoint on the ground bisects the FOV
+        double distance = Math.max(horizDistance, vertDistance) / 2;
+        double altitude = distance / Math.tan(wwCanvas.getView().getFieldOfView().radians / 2);
+        LatLon latlon = sector.getCentroid();
+        Position pos = new Position(latlon, altitude);
+        View view = wwCanvas.getView();
+        view.setEyePosition(pos);
+        view.firePropertyChange(AVKey.VIEW, null, view);
     }
 
     /**
@@ -628,5 +649,9 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (BackingStoreException ex) {
             // no prefs, do nothing
         }
+    }
+
+    public void resetNavigation() {
+        pViewSettings.reset();
     }
 }

@@ -70,6 +70,7 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             final Integer records = this.get();
             if (isResults) {
                 mw.lMexs.setText(String.format("Retrieved %d records", records));
+                mw.resetNavigation();
             } else {
                 mw.showInfoDialog("Hits", String.format("Query will give %d records", records));
             }

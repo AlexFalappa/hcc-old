@@ -31,6 +31,7 @@ import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwindx.examples.util.ToolTipController;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FootprintsLayer extends RenderableLayer {
@@ -39,6 +40,7 @@ public class FootprintsLayer extends RenderableLayer {
     private ToolTipController tooltipper;
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
+    private final ArrayList<SurfacePolygon> footprints = new ArrayList<>();
 
     public FootprintsLayer() {
         // properties of layer
@@ -68,16 +70,18 @@ public class FootprintsLayer extends RenderableLayer {
     }
 
     public void addSurfPoly(List<LatLon> coords) {
-        SurfacePolygon shape = new SurfacePolygon(attr, coords);
-        addRenderable(shape);
+        addSurfPoly(coords, null);
     }
 
     public void addSurfPoly(List<LatLon> coords, String tooltip) {
         SurfacePolygon shape = new SurfacePolygon(coords);
         shape.setAttributes(attr);
         shape.setHighlightAttributes(attrHigh);
-        shape.setValue(AVKey.HOVER_TEXT, tooltip);
+        if (tooltip != null) {
+            shape.setValue(AVKey.HOVER_TEXT, tooltip);
+        }
         addRenderable(shape);
+        footprints.add(shape);
     }
 
     public void addSurfQuad(double lat, double lon, double w, double h, String tooltip) {
@@ -117,4 +121,15 @@ public class FootprintsLayer extends RenderableLayer {
         }
         addRenderable(shape);
     }
+
+    public SurfacePolygon getFootPoly(int idx) {
+        return (SurfacePolygon) footprints.get(idx);
+    }
+
+    @Override
+    public void removeAllRenderables() {
+        super.removeAllRenderables();
+        footprints.clear();
+    }
+
 }
