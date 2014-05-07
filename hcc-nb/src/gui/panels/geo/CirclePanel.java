@@ -17,7 +17,10 @@ package gui.panels.geo;
 
 import gov.nasa.worldwind.geom.LatLon;
 import java.awt.geom.Point2D;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
+import javax.swing.JSpinner;
 import main.App;
 
 /**
@@ -28,6 +31,11 @@ public class CirclePanel extends javax.swing.JPanel {
 
     public CirclePanel() {
         initComponents();
+        // set spinners locale to english (to get point as decimal separator)
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        ((JSpinner.NumberEditor) spCenterLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spCenterLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spRadius.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
     @Override

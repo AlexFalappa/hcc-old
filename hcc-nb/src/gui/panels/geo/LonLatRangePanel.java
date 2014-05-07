@@ -21,6 +21,9 @@ import gov.nasa.worldwindx.examples.util.SectorSelector;
 import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+import javax.swing.JSpinner;
 import main.App;
 
 /**
@@ -34,6 +37,12 @@ public class LonLatRangePanel extends javax.swing.JPanel {
 
     public LonLatRangePanel() {
         initComponents();
+        // set spinners locale to english (to get point as decimal separator)
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        ((JSpinner.NumberEditor) spMaxLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spMaxLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spMinLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spMinLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
     @Override

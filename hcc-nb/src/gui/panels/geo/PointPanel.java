@@ -20,6 +20,9 @@ import gov.nasa.worldwind.geom.Position;
 import gui.wwind.MOILayer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+import javax.swing.JSpinner;
 
 /**
  *
@@ -47,6 +50,10 @@ public class PointPanel extends javax.swing.JPanel {
 
     public PointPanel() {
         initComponents();
+        // set spinners locale to english (to get point as decimal separator)
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        ((JSpinner.NumberEditor) spLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+        ((JSpinner.NumberEditor) spLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
     @Override
