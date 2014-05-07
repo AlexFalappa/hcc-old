@@ -314,7 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
                 stub._getServiceClient().getOptions().setSoapVersionURI(Constants.URI_SOAP11_ENV);
             }
             //set timeout in stub
-            Integer to = new Integer(selCatDef.getTimeoutMillis());
+            Integer to = selCatDef.getTimeoutMillis();
             stub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, to);
             stub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, to);
             // set endpoint url in stub

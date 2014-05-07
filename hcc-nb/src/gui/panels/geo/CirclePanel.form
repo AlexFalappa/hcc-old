@@ -50,6 +50,10 @@
                       </Group>
                       <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="bDrawPoly" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -76,7 +80,9 @@
                   <Component id="spRadius" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lUom1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="bDrawPoly" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="bGraphSel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bDraw" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -160,6 +166,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="deg."/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bDrawPoly">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Draw polygonal approximation"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDrawPolyActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
