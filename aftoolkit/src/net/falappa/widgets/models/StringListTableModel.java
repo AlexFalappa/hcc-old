@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gui;
+package net.falappa.widgets.models;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;

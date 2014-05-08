@@ -16,7 +16,7 @@
 package gui.panels;
 
 import gui.CapabilitiesWorker;
-import gui.StringListTableModel;
+import net.falappa.widgets.models.StringListTableModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
