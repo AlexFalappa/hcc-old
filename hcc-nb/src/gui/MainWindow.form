@@ -46,6 +46,9 @@
       </Layout>
       <SubComponents>
         <Component class="gui.panels.CollectionsPanel" name="pCollections">
+          <Properties>
+            <Property name="buttonsVisible" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="gui.panels.TimeWindowPanel" name="pTime">
         </Component>

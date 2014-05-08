@@ -174,6 +174,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         pQueryParams.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         pQueryParams.setLayout(new javax.swing.BoxLayout(pQueryParams, javax.swing.BoxLayout.PAGE_AXIS));
+
+        pCollections.setButtonsVisible(false);
         pQueryParams.add(pCollections);
         pQueryParams.add(pTime);
         pQueryParams.add(pGeo);
@@ -412,7 +414,7 @@ public class MainWindow extends javax.swing.JFrame {
             showErrorDialog("Submission error", "Select a catalogue first!");
             return false;
         }
-        if (!pCollections.collectionSelected()) {
+        if (!pCollections.isCollectionSelected()) {
             showErrorDialog("Submission error", "At least one collection must be selected");
             return false;
         }

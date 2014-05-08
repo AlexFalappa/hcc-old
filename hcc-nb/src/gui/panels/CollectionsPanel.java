@@ -16,9 +16,9 @@
 package gui.panels;
 
 import gui.CapabilitiesWorker;
+import gui.StringListTableModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**
@@ -27,14 +27,12 @@ import net.opengis.www.cat.wrs._1_0.CatalogueStub;
  */
 public class CollectionsPanel extends javax.swing.JPanel {
 
-    private final DefaultTableModel dtm = new DefaultTableModel(0, 1);
+    private final StringListTableModel ctm = new StringListTableModel();
     private CatalogueStub stub = null;
 
     public CollectionsPanel() {
-        dtm.setColumnIdentifiers(new String[]{"Collections"});
         initComponents();
         tblColls.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 bDel.setEnabled(tblColls.getSelectedRow() >= 0);
@@ -42,8 +40,19 @@ public class CollectionsPanel extends javax.swing.JPanel {
         });
     }
 
-    public boolean collectionSelected() {
+    public boolean isCollectionSelected() {
         return tblColls.getSelectedRowCount() > 0;
+    }
+
+    public void setButtonsVisible(boolean visible) {
+        bAdd.setVisible(visible);
+        bDel.setVisible(visible);
+        bDiscover.setVisible(visible);
+        ctm.setEditable(visible);
+    }
+
+    public boolean isButtonsVisible() {
+        return bAdd.isVisible();
     }
 
     public String[] getSelectedCollections() {
@@ -53,24 +62,24 @@ public class CollectionsPanel extends javax.swing.JPanel {
             ret = new String[numSelRows];
             int[] selRows = tblColls.getSelectedRows();
             for (int idx = 0; idx < selRows.length; idx++) {
-                ret[idx] = (String) dtm.getValueAt(selRows[idx], 0);
+                ret[idx] = (String) ctm.getValueAt(selRows[idx], 0);
             }
         }
         return ret;
     }
 
     public String[] getCollections() {
-        String[] ret = new String[dtm.getRowCount()];
+        String[] ret = new String[ctm.getRowCount()];
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = (String) dtm.getValueAt(i, 0);
+            ret[i] = (String) ctm.getValueAt(i, 0);
         }
         return ret;
     }
 
     public void setCollections(String[] collections) {
-        dtm.setRowCount(0);
+        ctm.clear();
         for (String c : collections) {
-            dtm.addRow(new String[]{c});
+            ctm.addString(c);
         }
     }
 
@@ -118,7 +127,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
             }
         });
 
-        tblColls.setModel(dtm);
+        tblColls.setModel(ctm);
         tblColls.setFillsViewportHeight(true);
         tblColls.setRowHeight(18);
         tblColls.setTableHeader(null);
@@ -168,14 +177,14 @@ public class CollectionsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
-        dtm.addRow(new String[]{"collection"});
-        tblColls.scrollRectToVisible(tblColls.getCellRect(dtm.getRowCount() - 1, 0, true));
+        ctm.addString("collection");
+        tblColls.scrollRectToVisible(tblColls.getCellRect(ctm.getRowCount() - 1, 0, true));
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelActionPerformed
         final int selectedRow = tblColls.getSelectedRow();
         if (selectedRow >= 0) {
-            dtm.removeRow(selectedRow);
+            ctm.removeString(selectedRow);
         }
     }//GEN-LAST:event_bDelActionPerformed
 
