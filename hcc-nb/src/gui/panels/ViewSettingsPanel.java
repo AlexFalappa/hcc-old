@@ -16,6 +16,7 @@
 package gui.panels;
 
 import gov.nasa.worldwind.WorldWindow;
+import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
@@ -32,7 +33,7 @@ import main.App;
  */
 public class ViewSettingsPanel extends javax.swing.JPanel {
 
-    private int currFtpIndex = 0;
+    private int currFtpIndex = -1;
     private ExtentVisibilitySupport extVisSupport;
 
     public ViewSettingsPanel() {
@@ -70,7 +71,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }
 
     public void reset() {
-        currFtpIndex = 0;
+        currFtpIndex = -1;
+        taRecDetails.setText("");
     }
 
     /**
@@ -100,6 +102,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         bPrev = new javax.swing.JButton();
         bNext = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taRecDetails = new javax.swing.JTextArea();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Layers"));
 
@@ -221,17 +225,25 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         });
         jPanel3.add(bNext);
 
+        taRecDetails.setEditable(false);
+        taRecDetails.setColumns(10);
+        taRecDetails.setRows(5);
+        taRecDetails.setTabSize(4);
+        taRecDetails.setEnabled(false);
+        jScrollPane1.setViewportView(taRecDetails);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,7 +257,9 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -256,9 +270,10 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
             if (currFtpIndex < 0) {
                 currFtpIndex = numRenderables - 1;
             }
-            SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
-            Sector sect = Sector.boundingSector(poly.getOuterBoundary());
-            App.frame.zoomToSector(sect);
+            // put the footprint into view
+            SurfacePolygon poly = flyToCurrFootprint();
+            // set details
+            updateRecDetails(poly);
         }
     }//GEN-LAST:event_bPrevActionPerformed
 
@@ -269,11 +284,26 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
             if (currFtpIndex == numRenderables) {
                 currFtpIndex = 0;
             }
-            SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
-            Sector sect = Sector.boundingSector(poly.getOuterBoundary());
-            App.frame.zoomToSector(sect);
+            // put the footprint into view
+            SurfacePolygon poly = flyToCurrFootprint();
+            // set details
+            updateRecDetails(poly);
         }
     }//GEN-LAST:event_bNextActionPerformed
+
+    private SurfacePolygon flyToCurrFootprint() {
+        SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
+        // TODO enlarge the view a bit
+        Sector sect = Sector.boundingSector(poly.getOuterBoundary());
+        // TODO fly to the footprint instead of suddenly set the view
+        App.frame.zoomToSector(sect);
+        return poly;
+    }
+
+    private void updateRecDetails(SurfacePolygon poly) {
+        // TODO display also sensing start-stop times
+        taRecDetails.setText(String.format("Record: %d\nId: %s\n", currFtpIndex, poly.getValue(AVKey.HOVER_TEXT)));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bNext;
@@ -295,6 +325,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea taRecDetails;
     // End of variables declaration//GEN-END:variables
 
     private void link(JCheckBox jcb, WorldWindow wwd, Layer layer) {
