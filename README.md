@@ -24,4 +24,4 @@ Features
 Screenshot
 ----------
 
-![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc_v0.6.png)
+![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc-0.7.png)
