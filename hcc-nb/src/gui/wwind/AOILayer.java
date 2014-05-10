@@ -42,9 +42,9 @@ public class AOILayer extends RenderableLayer {
         setEnabled(true);
         setPickEnabled(false);
         // painting attributes for footprints
-        attr.setOutlineMaterial(new Material(new Color(245, 66, 0)));
+        attr.setOutlineMaterial(Material.RED);
         attr.setOutlineWidth(2);
-        attr.setInteriorMaterial(new Material(new Color(245, 127, 127)));
+        attr.setInteriorMaterial(new Material(Color.red.brighter().brighter()));
         attr.setInteriorOpacity(0.1f);
     }
 

@@ -22,7 +22,12 @@ import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwindx.examples.util.ExtentVisibilitySupport;
+import gui.wwind.AOILayer;
+import gui.wwind.FootprintsLayer;
+import gui.wwind.MOILayer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import main.App;
@@ -34,6 +39,9 @@ import main.App;
 public class ViewSettingsPanel extends javax.swing.JPanel {
 
     private int currFtpIndex = -1;
+    private FootprintsLayer footprints;
+    private AOILayer aois;
+    private MOILayer mois;
     private ExtentVisibilitySupport extVisSupport;
 
     public ViewSettingsPanel() {
@@ -42,11 +50,15 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
     public void linkTo(WorldWindow wwd) {
         LayerList layers = wwd.getModel().getLayers();
-        Layer layer = layers.getLayerByName("Footprints");
-        link(chFootprints, wwd, layer);
-        layer = layers.getLayerByName("Area of interest");
-        link(chAoi, wwd, layer);
-        layer = layers.getLayerByName("Scale bar");
+        List<Layer> layersByClass = layers.getLayersByClass(MOILayer.class);
+        mois = (MOILayer) layersByClass.get(0);
+        layersByClass = layers.getLayersByClass(FootprintsLayer.class);
+        footprints = (FootprintsLayer) layersByClass.get(0);
+        link(chFootprints, wwd, footprints);
+        layersByClass = layers.getLayersByClass(AOILayer.class);
+        aois = (AOILayer) layersByClass.get(0);
+        link(chAoi, wwd, aois);
+        Layer layer = layers.getLayerByName("Scale bar");
         link(chScale, wwd, layer);
         layer = layers.getLayerByName("Compass");
         link(chCompass, wwd, layer);
@@ -110,8 +122,18 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Layers"));
 
         chAoi.setText("Area of Interest");
+        chAoi.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chAoiItemStateChanged(evt);
+            }
+        });
 
         chFootprints.setText("Footprints");
+        chFootprints.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chFootprintsItemStateChanged(evt);
+            }
+        });
 
         chPlaceNames.setText("Place Names");
 
@@ -126,6 +148,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         chBing.setText("Bing");
 
         ccbAoi.setSelectedIndex(10);
+        ccbAoi.setEnabled(false);
         ccbAoi.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 ccbAoiItemStateChanged(evt);
@@ -133,6 +156,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         });
 
         ccbFootprints.setSelectedIndex(8);
+        ccbFootprints.setEnabled(false);
         ccbFootprints.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 ccbFootprintsItemStateChanged(evt);
@@ -283,7 +307,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -317,12 +341,24 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bNextActionPerformed
 
     private void ccbAoiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbAoiItemStateChanged
-        // TODO add your handling code here:
+        final Color newColor = ccbAoi.getSelectedColor();
+        aois.setColor(newColor);
+        mois.setColor(newColor);
+        App.frame.wwCanvas.redraw();
     }//GEN-LAST:event_ccbAoiItemStateChanged
 
     private void ccbFootprintsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbFootprintsItemStateChanged
-        // TODO add your handling code here:
+        footprints.setColor(ccbFootprints.getSelectedColor());
+        App.frame.wwCanvas.redraw();
     }//GEN-LAST:event_ccbFootprintsItemStateChanged
+
+    private void chAoiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chAoiItemStateChanged
+        ccbAoi.setEnabled(chAoi.isSelected());
+    }//GEN-LAST:event_chAoiItemStateChanged
+
+    private void chFootprintsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chFootprintsItemStateChanged
+        ccbFootprints.setEnabled(chFootprints.isSelected());
+    }//GEN-LAST:event_chFootprintsItemStateChanged
 
     private SurfacePolygon flyToCurrFootprint() {
         SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);

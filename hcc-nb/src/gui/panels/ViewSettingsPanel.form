@@ -41,7 +41,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="70" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="72" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -116,11 +116,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Area of Interest"/>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chAoiItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chFootprints">
           <Properties>
             <Property name="text" type="java.lang.String" value="Footprints"/>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chFootprintsItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chPlaceNames">
           <Properties>
@@ -155,6 +161,7 @@
         <Component class="net.falappa.widgets.colorbox.ColorComboBox" name="ccbAoi">
           <Properties>
             <Property name="selectedIndex" type="int" value="10"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbAoiItemStateChanged"/>
@@ -163,6 +170,7 @@
         <Component class="net.falappa.widgets.colorbox.ColorComboBox" name="ccbFootprints">
           <Properties>
             <Property name="selectedIndex" type="int" value="8"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbFootprintsItemStateChanged"/>
