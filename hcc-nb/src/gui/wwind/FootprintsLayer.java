@@ -31,6 +31,7 @@ import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwindx.examples.util.ToolTipController;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,16 @@ public class FootprintsLayer extends RenderableLayer {
     public void linkTo(WorldWindow wwd) {
 //        highlighter = new HighlightController(wwd, SelectEvent.LEFT_CLICK);
         tooltipper = new ToolTipController(wwd);
+    }
+
+    public void setColor(Color col) {
+        attr.setOutlineMaterial(new Material(col));
+        attr.setInteriorMaterial(new Material(col.brighter().brighter()));
+    }
+
+    public void setHighlightColor(Color col) {
+        attr.setOutlineMaterial(new Material(col));
+        attr.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
     public void addSurfCircle(double lat, double lon, double rad, String tooltip) {

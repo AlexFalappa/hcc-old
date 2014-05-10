@@ -92,6 +92,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         chBMWMS = new javax.swing.JCheckBox();
         chMsVirtEarth = new javax.swing.JCheckBox();
         chBing = new javax.swing.JCheckBox();
+        ccbAoi = new net.falappa.widgets.colorbox.ColorComboBox();
+        ccbFootprints = new net.falappa.widgets.colorbox.ColorComboBox();
         jPanel1 = new javax.swing.JPanel();
         chMiniMap = new javax.swing.JCheckBox();
         chCompass = new javax.swing.JCheckBox();
@@ -123,6 +125,20 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
         chBing.setText("Bing");
 
+        ccbAoi.setSelectedIndex(10);
+        ccbAoi.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ccbAoiItemStateChanged(evt);
+            }
+        });
+
+        ccbFootprints.setSelectedIndex(8);
+        ccbFootprints.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ccbFootprintsItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -137,7 +153,12 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                     .addComponent(chMsVirtEarth)
                     .addComponent(chBoundaries)
                     .addComponent(chPlaceNames)
-                    .addComponent(chBing))
+                    .addComponent(chBing)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ccbAoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ccbFootprints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -146,7 +167,11 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(chAoi)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ccbAoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chFootprints)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ccbFootprints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chPlaceNames)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,7 +283,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -291,6 +316,14 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_bNextActionPerformed
 
+    private void ccbAoiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbAoiItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ccbAoiItemStateChanged
+
+    private void ccbFootprintsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbFootprintsItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ccbFootprintsItemStateChanged
+
     private SurfacePolygon flyToCurrFootprint() {
         SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
         // TODO enlarge the view a bit
@@ -308,6 +341,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bNext;
     private javax.swing.JButton bPrev;
+    private net.falappa.widgets.colorbox.ColorComboBox ccbAoi;
+    private net.falappa.widgets.colorbox.ColorComboBox ccbFootprints;
     private javax.swing.JCheckBox chAoi;
     private javax.swing.JCheckBox chBMImage;
     private javax.swing.JCheckBox chBMWMS;

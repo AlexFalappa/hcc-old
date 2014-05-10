@@ -48,6 +48,11 @@ public class AOILayer extends RenderableLayer {
         attr.setInteriorOpacity(0.1f);
     }
 
+    public void setColor(Color col) {
+        attr.setOutlineMaterial(new Material(col));
+        attr.setInteriorMaterial(new Material(col.brighter().brighter()));
+    }
+
     public void setSurfCircle(Circle circ) {
         removeOldAoI();
         SurfaceCircle shape = new SurfaceCircle(attr, circ.getCenter(), circ.getRadius());

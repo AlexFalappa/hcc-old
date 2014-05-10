@@ -41,7 +41,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="132" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="70" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -60,7 +60,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="chAoi" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -71,6 +71,13 @@
                       <Component id="chBoundaries" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="chPlaceNames" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="chBing" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="ccbAoi" min="-2" max="-2" attributes="0"/>
+                              <Component id="ccbFootprints" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -82,7 +89,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="chAoi" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="ccbAoi" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="chFootprints" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="ccbFootprints" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="chPlaceNames" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -140,6 +151,22 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Bing"/>
           </Properties>
+        </Component>
+        <Component class="net.falappa.widgets.colorbox.ColorComboBox" name="ccbAoi">
+          <Properties>
+            <Property name="selectedIndex" type="int" value="10"/>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbAoiItemStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="net.falappa.widgets.colorbox.ColorComboBox" name="ccbFootprints">
+          <Properties>
+            <Property name="selectedIndex" type="int" value="8"/>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbFootprintsItemStateChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
