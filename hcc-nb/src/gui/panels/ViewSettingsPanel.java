@@ -445,26 +445,26 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         // get view settings subnode
         Preferences vnode = prefs.node("view");
         // load layer enablement
-        getChbFromPrefs(chAoi, vnode);
-        getChbFromPrefs(chBMImage, vnode);
-        getChbFromPrefs(chBMWMS, vnode);
-        getChbFromPrefs(chBing, vnode);
-        getChbFromPrefs(chBoundaries, vnode);
-        getChbFromPrefs(chCompass, vnode);
-        getChbFromPrefs(chFootprints, vnode);
-        getChbFromPrefs(chGraticule, vnode);
-        getChbFromPrefs(chMiniMap, vnode);
-        getChbFromPrefs(chMsVirtEarth, vnode);
-        getChbFromPrefs(chPlaceNames, vnode);
-        getChbFromPrefs(chScale, vnode);
-        getChbFromPrefs(chViewContrl, vnode);
+        getChbFromPrefs(chAoi, vnode, true);
+        getChbFromPrefs(chBMImage, vnode, true);
+        getChbFromPrefs(chBMWMS, vnode, true);
+        getChbFromPrefs(chBing, vnode, false);
+        getChbFromPrefs(chBoundaries, vnode, false);
+        getChbFromPrefs(chCompass, vnode, false);
+        getChbFromPrefs(chFootprints, vnode, true);
+        getChbFromPrefs(chGraticule, vnode, false);
+        getChbFromPrefs(chMiniMap, vnode, false);
+        getChbFromPrefs(chMsVirtEarth, vnode, false);
+        getChbFromPrefs(chPlaceNames, vnode, false);
+        getChbFromPrefs(chScale, vnode, true);
+        getChbFromPrefs(chViewContrl, vnode, true);
         // load layers color
         ccbAoi.setSelectedColor(new Color(vnode.getInt("AoiColor", Color.red.getRGB())));
         ccbFootprints.setSelectedColor(new Color(vnode.getInt("FootpColor", Color.orange.getRGB())));
     }
 
-    private void getChbFromPrefs(JCheckBox chb, Preferences vnode) {
-        chb.setSelected(vnode.getBoolean(chb.getText(), true));
+    private void getChbFromPrefs(JCheckBox chb, Preferences vnode, boolean flag) {
+        chb.setSelected(vnode.getBoolean(chb.getText(), flag));
         // force action firing
         chb.getAction().actionPerformed(new ActionEvent(chb, 1, "initial"));
     }
