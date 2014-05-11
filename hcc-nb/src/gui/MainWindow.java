@@ -622,10 +622,11 @@ public class MainWindow extends javax.swing.JFrame {
         // save view settings
         pViewSettings.storePrefs(prefs);
         // save catalogue definitions
+        Preferences pCatalogs = prefs.node("catalogues");
         for (int i = 0; i < dcmCatalogues.getSize(); i++) {
             CatalogueDefinition catDef = dcmCatalogues.getElementAt(i);
             // create new pref child node with catalogue name
-            Preferences catPref = prefs.node(catDef.getName());
+            Preferences catPref = pCatalogs.node(catDef.getName());
             // store endpoint, timeout and soap flag
             catPref.put("edp", catDef.getEndpoint());
             catPref.putBoolean("soapv12", catDef.isSoapV12());
@@ -650,7 +651,7 @@ public class MainWindow extends javax.swing.JFrame {
             // load view settings
             pViewSettings.loadPrefs(prefs);
             // load catalogue definitions
-            final String[] nodes = prefs.childrenNames();
+            final String[] nodes = prefs.node("catalogues").childrenNames();
             for (String nodeName : nodes) {
                 Preferences catPref = prefs.node(nodeName);
                 CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false), catPref.getInt("timeout", 20000));
