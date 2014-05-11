@@ -15,8 +15,6 @@
  */
 package main;
 
-import javax.swing.UIManager;
-
 import gov.nasa.worldwind.Configuration;
 import gui.MainWindow;
 
@@ -36,8 +34,11 @@ public class App {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", "HMA Catalogue Client");
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
-        } else if (Configuration.isWindowsOS() || Configuration.isLinuxOS()) {
+        } else if (Configuration.isWindowsOS()) {
             // prevents flashing during window resizing
+            System.setProperty("sun.awt.noerasebackground", "true");
+            System.setProperty("sun.java2d.noddraw", "true");
+        } else if (Configuration.isLinuxOS()) {
             System.setProperty("sun.awt.noerasebackground", "true");
         }
     }
@@ -48,31 +49,7 @@ public class App {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-            UIManager.getDefaults().put("Table.alternateRowColor", UIManager.getDefaults().getColor("Table:\"Table.cellRenderer\".background"));
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+        // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
