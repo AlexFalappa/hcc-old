@@ -20,7 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 
 /**
- * Class of static utility methods for GUI classes.
+ * Class of static utility methods for GUI purposes.
  * <p/>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
@@ -35,7 +35,7 @@ public class GuiUtils {
     /**
      * Enable/disable a group of <tt>JComponent</tt>s widgets.
      * <p/>
-     * @param flag  the enable/disable flag
+     * @param flag the enable/disable flag
      * @param comps the components as variable arguments
      */
     public static void widgetsEnable(boolean flag, JComponent... comps) {
@@ -47,7 +47,7 @@ public class GuiUtils {
     /**
      * Converts a <tt>DefaultListModel</tt> into an <tt>ArrayList</tt> object.
      * <p>
-     * @param <T>       the elements type
+     * @param <T> the elements type
      * @param listModel a DefaultListModel to convert
      * @return an ArrayList containing the list model elements
      */
@@ -62,7 +62,7 @@ public class GuiUtils {
     /**
      * Converts an <tt>ArrayList</tt> into a <tt>DefaultListModel</tt> object.
      * <p>
-     * @param <T>  the elements type
+     * @param <T> the elements type
      * @param list an ArrayList to convert
      * @return a DefaultListModel containing the list elements
      */
