@@ -95,7 +95,8 @@
               <Connection code="ctm" type="code"/>
             </Property>
             <Property name="fillsViewportHeight" type="boolean" value="true"/>
-            <Property name="rowHeight" type="int" value="18"/>
+            <Property name="showHorizontalLines" type="boolean" value="false"/>
+            <Property name="showVerticalLines" type="boolean" value="false"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="null" type="code"/>
             </Property>

@@ -16,9 +16,9 @@
 package gui.panels;
 
 import gui.CapabilitiesWorker;
-import net.falappa.widgets.models.StringListTableModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import net.falappa.widgets.models.StringListTableModel;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**
@@ -129,7 +129,8 @@ public class CollectionsPanel extends javax.swing.JPanel {
 
         tblColls.setModel(ctm);
         tblColls.setFillsViewportHeight(true);
-        tblColls.setRowHeight(18);
+        tblColls.setShowHorizontalLines(false);
+        tblColls.setShowVerticalLines(false);
         tblColls.setTableHeader(null);
         jScrollPane2.setViewportView(tblColls);
 
