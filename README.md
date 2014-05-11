@@ -20,6 +20,7 @@ Features
 * Visual representation of query product footprints on a 3D globe (uses the [World Wind Java SDK](http://goworldwind.org) )
 * Base cartography from widely known map providers (e.g. _NASA Blue Marble_ and _Microsoft Bing_)
 * Geographic names and lat/lon graticule overlays
+* Persistence of catalogue definitions and view settings between invocations
 
 Screenshot
 ----------
