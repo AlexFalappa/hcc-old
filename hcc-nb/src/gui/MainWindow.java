@@ -651,9 +651,10 @@ public class MainWindow extends javax.swing.JFrame {
             // load view settings
             pViewSettings.loadPrefs(prefs);
             // load catalogue definitions
-            final String[] nodes = prefs.node("catalogues").childrenNames();
+            Preferences pCatalogs = prefs.node("catalogues");
+            final String[] nodes = pCatalogs.childrenNames();
             for (String nodeName : nodes) {
-                Preferences catPref = prefs.node(nodeName);
+                Preferences catPref = pCatalogs.node(nodeName);
                 CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false), catPref.getInt("timeout", 20000));
                 catDef.setCollections(catPref.get("collections", "").split("\\s"));
                 dcmCatalogues.addElement(catDef);
