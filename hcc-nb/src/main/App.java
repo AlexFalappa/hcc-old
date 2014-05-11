@@ -17,6 +17,7 @@ package main;
 
 import gov.nasa.worldwind.Configuration;
 import gui.MainWindow;
+import net.falappa.utils.LogUtils;
 
 /**
  * Application entry point.
@@ -49,6 +50,7 @@ public class App {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        LogUtils.silenceJUL();
         // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
