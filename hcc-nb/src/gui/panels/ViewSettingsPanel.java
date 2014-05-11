@@ -28,12 +28,14 @@ import gui.wwind.MOILayer;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import main.App;
 
 /**
- *
+ * Globe view settings and other view manipulations.
+ * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class ViewSettingsPanel extends javax.swing.JPanel {
@@ -344,12 +346,16 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         final Color newColor = ccbAoi.getSelectedColor();
         aois.setColor(newColor);
         mois.setColor(newColor);
-        App.frame.wwCanvas.redraw();
+        if (App.frame != null) {
+            App.frame.wwCanvas.redraw();
+        }
     }//GEN-LAST:event_ccbAoiItemStateChanged
 
     private void ccbFootprintsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbFootprintsItemStateChanged
         footprints.setColor(ccbFootprints.getSelectedColor());
-        App.frame.wwCanvas.redraw();
+        if (App.frame != null) {
+            App.frame.wwCanvas.redraw();
+        }
     }//GEN-LAST:event_ccbFootprintsItemStateChanged
 
     private void chAoiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chAoiItemStateChanged
@@ -407,6 +413,60 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         } else {
             jcb.setEnabled(false);
         }
+    }
+
+    public void storePrefs(Preferences prefs) {
+        // create a subnode for view settings
+        Preferences vnode = prefs.node("view");
+        // store layer enablement
+        putChbInPrefs(chAoi, vnode);
+        putChbInPrefs(chBMImage, vnode);
+        putChbInPrefs(chBMWMS, vnode);
+        putChbInPrefs(chBing, vnode);
+        putChbInPrefs(chBoundaries, vnode);
+        putChbInPrefs(chCompass, vnode);
+        putChbInPrefs(chFootprints, vnode);
+        putChbInPrefs(chGraticule, vnode);
+        putChbInPrefs(chMiniMap, vnode);
+        putChbInPrefs(chMsVirtEarth, vnode);
+        putChbInPrefs(chPlaceNames, vnode);
+        putChbInPrefs(chScale, vnode);
+        putChbInPrefs(chViewContrl, vnode);
+        // store layers color
+        vnode.putInt("AoiColor", ccbAoi.getSelectedColor().getRGB());
+        vnode.putInt("FootpColor", ccbFootprints.getSelectedColor().getRGB());
+    }
+
+    private void putChbInPrefs(JCheckBox chb, Preferences vnode) {
+        vnode.putBoolean(chb.getText(), chb.isSelected());
+    }
+
+    public void loadPrefs(Preferences prefs) {
+        // get view settings subnode
+        Preferences vnode = prefs.node("view");
+        // load layer enablement
+        getChbFromPrefs(chAoi, vnode);
+        getChbFromPrefs(chBMImage, vnode);
+        getChbFromPrefs(chBMWMS, vnode);
+        getChbFromPrefs(chBing, vnode);
+        getChbFromPrefs(chBoundaries, vnode);
+        getChbFromPrefs(chCompass, vnode);
+        getChbFromPrefs(chFootprints, vnode);
+        getChbFromPrefs(chGraticule, vnode);
+        getChbFromPrefs(chMiniMap, vnode);
+        getChbFromPrefs(chMsVirtEarth, vnode);
+        getChbFromPrefs(chPlaceNames, vnode);
+        getChbFromPrefs(chScale, vnode);
+        getChbFromPrefs(chViewContrl, vnode);
+        // load layers color
+        ccbAoi.setSelectedColor(new Color(vnode.getInt("AoiColor", Color.red.getRGB())));
+        ccbFootprints.setSelectedColor(new Color(vnode.getInt("FootpColor", Color.orange.getRGB())));
+    }
+
+    private void getChbFromPrefs(JCheckBox chb, Preferences vnode) {
+        chb.setSelected(vnode.getBoolean(chb.getText(), true));
+        // force action firing
+        chb.getAction().actionPerformed(new ActionEvent(chb, 1, "initial"));
     }
 
     private class ToggleAction extends AbstractAction {

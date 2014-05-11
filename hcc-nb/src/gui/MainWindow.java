@@ -617,14 +617,20 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void storePrefs() {
-        // save catalogue definitions via preferences API
+        // get preferences API node
         Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+        // save view settings
+        pViewSettings.storePrefs(prefs);
+        // save catalogue definitions
         for (int i = 0; i < dcmCatalogues.getSize(); i++) {
             CatalogueDefinition catDef = dcmCatalogues.getElementAt(i);
+            // create new pref child node with catalogue name
             Preferences catPref = prefs.node(catDef.getName());
+            // store endpoint, timeout and soap flag
             catPref.put("edp", catDef.getEndpoint());
             catPref.putBoolean("soapv12", catDef.isSoapV12());
             catPref.putInt("timeout", catDef.getTimeoutMillis());
+            // store collections as space separated string
             StringBuilder sb = new StringBuilder();
             final int arrLen = catDef.getCollections().length;
             for (int j = 0; j < arrLen; j++) {
@@ -639,8 +645,11 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void loadPrefs() {
         try {
-            // load catalogue definitions via preferences API
+            // get preferences API node
             Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+            // load view settings
+            pViewSettings.loadPrefs(prefs);
+            // load catalogue definitions
             final String[] nodes = prefs.childrenNames();
             for (String nodeName : nodes) {
                 Preferences catPref = prefs.node(nodeName);
