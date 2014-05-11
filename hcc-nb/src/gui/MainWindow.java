@@ -15,7 +15,6 @@
  */
 package gui;
 
-import data.CatalogueDefinition;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.avlist.AVKey;
@@ -41,6 +40,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.xml.namespace.QName;
 import main.App;
+import main.data.CatalogueDefinition;
 import main.hma.HmaGetRecordsBuilder;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;

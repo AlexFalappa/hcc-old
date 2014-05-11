@@ -15,7 +15,7 @@
  */
 package gui.dialogs;
 
-import data.CatalogueDefinition;
+import main.data.CatalogueDefinition;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**
