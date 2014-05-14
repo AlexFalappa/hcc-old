@@ -97,7 +97,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bgMode = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         chAoi = new javax.swing.JCheckBox();
         chFootprints = new javax.swing.JCheckBox();
@@ -121,10 +120,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         bNext = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taRecDetails = new javax.swing.JTextArea();
-        jPanel4 = new javax.swing.JPanel();
-        rbGlobe = new javax.swing.JRadioButton();
-        rbMap = new javax.swing.JRadioButton();
-        cbProjection = new javax.swing.JComboBox();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Layers"));
 
@@ -198,7 +193,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(chAoi)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ccbAoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,7 +212,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chMsVirtEarth)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chBing))
+                .addComponent(chBing)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Visual aids"));
@@ -290,45 +286,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         taRecDetails.setEnabled(false);
         jScrollPane1.setViewportView(taRecDetails);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Mode"));
-
-        bgMode.add(rbGlobe);
-        rbGlobe.setSelected(true);
-        rbGlobe.setText("Globe");
-
-        bgMode.add(rbMap);
-        rbMap.setText("Map");
-
-        cbProjection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mercator", "Lat-Lon", "Sinusoidal", "Modified Sinusoidal" }));
-        cbProjection.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbGlobe)
-                    .addComponent(rbMap))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(cbProjection, 0, 0, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(rbGlobe)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rbMap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbProjection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,16 +297,13 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -358,7 +312,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -396,14 +350,14 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         aois.setColor(newColor);
         mois.setColor(newColor);
         if (App.frame != null) {
-            App.frame.wwCanvas.redraw();
+            App.frame.wwindPane.redraw();
         }
     }//GEN-LAST:event_ccbAoiItemStateChanged
 
     private void ccbFootprintsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbFootprintsItemStateChanged
         footprints.setColor(ccbFootprints.getSelectedColor());
         if (App.frame != null) {
-            App.frame.wwCanvas.redraw();
+            App.frame.wwindPane.redraw();
         }
     }//GEN-LAST:event_ccbFootprintsItemStateChanged
 
@@ -432,8 +386,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bNext;
     private javax.swing.JButton bPrev;
-    private javax.swing.ButtonGroup bgMode;
-    private javax.swing.JComboBox cbProjection;
     private net.falappa.widgets.colorbox.ColorComboBox ccbAoi;
     private net.falappa.widgets.colorbox.ColorComboBox ccbFootprints;
     private javax.swing.JCheckBox chAoi;
@@ -453,10 +405,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbGlobe;
-    private javax.swing.JRadioButton rbMap;
     private javax.swing.JTextArea taRecDetails;
     // End of variables declaration//GEN-END:variables
 
