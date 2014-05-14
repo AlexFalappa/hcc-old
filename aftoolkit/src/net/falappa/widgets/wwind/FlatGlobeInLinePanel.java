@@ -15,14 +15,55 @@
  */
 package net.falappa.widgets.wwind;
 
+import gov.nasa.worldwind.WorldWindow;
+import gov.nasa.worldwind.globes.Earth;
+import gov.nasa.worldwind.globes.EarthFlat;
+import gov.nasa.worldwind.globes.FlatGlobe;
+import gov.nasa.worldwind.globes.Globe;
+import gov.nasa.worldwind.layers.LayerList;
+import gov.nasa.worldwind.layers.SkyColorLayer;
+import gov.nasa.worldwind.layers.SkyGradientLayer;
+import gov.nasa.worldwind.view.orbit.BasicOrbitView;
+import gov.nasa.worldwind.view.orbit.FlatOrbitView;
+
 /**
- *
- * @author afalappa
+ * WorldWindow globe/map switcher in a small inline panel.
+ * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class FlatGlobeInLinePanel extends javax.swing.JPanel {
+    private Globe roundGlobe = new Earth();
+    private FlatGlobe flatGlobe = new EarthFlat();
+    private WorldWindow ww;
 
     public FlatGlobeInLinePanel() {
+        this(null);
+    }
+    public FlatGlobeInLinePanel(WorldWindow ww) {
         initComponents();
+        if (ww!=null) {
+            setupGlobes(ww);
+        }
+    }
+
+    private void setupGlobes(WorldWindow ww) {
+        this.ww = ww;
+        Globe globe = ww.getModel().getGlobe();
+        if (globe instanceof FlatGlobe) {
+            flatGlobe = (FlatGlobe) globe;
+        } else {
+            roundGlobe = globe;
+        }
+    }
+
+    public WorldWindow getWorldWindow() {
+        return ww;
+    }
+
+    public void setWorldWindow(WorldWindow ww) {
+        if (ww==null) {
+            throw new NullPointerException("Null worldwindow");
+        }
+        setupGlobes(ww);
     }
 
     /**
@@ -44,15 +85,105 @@ public class FlatGlobeInLinePanel extends javax.swing.JPanel {
 
         rbGlobe.setSelected(true);
         rbGlobe.setText("Globe");
+        rbGlobe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbGlobeActionPerformed(evt);
+            }
+        });
         add(rbGlobe);
 
         rbMap.setText("Map");
+        rbMap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbMapActionPerformed(evt);
+            }
+        });
         add(rbMap);
 
         cbProjection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mercator", "Lat-Lon", "Sinusoidal", "Modified Sinusoidal" }));
         cbProjection.setEnabled(false);
+        cbProjection.setLightWeightPopupEnabled(false);
+        cbProjection.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbProjectionItemStateChanged(evt);
+            }
+        });
         add(cbProjection);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rbGlobeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbGlobeActionPerformed
+        cbProjection.setEnabled(false);
+        switchGlobe(false);
+    }//GEN-LAST:event_rbGlobeActionPerformed
+
+    private void rbMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbMapActionPerformed
+        cbProjection.setEnabled(true);
+        switchGlobe(true);
+    }//GEN-LAST:event_rbMapActionPerformed
+
+    private void cbProjectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbProjectionItemStateChanged
+        switch (cbProjection.getSelectedIndex()) {
+            case 0:
+                // mercator
+                flatGlobe.setProjection(FlatGlobe.PROJECTION_MERCATOR);
+                break;
+            case 1:
+                // equirectangular
+                flatGlobe.setProjection(FlatGlobe.PROJECTION_LAT_LON);
+                break;
+            case 2:
+                // sinusoidal
+                flatGlobe.setProjection(FlatGlobe.PROJECTION_SINUSOIDAL);
+                break;
+            case 3:
+                // modified sinusoidal
+                flatGlobe.setProjection(FlatGlobe.PROJECTION_MODIFIED_SINUSOIDAL);
+                break;
+        }
+        ww.redraw();
+        }//GEN-LAST:event_cbProjectionItemStateChanged
+
+    private void switchGlobe(boolean flat) {
+        if (!flat) {
+            // Switch to round globe
+            ww.getModel().setGlobe(roundGlobe);
+            // Switch to orbit view and update with current position
+            FlatOrbitView flatOrbitView = (FlatOrbitView) ww.getView();
+            BasicOrbitView orbitView = new BasicOrbitView();
+            orbitView.setCenterPosition(flatOrbitView.getCenterPosition());
+            orbitView.setZoom(flatOrbitView.getZoom());
+            orbitView.setHeading(flatOrbitView.getHeading());
+            orbitView.setPitch(flatOrbitView.getPitch());
+            ww.setView(orbitView);
+            // Change sky layer
+            LayerList layers = ww.getModel().getLayers();
+            for (int i = 0; i < layers.size(); i++) {
+                if (layers.get(i) instanceof SkyColorLayer) {
+                    layers.set(i, new SkyGradientLayer());
+                }
+            }
+        } else {
+            // Switch to flat globe
+            ww.getModel().setGlobe(flatGlobe);
+            cbProjectionItemStateChanged(null);
+            // Switch to flat view and update with current position
+            BasicOrbitView orbitView = (BasicOrbitView) ww.getView();
+            FlatOrbitView flatOrbitView = new FlatOrbitView();
+            flatOrbitView.setCenterPosition(orbitView.getCenterPosition());
+            flatOrbitView.setZoom(orbitView.getZoom());
+            flatOrbitView.setHeading(orbitView.getHeading());
+            flatOrbitView.setPitch(orbitView.getPitch());
+            ww.setView(flatOrbitView);
+            // Change sky layer
+            LayerList layers = ww.getModel().getLayers();
+            for (int i = 0; i < layers.size(); i++) {
+                if (layers.get(i) instanceof SkyGradientLayer) {
+                    layers.set(i, new SkyColorLayer());
+                }
+            }
+        }
+        ww.redraw();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbProjection;
