@@ -191,7 +191,7 @@ public class CirclePanel extends javax.swing.JPanel {
     private void bDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawActionPerformed
         LatLon center = LatLon.fromDegrees((double) spCenterLat.getValue(), (double) spCenterLon.getValue());
         App.frame.aois.setSurfCircle(center, (double) spRadius.getValue());
-        App.frame.wwCanvas.redraw();
+        App.frame.wwindPane.redraw();
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
@@ -200,7 +200,7 @@ public class CirclePanel extends javax.swing.JPanel {
 
     private void bDrawPolyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawPolyActionPerformed
         App.frame.aois.setSurfPoly(circleToPolygon((double) spCenterLon.getValue(), (double) spCenterLat.getValue(), (double) spRadius.getValue()));
-        App.frame.wwCanvas.redraw();
+        App.frame.wwindPane.redraw();
     }//GEN-LAST:event_bDrawPolyActionPerformed
 
     /**

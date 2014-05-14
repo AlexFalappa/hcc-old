@@ -15,18 +15,12 @@
  */
 package gui;
 
-import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.event.RenderingExceptionListener;
-import gov.nasa.worldwind.exception.WWAbsentRequirementException;
+import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
-import gov.nasa.worldwind.layers.LayerList;
-import gov.nasa.worldwind.layers.ViewControlsLayer;
-import gov.nasa.worldwind.layers.ViewControlsSelectListener;
-import gov.nasa.worldwindx.examples.util.StatusLayer;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.wwind.AOILayer;
@@ -75,7 +69,7 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (AxisFault ex) {
             ex.printStackTrace(System.err);
         }
-        setupWorldWind();
+        setupLayers();
         loadPrefs();
     }
 
@@ -123,6 +117,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void zoomToSector(Sector sector) {
+        WorldWindowGLCanvas wwCanvas = wwindPane.getWWCanvas();
         double delta_x = sector.getDeltaLonRadians();
         double delta_y = sector.getDeltaLatRadians();
         double earthRadius = wwCanvas.getModel().getGlobe().getRadius();
@@ -152,9 +147,6 @@ public class MainWindow extends javax.swing.JFrame {
         pTime = new gui.panels.TimeWindowPanel();
         pGeo = new gui.panels.GeoAreaPanel();
         pSearchButons = new gui.panels.SearchButtonsPanel();
-        pGlobe = new javax.swing.JPanel();
-        wwCanvas = new gov.nasa.worldwind.awt.WorldWindowGLCanvas();
-        pViewSettings = new gui.panels.ViewSettingsPanel();
         pToolBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cbCatalogues = new javax.swing.JComboBox();
@@ -163,6 +155,8 @@ public class MainWindow extends javax.swing.JFrame {
         lMexs = new javax.swing.JLabel();
         bEditCat = new javax.swing.JButton();
         bInfo = new javax.swing.JButton();
+        pViewSettings = new gui.panels.ViewSettingsPanel();
+        wwindPane = new net.falappa.widgets.wwind.WWindPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HMA Catalogue Client");
@@ -182,13 +176,6 @@ public class MainWindow extends javax.swing.JFrame {
         pQueryParams.add(pSearchButons);
 
         getContentPane().add(pQueryParams, java.awt.BorderLayout.WEST);
-
-        pGlobe.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 6, 6));
-        pGlobe.setLayout(new java.awt.BorderLayout());
-        pGlobe.add(wwCanvas, java.awt.BorderLayout.CENTER);
-        pGlobe.add(pViewSettings, java.awt.BorderLayout.LINE_END);
-
-        getContentPane().add(pGlobe, java.awt.BorderLayout.CENTER);
 
         jLabel1.setText("Catalogue");
 
@@ -254,7 +241,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEditCat)
                 .addGap(5, 5, 5)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bInfo)
                 .addContainerGap())
@@ -276,6 +263,10 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         getContentPane().add(pToolBar, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(pViewSettings, java.awt.BorderLayout.LINE_END);
+
+        wwindPane.setBottomBar(true);
+        getContentPane().add(wwindPane, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -345,45 +336,16 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbCataloguesItemStateChanged
 
-    private void setupWorldWind() {
-        BasicModel model = new BasicModel();
-        wwCanvas.setModel(model);
-        // Register a rendering exception listener
-        wwCanvas.addRenderingExceptionListener(new RenderingExceptionListener() {
-            @Override
-            public void exceptionThrown(Throwable t) {
-                if (t instanceof WWAbsentRequirementException) {
-                    StringBuilder message = new StringBuilder(
-                            "Computer does not meet minimum graphics requirements.\n");
-                    message.append("Please install up-to-date graphics driver and try again.\n");
-                    message.append("Reason: ").append(t.getMessage());
-                    message.append("\nThis program will end when you press OK.");
-                    showErrorDialog("Unable to Start Program", message.toString());
-                    System.exit(-1);
-                } else {
-                    System.err.println("WorldWind library rendering problem!");
-                    t.printStackTrace(System.err);
-                }
-            }
-        });
-        LayerList layers = model.getLayers();
-        // add a StatusLayer
-        StatusLayer slayer = new StatusLayer();
-        slayer.setEventSource(wwCanvas);
-        slayer.setDefaultFont(bAddCat.getFont());
-        layers.add(slayer);
-        // add a view controls layer and register a controller for it.
-        ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
-        layers.add(viewControlsLayer);
-        wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
+    private void setupLayers() {
+        WorldWindowGLCanvas wwCanvas = wwindPane.getWWCanvas();
         // create footprints and AOI layers and add them before the place names
         footprints = new FootprintsLayer();
         footprints.linkTo(wwCanvas);
-        layers.add(footprints);
+        wwindPane.addLayer(footprints);
         aois = new AOILayer();
-        layers.add(aois);
+        wwindPane.addLayer(aois);
         mois = new MOILayer();
-        layers.add(mois);
+        wwindPane.addLayer(mois);
         // link panels to globe
         pGeo.linkTo(wwCanvas, aois, mois);
         // link view settings panel
@@ -400,13 +362,12 @@ public class MainWindow extends javax.swing.JFrame {
     public javax.swing.JLabel lMexs;
     private gui.panels.CollectionsPanel pCollections;
     private gui.panels.GeoAreaPanel pGeo;
-    private javax.swing.JPanel pGlobe;
     private javax.swing.JPanel pQueryParams;
     private gui.panels.SearchButtonsPanel pSearchButons;
     private gui.panels.TimeWindowPanel pTime;
     private javax.swing.JPanel pToolBar;
     private gui.panels.ViewSettingsPanel pViewSettings;
-    public gov.nasa.worldwind.awt.WorldWindowGLCanvas wwCanvas;
+    public net.falappa.widgets.wwind.WWindPanel wwindPane;
     // End of variables declaration//GEN-END:variables
 
     private boolean checkCanSubmit() {
@@ -583,8 +544,8 @@ public class MainWindow extends javax.swing.JFrame {
                 double lon = Double.valueOf(coords[i + 1]);
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
-            App.frame.footprints.addSurfPoly(geopoints, pid);
-            App.frame.wwCanvas.redraw();
+            footprints.addSurfPoly(geopoints, pid);
+            wwindPane.redraw();
         }
         return res.length;
     }
