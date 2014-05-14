@@ -23,6 +23,7 @@ import gov.nasa.worldwind.globes.Earth;
 import gov.nasa.worldwind.globes.EarthFlat;
 import gov.nasa.worldwind.globes.FlatGlobe;
 import gov.nasa.worldwind.globes.Globe;
+import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
@@ -49,7 +50,16 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     public void setBottomBar(boolean flag) {
-        pTop.set
+        remove(pTop);
+        add(pTop, java.awt.BorderLayout.PAGE_END);
+    }
+
+    public void addLayer(Layer layer) {
+        wwCanvas.getModel().getLayers().add(layer);
+    }
+
+    public void redraw() {
+        wwCanvas.redraw();
     }
 
     private void setupWorldWind() {
