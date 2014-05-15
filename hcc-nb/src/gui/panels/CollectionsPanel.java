@@ -16,6 +16,8 @@
 package gui.panels;
 
 import gui.CapabilitiesWorker;
+import java.awt.Dimension;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.falappa.widgets.models.StringListTableModel;
@@ -38,6 +40,12 @@ public class CollectionsPanel extends javax.swing.JPanel {
                 bDel.setEnabled(tblColls.getSelectedRow() >= 0);
             }
         });
+        // hack to preserve the space between the list and the panel border when the buttons are made invisible
+        // the code below sets the filler width to the GroupLayout container gap according to the current Look&Feel
+        Dimension dim = new Dimension(javax.swing.LayoutStyle.getInstance().getContainerGap(filler1, SwingConstants.EAST, this), 10);
+        filler1.setPreferredSize(dim);
+        filler1.setMaximumSize(dim);
+        filler1.setMinimumSize(dim);
     }
 
     public boolean isCollectionSelected() {
@@ -107,6 +115,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblColls = new javax.swing.JTable();
         bDiscover = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(12, 0), new java.awt.Dimension(12, 0), new java.awt.Dimension(12, 32767));
 
         jLabel1.setText("Collections");
 
@@ -159,7 +168,9 @@ public class CollectionsPanel extends javax.swing.JPanel {
                         .addComponent(bDel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bDiscover)))
-                .addContainerGap())
+                .addGap(0, 0, 0)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,7 +183,9 @@ public class CollectionsPanel extends javax.swing.JPanel {
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addComponent(bDiscover))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -198,6 +211,7 @@ public class CollectionsPanel extends javax.swing.JPanel {
     private javax.swing.JButton bAdd;
     private javax.swing.JButton bDel;
     private javax.swing.JButton bDiscover;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblColls;
