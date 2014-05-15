@@ -155,6 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
         lMexs = new javax.swing.JLabel();
         bEditCat = new javax.swing.JButton();
         bInfo = new javax.swing.JButton();
+        bSettings = new javax.swing.JButton();
         pViewSettings = new gui.panels.ViewSettingsPanel();
         wwindPane = new net.falappa.widgets.wwind.WWindPanel();
 
@@ -225,6 +226,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        bSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_137_cogwheels.png"))); // NOI18N
+        bSettings.setEnabled(false);
+        bSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSettingsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pToolBarLayout = new javax.swing.GroupLayout(pToolBar);
         pToolBar.setLayout(pToolBarLayout);
         pToolBarLayout.setHorizontalGroup(
@@ -241,25 +250,29 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEditCat)
                 .addGap(5, 5, 5)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bInfo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bSettings)
                 .addContainerGap())
         );
         pToolBarLayout.setVerticalGroup(
             pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pToolBarLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(bAddCat)
-                        .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(bDelCat))
-                    .addComponent(bEditCat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
+                .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bSettings)
+                    .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bAddCat)
+                            .addComponent(cbCatalogues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(bDelCat))
+                        .addComponent(bEditCat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         getContentPane().add(pToolBar, java.awt.BorderLayout.PAGE_START);
@@ -336,6 +349,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbCataloguesItemStateChanged
 
+    private void bSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSettingsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bSettingsActionPerformed
+
     private void setupLayers() {
         WorldWindowGLCanvas wwCanvas = wwindPane.getWWCanvas();
         // create footprints and AOI layers and add them before the place names
@@ -357,6 +374,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton bDelCat;
     private javax.swing.JButton bEditCat;
     private javax.swing.JButton bInfo;
+    private javax.swing.JButton bSettings;
     private javax.swing.JComboBox cbCatalogues;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel lMexs;
