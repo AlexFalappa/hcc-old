@@ -23,6 +23,7 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
+import gui.dialogs.SettingsDialog;
 import gui.wwind.AOILayer;
 import gui.wwind.FootprintsLayer;
 import gui.wwind.MOILayer;
@@ -219,7 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         bInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_195_circle_info.png"))); // NOI18N
-        bInfo.setToolTipText("About this application");
+        bInfo.setToolTipText("About HCC");
         bInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bInfoActionPerformed(evt);
@@ -227,7 +228,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         bSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_137_cogwheels.png"))); // NOI18N
-        bSettings.setEnabled(false);
+        bSettings.setToolTipText("HCC settings");
         bSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bSettingsActionPerformed(evt);
@@ -350,7 +351,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cbCataloguesItemStateChanged
 
     private void bSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSettingsActionPerformed
-        // TODO add your handling code here:
+        SettingsDialog sd = new SettingsDialog(this);
+        sd.setLocationRelativeTo(this);
+        sd.setVisible(true);
+        if (sd.isOkPressed()) {
+
+        }
     }//GEN-LAST:event_bSettingsActionPerformed
 
     private void setupLayers() {
