@@ -263,6 +263,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
 
+        bPrev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_224_chevron-left.png"))); // NOI18N
         bPrev.setText("Previous");
         bPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +272,9 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         });
         jPanel3.add(bPrev);
 
+        bNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_223_chevron-right.png"))); // NOI18N
         bNext.setText("Next");
+        bNext.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         bNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bNextActionPerformed(evt);
@@ -312,7 +315,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
