@@ -16,7 +16,9 @@
 package net.falappa.widgets.wwind;
 
 import gov.nasa.worldwind.BasicModel;
+import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
+import gov.nasa.worldwind.cache.FileStore;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.globes.Earth;
@@ -28,6 +30,7 @@ import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
+import java.io.File;
 
 /**
  * A base WorldWind panel with a top bar and
@@ -63,6 +66,18 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     private void setupWorldWind() {
+
+        FileStore fs = WorldWind.getDataFileStore();
+        fs.addLocation(0, "/home/afalappa/.cache/worldwind", false);
+        System.out.println("   locations:");
+        for (File f : fs.getLocations()) {
+            System.out.println("f = " + f);
+        }
+        System.out.println("   write location:");
+        fs.getWriteLocation();
+        System.out.println(fs.getWriteLocation().getAbsolutePath());
+        // WorldWind.setOfflineMode(true);
+
         BasicModel model = new BasicModel();
         model.setGlobe(roundGlobe);
         wwCanvas.setModel(model);
