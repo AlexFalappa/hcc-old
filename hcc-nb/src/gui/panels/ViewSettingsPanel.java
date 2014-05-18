@@ -17,7 +17,6 @@ package gui.panels;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.render.SurfacePolygon;
@@ -375,10 +374,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
     private SurfacePolygon flyToCurrFootprint() {
         SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
-        // TODO enlarge the view a bit
-        Sector sect = Sector.boundingSector(poly.getOuterBoundary());
-        // TODO fly to the footprint instead of suddenly set the view
-        App.frame.zoomToSector(sect);
+//        Sector sect = Sector.boundingSector(poly.getOuterBoundary());
+        App.frame.flyToSector(poly);
         return poly;
     }
 

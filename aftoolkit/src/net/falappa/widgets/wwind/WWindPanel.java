@@ -30,6 +30,7 @@ import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
+import gov.nasa.worldwind.render.SurfaceShape;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 
@@ -66,7 +67,8 @@ public class WWindPanel extends javax.swing.JPanel {
         wwCanvas.redraw();
     }
 
-    public void flyToSector(Sector sector) {
+    public void flyToSector(SurfaceShape shape) {
+        Sector sector = Sector.boundingSector(shape.getLocations(wwCanvas.getModel().getGlobe()));
         double delta_x = sector.getDeltaLonRadians();
         double delta_y = sector.getDeltaLatRadians();
         double earthRadius = wwCanvas.getModel().getGlobe().getRadius();
@@ -82,6 +84,7 @@ public class WWindPanel extends javax.swing.JPanel {
         Position pos = new Position(sector.getCentroid(), altitude);
         BasicOrbitView view = (BasicOrbitView) wwCanvas.getView();
         view.addPanToAnimator(pos, Angle.ZERO, Angle.ZERO, altitude);
+        shape.setHighlighted(true);
     }
 
     /**

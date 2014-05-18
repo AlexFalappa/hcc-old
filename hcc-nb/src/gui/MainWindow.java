@@ -17,7 +17,7 @@ package gui;
 
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.geom.LatLon;
-import gov.nasa.worldwind.geom.Sector;
+import gov.nasa.worldwind.render.SurfaceShape;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.dialogs.SettingsDialog;
@@ -114,8 +114,8 @@ public class MainWindow extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void zoomToSector(Sector sector) {
-        wwindPane.flyToSector(sector);
+    public void flyToSector(SurfaceShape shape) {
+        wwindPane.flyToSector(shape);
     }
 
     /**
