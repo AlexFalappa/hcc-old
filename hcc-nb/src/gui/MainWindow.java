@@ -603,7 +603,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void storePrefs() {
         // get preferences API node
-        Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+        Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
         // save view settings
         pViewSettings.storePrefs(prefs);
         // save catalogue definitions
@@ -632,7 +632,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void loadPrefs() {
         try {
             // get preferences API node
-            Preferences prefs = Preferences.userRoot().node("alexfalappa.hcc-nb");
+            Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
             // load view settings
             pViewSettings.loadPrefs(prefs);
             // load catalogue definitions

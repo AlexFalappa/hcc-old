@@ -26,6 +26,7 @@ import net.falappa.utils.LogUtils;
  */
 public class App {
 
+    public static final String PREF_ROOT = "alexfalappa.hcc-nb";
     public static MainWindow frame;
 
     static {
