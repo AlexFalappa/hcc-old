@@ -15,6 +15,12 @@
  */
 package gui.dialogs;
 
+import java.util.HashMap;
+import java.util.prefs.Preferences;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.UIManager;
+import main.App;
+
 /**
  * HCC settings dialog.
  * <p>
@@ -22,9 +28,25 @@ package gui.dialogs;
  */
 public class SettingsDialog extends javax.swing.JDialog {
 
+    private final HashMap<String, String> lafs = new HashMap<>();
+    private final DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
+
     public SettingsDialog(java.awt.Frame parent) {
         super(parent, true);
+        // add to the combobox and the map all platform installed L&Fs
+        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            lafs.put(info.getName(), info.getClassName());
+            dcbm.addElement(info.getName());
+        }
+        // add to the combobox and the map third party L&Fs
+        lafs.put("JGoodies Plastic", "com.jgoodies.looks.plastic.PlasticLookAndFeel");
+        dcbm.addElement("JGoodies Plastic");
+        lafs.put("JGoodies Plastic XP", "com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
+        dcbm.addElement("JGoodies Plastic XP");
+        // build widgets
         initComponents();
+        // select the current look and feel
+        cbLF.setSelectedItem(UIManager.getLookAndFeel().getName());
     }
 
     /** This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
@@ -38,43 +60,73 @@ public class SettingsDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         cbLF = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        okCancelPanel = new net.falappa.widgets.OkCancelPanel();
+        bCancel = new javax.swing.JButton();
+        bOk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("HCC Settings");
 
         jLabel2.setText("Look & Feel");
+
+        cbLF.setModel(dcbm);
 
         jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()-1f));
         jLabel3.setForeground(javax.swing.UIManager.getDefaults().getColor("CheckBoxMenuItem.acceleratorSelectionBackground"));
         jLabel3.setText("Requires restart of the application");
+
+        bCancel.setText("Cancel");
+        bCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCancelActionPerformed(evt);
+            }
+        });
+
+        bOk.setText("OK");
+        bOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bOkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bOk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCancel))
                     .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 30, Short.MAX_VALUE))
-                    .addComponent(cbLF, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 9, Short.MAX_VALUE))
+                            .addComponent(cbLF, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
-            .addComponent(okCancelPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        contentPaneLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bCancel, bOk});
+
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contentPaneLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cbLF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(okCancelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bCancel)
+                    .addComponent(bOk))
+                .addContainerGap())
         );
 
         getContentPane().add(contentPane, java.awt.BorderLayout.CENTER);
@@ -82,15 +134,24 @@ public class SettingsDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
+        // get preferences API node
+        Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
+        // store selected LAF class name
+        prefs.put(App.PREF_LAFCLASS, lafs.get(cbLF.getSelectedItem().toString()));
+        setVisible(false);
+    }//GEN-LAST:event_bOkActionPerformed
+
+    private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_bCancelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bCancel;
+    private javax.swing.JButton bOk;
     private javax.swing.JComboBox cbLF;
     private javax.swing.JPanel contentPane;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private net.falappa.widgets.OkCancelPanel okCancelPanel;
     // End of variables declaration//GEN-END:variables
-
-    public boolean isOkPressed() {
-        return okCancelPanel.isOkPressed();
-    }
 }

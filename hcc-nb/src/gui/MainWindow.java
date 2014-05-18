@@ -354,9 +354,6 @@ public class MainWindow extends javax.swing.JFrame {
         SettingsDialog sd = new SettingsDialog(this);
         sd.setLocationRelativeTo(this);
         sd.setVisible(true);
-        if (sd.isOkPressed()) {
-
-        }
     }//GEN-LAST:event_bSettingsActionPerformed
 
     private void setupLayers() {

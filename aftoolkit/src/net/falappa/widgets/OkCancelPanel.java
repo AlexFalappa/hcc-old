@@ -8,7 +8,7 @@ package net.falappa.widgets;
 import javax.swing.JDialog;
 
 /**
- * A simple panel suited for controlling the cloaing of a JDialog with a boolean outcome.
+ * A panel for closing JDialog with a simple boolean outcome (nothing is done on button press).
  * <p>
  * The panel should be added to a dialog and the same dialog should be set trough the {@link #setDialog(javax.swing.JDialog) } method. The
  * dialog should also create a delegate method to {@link #isOkPressed() } to retrieve the outcome.

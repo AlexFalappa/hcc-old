@@ -17,6 +17,9 @@ package main;
 
 import gov.nasa.worldwind.Configuration;
 import gui.MainWindow;
+import java.util.prefs.Preferences;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import net.falappa.utils.LogUtils;
 
 /**
@@ -27,6 +30,7 @@ import net.falappa.utils.LogUtils;
 public class App {
 
     public static final String PREF_ROOT = "alexfalappa.hcc-nb";
+    public static final String PREF_LAFCLASS = "LAF-classname";
     public static MainWindow frame;
 
     static {
@@ -56,10 +60,21 @@ public class App {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                setPrefLAF();
                 frame = new MainWindow();
                 frame.setSize(1200, 800);
                 frame.setVisible(true);
             }
         });
+    }
+
+    private static void setPrefLAF() {
+        // get preferences API node
+        Preferences prefs = Preferences.userRoot().node(PREF_ROOT);
+        try {
+            UIManager.setLookAndFeel(prefs.get(PREF_LAFCLASS, UIManager.getSystemLookAndFeelClassName()));
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            //ignored will go with default look and feel
+        }
     }
 }
