@@ -16,12 +16,10 @@
 package net.falappa.widgets.wwind;
 
 import gov.nasa.worldwind.BasicModel;
-import gov.nasa.worldwind.View;
-import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
-import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.globes.Earth;
@@ -32,6 +30,7 @@ import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.layers.ViewControlsSelectListener;
+import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 
 /**
@@ -67,7 +66,7 @@ public class WWindPanel extends javax.swing.JPanel {
         wwCanvas.redraw();
     }
 
-    public void zoomToSector(Sector sector) {
+    public void flyToSector(Sector sector) {
         double delta_x = sector.getDeltaLonRadians();
         double delta_y = sector.getDeltaLatRadians();
         double earthRadius = wwCanvas.getModel().getGlobe().getRadius();
@@ -76,13 +75,13 @@ public class WWindPanel extends javax.swing.JPanel {
         // Form a triangle consisting of the longest distance on the ground and the ray from the eye to the center point
         // The ray from the eye to the midpoint on the ground bisects the FOV
         double distance = Math.max(horizDistance, vertDistance) / 2;
-//        double altitude = distance / Math.tan(wwCanvas.getView().getFieldOfView().radians / 2);
-        double altitude = distance / Math.tan(wwCanvas.getView().getFieldOfView().radians);
-        LatLon latlon = sector.getCentroid();
-        Position pos = new Position(latlon, altitude);
-        View view = wwCanvas.getView();
-        view.setEyePosition(pos);
-        view.firePropertyChange(AVKey.VIEW, null, view);
+        double altitude = distance / Math.tan(wwCanvas.getView().getFieldOfView().radians / 2);
+        // double the altitude to leave some space around
+        altitude *= 2;
+        // fly to the calculated position
+        Position pos = new Position(sector.getCentroid(), altitude);
+        BasicOrbitView view = (BasicOrbitView) wwCanvas.getView();
+        view.addPanToAnimator(pos, Angle.ZERO, Angle.ZERO, altitude);
     }
 
     /**

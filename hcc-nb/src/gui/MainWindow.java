@@ -115,7 +115,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void zoomToSector(Sector sector) {
-        wwindPane.zoomToSector(sector);
+        wwindPane.flyToSector(sector);
     }
 
     /**
