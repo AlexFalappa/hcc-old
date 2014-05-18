@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JCheckBox;
 import main.App;
 
@@ -472,7 +473,10 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     private void getChbFromPrefs(JCheckBox chb, Preferences vnode, boolean flag) {
         chb.setSelected(vnode.getBoolean(chb.getText(), flag));
         // force action firing
-        chb.getAction().actionPerformed(new ActionEvent(chb, 1, "initial"));
+        final Action act = chb.getAction();
+        if (act != null) {
+            act.actionPerformed(new ActionEvent(chb, 1, "initial"));
+        }
     }
 
     private class ToggleAction extends AbstractAction {
