@@ -33,6 +33,7 @@ import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwind.render.SurfaceShape;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
+import net.falappa.widgets.wwind.posparser.LatLonParser;
 
 /**
  * A base WorldWind panel with a top bar and
@@ -48,6 +49,8 @@ public class WWindPanel extends javax.swing.JPanel {
         initComponents();
         setupWorldWind();
         globeSwitcher.setWorldWindow(wwCanvas);
+        flyToPanel.setWWindPanel(this);
+        flyToPanel.addParser(new LatLonParser());
     }
 
     public WorldWindowGLCanvas getWWCanvas() {
@@ -65,6 +68,11 @@ public class WWindPanel extends javax.swing.JPanel {
 
     public void redraw() {
         wwCanvas.redraw();
+    }
+
+    public void flyToPoint(Position position) {
+        BasicOrbitView view = (BasicOrbitView) wwCanvas.getView();
+        view.addPanToAnimator(position, Angle.ZERO, Angle.ZERO, 1000e3);
     }
 
     public void flyToSector(SurfaceShape shape) {
@@ -97,12 +105,17 @@ public class WWindPanel extends javax.swing.JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pTop = new javax.swing.JPanel();
+        flyToPanel = new net.falappa.widgets.wwind.FlyToPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         globeSwitcher = new net.falappa.widgets.wwind.FlatRoundInLinePanel();
         wwCanvas = new gov.nasa.worldwind.awt.WorldWindowGLCanvas();
 
         setLayout(new java.awt.BorderLayout());
 
-        pTop.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 3, 1));
+        pTop.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 2, 3, 2));
+        pTop.setLayout(new javax.swing.BoxLayout(pTop, javax.swing.BoxLayout.LINE_AXIS));
+        pTop.add(flyToPanel);
+        pTop.add(filler1);
         pTop.add(globeSwitcher);
 
         add(pTop, java.awt.BorderLayout.PAGE_START);
@@ -111,6 +124,8 @@ public class WWindPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.Box.Filler filler1;
+    private net.falappa.widgets.wwind.FlyToPanel flyToPanel;
     private net.falappa.widgets.wwind.FlatRoundInLinePanel globeSwitcher;
     private javax.swing.JPanel pTop;
     private gov.nasa.worldwind.awt.WorldWindowGLCanvas wwCanvas;
