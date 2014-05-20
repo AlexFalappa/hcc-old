@@ -33,7 +33,7 @@
         <Property name="verticalGap" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="net.falappa.widgets.wwind.FlatGlobeInLinePanel" name="globeSwitcher">
+        <Component class="net.falappa.widgets.wwind.FlatRoundInLinePanel" name="globeSwitcher">
         </Component>
       </SubComponents>
     </Container>

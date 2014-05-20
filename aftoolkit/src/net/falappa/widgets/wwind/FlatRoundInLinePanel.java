@@ -31,17 +31,17 @@ import gov.nasa.worldwind.view.orbit.FlatOrbitView;
  * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
-public class FlatGlobeInLinePanel extends javax.swing.JPanel {
+public class FlatRoundInLinePanel extends javax.swing.JPanel {
 
     private Globe roundGlobe = new Earth();
     private FlatGlobe flatGlobe = new EarthFlat();
     private WorldWindow ww;
 
-    public FlatGlobeInLinePanel() {
+    public FlatRoundInLinePanel() {
         this(null);
     }
 
-    public FlatGlobeInLinePanel(WorldWindow ww) {
+    public FlatRoundInLinePanel(WorldWindow ww) {
         initComponents();
         if (ww != null) {
             setupGlobes(ww);
