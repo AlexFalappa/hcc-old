@@ -82,10 +82,6 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
         rbMap = new javax.swing.JRadioButton();
         cbProjection = new javax.swing.JComboBox();
 
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 3, 0);
-        flowLayout1.setAlignOnBaseline(true);
-        setLayout(flowLayout1);
-
         buttonGroup1.add(rbGlobe);
         rbGlobe.setSelected(true);
         rbGlobe.setText("Globe");
@@ -94,7 +90,6 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
                 rbGlobeActionPerformed(evt);
             }
         });
-        add(rbGlobe);
 
         buttonGroup1.add(rbMap);
         rbMap.setText("Map");
@@ -103,7 +98,6 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
                 rbMapActionPerformed(evt);
             }
         });
-        add(rbMap);
 
         cbProjection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mercator", "Lat-Lon", "Sinusoidal", "Modified Sinusoidal" }));
         cbProjection.setEnabled(false);
@@ -113,7 +107,25 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
                 cbProjectionItemStateChanged(evt);
             }
         });
-        add(cbProjection);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(rbGlobe)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rbMap)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbProjection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(rbGlobe)
+                .addComponent(rbMap)
+                .addComponent(cbProjection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbGlobeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbGlobeActionPerformed
