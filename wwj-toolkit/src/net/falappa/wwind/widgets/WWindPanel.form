@@ -36,7 +36,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Component class="net.falappa.widgets.wwind.FlyToPanel" name="flyToPanel">
+        <Component class="net.falappa.wwind.widgets.FlyToPanel" name="flyToPanel">
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler1">
           <Properties>
@@ -48,7 +48,7 @@
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalGlue"/>
           </AuxValues>
         </Component>
-        <Component class="net.falappa.widgets.wwind.FlatRoundInLinePanel" name="globeSwitcher">
+        <Component class="net.falappa.wwind.widgets.FlatRoundInLinePanel" name="globeSwitcher">
         </Component>
       </SubComponents>
     </Container>

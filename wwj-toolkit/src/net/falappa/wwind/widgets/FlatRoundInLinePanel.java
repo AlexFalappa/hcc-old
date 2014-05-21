@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.falappa.widgets.wwind;
+package net.falappa.wwind.widgets;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.globes.Earth;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.falappa.widgets.wwind;
+package net.falappa.wwind.widgets;
 
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
@@ -33,7 +33,7 @@ import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwind.render.SurfaceShape;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
-import net.falappa.widgets.wwind.posparser.LatLonParser;
+import net.falappa.wwind.posparser.LatLonParser;
 
 /**
  * A base WorldWind panel with a top bar and
@@ -105,9 +105,9 @@ public class WWindPanel extends javax.swing.JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pTop = new javax.swing.JPanel();
-        flyToPanel = new net.falappa.widgets.wwind.FlyToPanel();
+        flyToPanel = new net.falappa.wwind.widgets.FlyToPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        globeSwitcher = new net.falappa.widgets.wwind.FlatRoundInLinePanel();
+        globeSwitcher = new net.falappa.wwind.widgets.FlatRoundInLinePanel();
         wwCanvas = new gov.nasa.worldwind.awt.WorldWindowGLCanvas();
 
         setLayout(new java.awt.BorderLayout());
@@ -125,8 +125,8 @@ public class WWindPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.Box.Filler filler1;
-    private net.falappa.widgets.wwind.FlyToPanel flyToPanel;
-    private net.falappa.widgets.wwind.FlatRoundInLinePanel globeSwitcher;
+    private net.falappa.wwind.widgets.FlyToPanel flyToPanel;
+    private net.falappa.wwind.widgets.FlatRoundInLinePanel globeSwitcher;
     private javax.swing.JPanel pTop;
     private gov.nasa.worldwind.awt.WorldWindowGLCanvas wwCanvas;
     // End of variables declaration//GEN-END:variables

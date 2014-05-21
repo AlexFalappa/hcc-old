@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.falappa.widgets.wwind.posparser;
+package net.falappa.wwind.posparser;
 
 import gov.nasa.worldwind.geom.Position;
 
