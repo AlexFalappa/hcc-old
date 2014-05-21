@@ -1,5 +1,5 @@
-dist/
-build/
-nbproject/private/
-archives/
-stage/
+/dist/
+/build/
+/nbproject/private/
+/archives/
+/stage/
