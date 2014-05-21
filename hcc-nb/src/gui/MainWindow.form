@@ -82,9 +82,9 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="lMexs" pref="558" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="bInfo" min="-2" max="-2" attributes="0"/>
+                  <Component id="bInfo" linkSize="2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bSettings" min="-2" max="-2" attributes="0"/>
+                  <Component id="bSettings" linkSize="2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -94,10 +94,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="bSettings" min="-2" max="-2" attributes="0"/>
+                      <Component id="bSettings" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lMexs" max="32767" attributes="0"/>
-                          <Component id="bInfo" max="32767" attributes="0"/>
+                          <Component id="bInfo" linkSize="1" max="32767" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="bAddCat" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="cbCatalogues" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -201,7 +201,7 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="net.falappa.widgets.wwind.WWindPanel" name="wwindPane">
+    <Component class="net.falappa.wwind.widgets.WWindPanel" name="wwindPane">
       <Properties>
         <Property name="bottomBar" type="boolean" value="true"/>
       </Properties>

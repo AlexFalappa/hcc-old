@@ -141,7 +141,7 @@ public class MainWindow extends javax.swing.JFrame {
         bInfo = new javax.swing.JButton();
         bSettings = new javax.swing.JButton();
         pViewSettings = new gui.panels.ViewSettingsPanel();
-        wwindPane = new net.falappa.widgets.wwind.WWindPanel();
+        wwindPane = new net.falappa.wwind.widgets.WWindPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HMA Catalogue Client");
@@ -241,6 +241,9 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(bSettings)
                 .addContainerGap())
         );
+
+        pToolBarLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bInfo, bSettings});
+
         pToolBarLayout.setVerticalGroup(
             pToolBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pToolBarLayout.createSequentialGroup()
@@ -258,6 +261,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(bEditCat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        pToolBarLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bInfo, bSettings});
 
         getContentPane().add(pToolBar, java.awt.BorderLayout.PAGE_START);
         getContentPane().add(pViewSettings, java.awt.BorderLayout.LINE_END);
@@ -371,7 +376,7 @@ public class MainWindow extends javax.swing.JFrame {
     private gui.panels.TimeWindowPanel pTime;
     private javax.swing.JPanel pToolBar;
     private gui.panels.ViewSettingsPanel pViewSettings;
-    public net.falappa.widgets.wwind.WWindPanel wwindPane;
+    public net.falappa.wwind.widgets.WWindPanel wwindPane;
     // End of variables declaration//GEN-END:variables
 
     private boolean checkCanSubmit() {

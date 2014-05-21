@@ -15,7 +15,8 @@
  */
 package gui.dialogs;
 
-import java.util.HashMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
@@ -28,25 +29,25 @@ import main.App;
  */
 public class SettingsDialog extends javax.swing.JDialog {
 
-    private final HashMap<String, String> lafs = new HashMap<>();
+    private final BiMap<String, String> lafClassToNames = HashBiMap.create(6);
     private final DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
 
     public SettingsDialog(java.awt.Frame parent) {
         super(parent, true);
         // add to the combobox and the map all platform installed L&Fs
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            lafs.put(info.getName(), info.getClassName());
+            lafClassToNames.put(info.getClassName(), info.getName());
             dcbm.addElement(info.getName());
         }
         // add to the combobox and the map third party L&Fs
-        lafs.put("JGoodies Plastic", "com.jgoodies.looks.plastic.PlasticLookAndFeel");
+        lafClassToNames.put("com.jgoodies.looks.plastic.PlasticLookAndFeel", "JGoodies Plastic");
         dcbm.addElement("JGoodies Plastic");
-        lafs.put("JGoodies Plastic XP", "com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
+        lafClassToNames.put("com.jgoodies.looks.plastic.PlasticXPLookAndFeel", "JGoodies Plastic XP");
         dcbm.addElement("JGoodies Plastic XP");
         // build widgets
         initComponents();
         // select the current look and feel
-        cbLF.setSelectedItem(UIManager.getLookAndFeel().getName());
+        cbLF.setSelectedItem(lafClassToNames.get(UIManager.getLookAndFeel().getClass().getName()));
     }
 
     /** This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
@@ -138,7 +139,7 @@ public class SettingsDialog extends javax.swing.JDialog {
         // get preferences API node
         Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
         // store selected LAF class name
-        prefs.put(App.PREF_LAFCLASS, lafs.get(cbLF.getSelectedItem().toString()));
+        prefs.put(App.PREF_LAFCLASS, lafClassToNames.inverse().get(cbLF.getSelectedItem().toString()));
         setVisible(false);
     }//GEN-LAST:event_bOkActionPerformed
 
