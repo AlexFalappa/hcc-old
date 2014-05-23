@@ -33,6 +33,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
 
     public void linkTo(WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois) {
         pPolyPane.linkTo(wwCanvas, aois);
+        pCirclePane.linkTo(wwCanvas, aois);
         pRangePane.linkTo(wwCanvas);
         pLinePane.linkTo(wwCanvas, aois);
         pPointPane.linkTo(wwCanvas, mois);

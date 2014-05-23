@@ -15,19 +15,29 @@
  */
 package gui.panels.geo;
 
+import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.geom.Position;
+import gui.wwind.AOILayer;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JSpinner;
 import main.App;
+import net.falappa.wwind.tools.CircleBuilder;
 
 /**
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class CirclePanel extends javax.swing.JPanel {
+
+    private CircleBuilder circBuilder;
+    private WorldWindow wwd;
+    private AOILayer aoi;
 
     public CirclePanel() {
         initComponents();
@@ -49,6 +59,12 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom1.setEnabled(enabled);
         lUom2.setEnabled(enabled);
         lUom3.setEnabled(enabled);
+    }
+
+    public void linkTo(WorldWindow wwd, AOILayer aoi) {
+        this.wwd = wwd;
+        this.aoi = aoi;
+        circBuilder = new CircleBuilder(wwd, null, null);
     }
 
     /**
@@ -90,7 +106,6 @@ public class CirclePanel extends javax.swing.JPanel {
 
         bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_095_vector_path_circle.png"))); // NOI18N
         bGraphSel.setText("Graphical Selection");
-        bGraphSel.setEnabled(false);
         bGraphSel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bGraphSelActionPerformed(evt);
@@ -195,13 +210,42 @@ public class CirclePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        // TODO add your handling code here:
+        final boolean armed = circBuilder.isArmed();
+        spCenterLat.setEnabled(armed);
+        spCenterLon.setEnabled(armed);
+        spRadius.setEnabled(armed);
+        if (armed) {
+            circBuilder.setArmed(false);
+            bGraphSel.setText("Graphical Selection");
+            ((Component) wwd).setCursor(Cursor.getDefaultCursor());
+            finishGraphSel();
+        } else {
+            circBuilder.setArmed(true);
+            bGraphSel.setText("Close & Accept");
+            ((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        }
     }//GEN-LAST:event_bGraphSelActionPerformed
 
     private void bDrawPolyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawPolyActionPerformed
         App.frame.aois.setSurfPoly(circleToPolygon((double) spCenterLon.getValue(), (double) spCenterLat.getValue(), (double) spRadius.getValue()));
         App.frame.wwindPane.redraw();
     }//GEN-LAST:event_bDrawPolyActionPerformed
+
+    private void finishGraphSel() {
+        Position center = circBuilder.getCenter();
+        double radius = circBuilder.getRadius();
+        if (center != null) {
+            // clear line
+            circBuilder.clear();
+            // set spinners
+            spCenterLat.setValue(center.getLatitude().getDegrees());
+            spCenterLon.setValue(center.getLongitude().getDegrees());
+            spRadius.setValue(radius);
+            // add circular area of interest
+            aoi.setSurfCircle(center, radius);
+            wwd.redraw();
+        }
+    }
 
     /**
      * Approximate a circle of the given center and radius with a 40 sided regular polygon.
