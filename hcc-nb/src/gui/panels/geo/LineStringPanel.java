@@ -124,7 +124,9 @@ public class LineStringPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        if (lineBuilder.isArmed()) {
+        final boolean armed = lineBuilder.isArmed();
+        taCoords.setEnabled(armed);
+        if (armed) {
             lineBuilder.setArmed(false);
             bGraphSel.setText("Graphical Selection");
             ((Component) wwd).setCursor(Cursor.getDefaultCursor());
