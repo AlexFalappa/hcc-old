@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.falappa.widgets;
+package net.falappa.swing;
 
 import java.io.File;
 import javax.swing.JFileChooser;

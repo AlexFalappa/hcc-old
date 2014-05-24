@@ -1,4 +1,4 @@
-package net.falappa.widgets;
+package net.falappa.swing.table;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -19,20 +19,16 @@ import javax.swing.table.TableModel;
 
 /**
  * Class to manage the widths of colunmns in a table.
- *
- * Various properties control how the width of the column is calculated. Another
- * property controls whether column width calculation should be dynamic.
- * Finally, various Actions will be added to the table to allow the user to
- * customize the functionality.
  * <p>
- * This class was designed to be used with tables that use an auto resize mode
- * of AUTO_RESIZE_OFF. With all other modes you are constrained as the width of
- * the columns must fit inside the table. So if you increase one column, one or
- * more of the other columns must decrease. Because of this the resize mode of
- * RESIZE_ALL_COLUMNS will work the best.
+ * Various properties control how the width of the column is calculated. Another property controls whether column width calculation should
+ * be dynamic. Finally, various Actions will be added to the table to allow the user to customize the functionality.
+ * <p>
+ * This class was designed to be used with tables that use an auto resize mode of AUTO_RESIZE_OFF. With all other modes you are constrained
+ * as the width of the columns must fit inside the table. So if you increase one column, one or more of the other columns must decrease.
+ * Because of this the resize mode of RESIZE_ALL_COLUMNS will work the best.
  * <p>
  * Taken from http://tips4java.wordpress.com/2008/11/10/table-column-adjuster/
- *
+ * <p>
  * @author Rob Camick
  */
 public final class TableColumnAdjuster implements PropertyChangeListener, TableModelListener {
@@ -47,7 +43,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Specify the table and use default spacing
-     *
+     * <p>
      * @param table
      */
     public TableColumnAdjuster(JTable table) {
@@ -56,7 +52,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Specify the table and spacing
-     *
+     * <p>
      * @param table
      * @param spacing
      */
@@ -82,7 +78,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Adjust the width of the specified column in the table
-     *
+     * <p>
      * @param column
      */
     public void adjustColumn(final int column) {
@@ -98,7 +94,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Calculated the width based on the column name
-     *
+     * <p>
      * @param column
      */
     private int getColumnHeaderWidth(int column) {
@@ -116,9 +112,8 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
     }
 
     /**
-     * Calculate the width based on the widest cell renderer for the given
-     * column.
-     *
+     * Calculate the width based on the widest cell renderer for the given column.
+     * <p>
      * @param column
      */
     private int getColumnDataWidth(int column) {
@@ -140,7 +135,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Get the preferred width for the specified cell
-     *
+     * <p>
      * @param row
      * @param column
      */
@@ -154,7 +149,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Update the TableColumn with the newly calculated width
-     *
+     * <p>
      * @param column
      * @param width
      */
@@ -185,7 +180,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Restore the width of the specified column to its previous width
-     *
+     * <p>
      * @param column
      */
     private void restoreColumn(int column) {
@@ -199,7 +194,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Indicates whether to include the header in the width calculation
-     *
+     * <p>
      * @param isColumnHeaderIncluded
      */
     public final void setColumnHeaderIncluded(boolean isColumnHeaderIncluded) {
@@ -208,7 +203,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Indicates whether to include the model data in the width calculation
-     *
+     * <p>
      * @param isColumnDataIncluded
      */
     public final void setColumnDataIncluded(boolean isColumnDataIncluded) {
@@ -217,7 +212,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
 
     /**
      * Indicates whether columns can only be increased in size
-     *
+     * <p>
      * @param isOnlyAdjustLarger
      */
     public final void setOnlyAdjustLarger(boolean isOnlyAdjustLarger) {
@@ -225,9 +220,8 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
     }
 
     /**
-     * Indicate whether changes to the model should cause the width to be
-     * dynamically recalculated.
-     *
+     * Indicate whether changes to the model should cause the width to be dynamically recalculated.
+     * <p>
      * @param isDynamicAdjustment
      */
     public final void setDynamicAdjustment(boolean isDynamicAdjustment) {
@@ -358,8 +352,7 @@ public final class TableColumnAdjuster implements PropertyChangeListener, TableM
     }
 
     /**
-     * Toggle properties of the TableColumnAdjuster so the user can customize
-     * the functionality to their preferences
+     * Toggle properties of the TableColumnAdjuster so the user can customize the functionality to their preferences
      */
     class ToggleAction extends AbstractAction {
 

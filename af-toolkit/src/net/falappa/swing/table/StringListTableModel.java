@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.falappa.widgets.models;
+package net.falappa.swing.table;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;

@@ -1,4 +1,4 @@
-package net.falappa.widgets;
+package net.falappa.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

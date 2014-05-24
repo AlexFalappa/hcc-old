@@ -39,7 +39,7 @@
  *
  * Portions Copyrighted 2012 Sun Microsystems, Inc.
  */
-package net.falappa.widgets.colorbox;
+package net.falappa.swing.combobox.colorbox;
 
 import java.awt.Color;
 import java.awt.Dialog;
