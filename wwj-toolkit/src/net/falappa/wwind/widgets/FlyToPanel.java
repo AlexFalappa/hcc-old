@@ -20,7 +20,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.UIManager;
-import net.falappa.widgets.TextPrompt;
+import net.falappa.swing.TextPrompt;
 import net.falappa.wwind.posparser.PositionParser;
 
 /**

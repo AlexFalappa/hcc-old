@@ -20,7 +20,7 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import net.falappa.widgets.models.StringListTableModel;
+import net.falappa.swing.table.StringListTableModel;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
 
 /**

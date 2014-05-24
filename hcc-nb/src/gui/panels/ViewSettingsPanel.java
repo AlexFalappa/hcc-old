@@ -106,8 +106,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         chBMWMS = new javax.swing.JCheckBox();
         chMsVirtEarth = new javax.swing.JCheckBox();
         chBing = new javax.swing.JCheckBox();
-        ccbAoi = new net.falappa.widgets.colorbox.ColorComboBox();
-        ccbFootprints = new net.falappa.widgets.colorbox.ColorComboBox();
+        ccbAoi = new net.falappa.swing.combobox.colorbox.ColorComboBox();
+        ccbFootprints = new net.falappa.swing.combobox.colorbox.ColorComboBox();
         jPanel1 = new javax.swing.JPanel();
         chMiniMap = new javax.swing.JCheckBox();
         chCompass = new javax.swing.JCheckBox();
@@ -387,8 +387,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bNext;
     private javax.swing.JButton bPrev;
-    private net.falappa.widgets.colorbox.ColorComboBox ccbAoi;
-    private net.falappa.widgets.colorbox.ColorComboBox ccbFootprints;
+    private net.falappa.swing.combobox.colorbox.ColorComboBox ccbAoi;
+    private net.falappa.swing.combobox.colorbox.ColorComboBox ccbFootprints;
     private javax.swing.JCheckBox chAoi;
     private javax.swing.JCheckBox chBMImage;
     private javax.swing.JCheckBox chBMWMS;
