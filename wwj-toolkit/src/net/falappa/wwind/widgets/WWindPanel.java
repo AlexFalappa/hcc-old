@@ -33,6 +33,7 @@ import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwind.render.SurfaceShape;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
+import javax.swing.UIManager;
 import net.falappa.wwind.posparser.LatLonParser;
 
 /**
@@ -158,7 +159,7 @@ public class WWindPanel extends javax.swing.JPanel {
         // add a StatusLayer
         StatusLayer slayer = new StatusLayer();
         slayer.setEventSource(wwCanvas);
-//        slayer.setDefaultFont(this.getFont());
+        slayer.setDefaultFont(UIManager.getFont("Label.font"));
         layers.add(slayer);
         // add a view controls layer and register a controller for it.
         ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
