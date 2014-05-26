@@ -19,11 +19,6 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="bDrawPoly" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lCorners" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -81,12 +76,7 @@
                   <Component id="spRadius" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lUom1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="lCorners" max="32767" attributes="0"/>
-                  <Component id="bDrawPoly" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace pref="46" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="bGraphSel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bDraw" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -169,16 +159,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="deg."/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="bDrawPoly">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Draw polygonal approx."/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDrawPolyActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lCorners">
     </Component>
   </SubComponents>
 </Form>

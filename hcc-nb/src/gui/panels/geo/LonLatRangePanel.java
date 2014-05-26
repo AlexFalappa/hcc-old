@@ -18,6 +18,7 @@ package gui.panels.geo;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwindx.examples.util.SectorSelector;
+import gui.panels.GeoAreaPanel;
 import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -58,6 +59,8 @@ public class LonLatRangePanel extends javax.swing.JPanel {
 
     public void linkTo(WorldWindow wwd) {
         selector = new SectorSelector(wwd);
+        selector.setBorderColor(GeoAreaPanel.COL_BOUNDARY);
+        selector.setInteriorColor(GeoAreaPanel.COL_FILL);
         selector.addPropertyChangeListener(SectorSelector.SECTOR_PROPERTY, new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 Sector sec = (Sector) evt.getNewValue();

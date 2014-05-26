@@ -16,9 +16,16 @@
 package gui.panels;
 
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
+import gov.nasa.worldwind.util.measure.MeasureTool;
+import gov.nasa.worldwind.util.measure.MeasureToolController;
 import gui.wwind.AOILayer;
 import gui.wwind.MOILayer;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import main.App;
 
 /**
@@ -27,16 +34,42 @@ import main.App;
  */
 public class GeoAreaPanel extends javax.swing.JPanel {
 
+    private MeasureTool measTool;
+    public static final Color COL_FILL = new Color(255, 255, 255, 63);
+    public static final Color COL_BOUNDARY = new Color(255, 20, 0, 200);
+
     public GeoAreaPanel() {
         initComponents();
     }
 
-    public void linkTo(WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois) {
-        pPolyPane.linkTo(wwCanvas, aois);
-        pCirclePane.linkTo(wwCanvas, aois);
-        pRangePane.linkTo(wwCanvas);
-        pLinePane.linkTo(wwCanvas, aois);
+    public void linkTo(final WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois) {
+        // create and setup the measure tool
+        measTool = new MeasureTool(wwCanvas);
+        measTool.setController(new MeasureToolController());
+        // set some attributes of the measure tool
+        measTool.setShowAnnotation(false);
+        measTool.setFollowTerrain(true);
+        measTool.setFillColor(COL_FILL);
+        measTool.setLineColor(COL_BOUNDARY);
+        measTool.getControlPointsAttributes().setBackgroundColor(COL_BOUNDARY);
+        measTool.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals(MeasureTool.EVENT_ARMED)) {
+                    if (measTool.isArmed()) {
+                        ((Component) wwCanvas).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                    } else {
+                        ((Component) wwCanvas).setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+            }
+        });
+        // link the various panes
+        pPolyPane.linkTo(measTool, aois);
+        pLinePane.linkTo(measTool, aois);
+        pCirclePane.linkTo(measTool, aois);
         pPointPane.linkTo(wwCanvas, mois);
+        pRangePane.linkTo(wwCanvas);
     }
 
     /**

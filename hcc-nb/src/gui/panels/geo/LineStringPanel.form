@@ -16,21 +16,21 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane2" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Component id="lblCoords" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="bGraphSel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                       <Component id="bDraw" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -41,7 +41,7 @@
               <Component id="lblCoords" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane2" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="bGraphSel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bDraw" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -56,17 +56,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Coordinates (deg.)"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="bGraphSel">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/gui/images_16x16/glyphicons_097_vector_path_line.png"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Graphical Selection"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bGraphSelActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bDraw">
       <Properties>
@@ -95,5 +84,16 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="bGraphSel">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/gui/images_16x16/glyphicons_097_vector_path_line.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Graphical Selection"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bGraphSelActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

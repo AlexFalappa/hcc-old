@@ -18,16 +18,12 @@ package gui.panels.geo;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.util.measure.MeasureTool;
 import gui.wwind.AOILayer;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.geom.Point2D;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JSpinner;
 import main.App;
-import net.falappa.wwind.tools.CircleBuilder;
 
 /**
  *
@@ -35,9 +31,10 @@ import net.falappa.wwind.tools.CircleBuilder;
  */
 public class CirclePanel extends javax.swing.JPanel {
 
-    private CircleBuilder circBuilder;
     private WorldWindow wwd;
     private AOILayer aoi;
+    private MeasureTool mt;
+    private boolean mtVisible = false;
 
     public CirclePanel() {
         initComponents();
@@ -61,10 +58,10 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom3.setEnabled(enabled);
     }
 
-    public void linkTo(WorldWindow wwd, AOILayer aoi) {
-        this.wwd = wwd;
+    public void linkTo(MeasureTool mTool, AOILayer aoi) {
+        this.wwd = mTool.getWwd();
         this.aoi = aoi;
-        circBuilder = new CircleBuilder(wwd, null, null);
+        this.mt = mTool;
     }
 
     /**
@@ -86,8 +83,6 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom1 = new javax.swing.JLabel();
         lUom2 = new javax.swing.JLabel();
         lUom3 = new javax.swing.JLabel();
-        bDrawPoly = new javax.swing.JButton();
-        lCorners = new javax.swing.JLabel();
 
         lCenterLat.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lCenterLat.setText("Center Lat");
@@ -125,13 +120,6 @@ public class CirclePanel extends javax.swing.JPanel {
 
         lUom3.setText("deg.");
 
-        bDrawPoly.setText("Draw polygonal approx.");
-        bDrawPoly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bDrawPolyActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,10 +127,6 @@ public class CirclePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(bDrawPoly)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lCorners, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -191,11 +175,7 @@ public class CirclePanel extends javax.swing.JPanel {
                     .addComponent(lRadius)
                     .addComponent(spRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lUom1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lCorners, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bDrawPoly, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bGraphSel)
                     .addComponent(bDraw))
@@ -210,33 +190,28 @@ public class CirclePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        final boolean armed = circBuilder.isArmed();
-        spCenterLat.setEnabled(armed);
-        spCenterLon.setEnabled(armed);
-        spRadius.setEnabled(armed);
-        if (armed) {
-            circBuilder.setArmed(false);
+        spCenterLat.setEnabled(mtVisible);
+        spCenterLon.setEnabled(mtVisible);
+        spRadius.setEnabled(mtVisible);
+        if (mtVisible) {
+            mtVisible = false;
             bGraphSel.setText("Graphical Selection");
-            ((Component) wwd).setCursor(Cursor.getDefaultCursor());
             finishGraphSel();
         } else {
-            circBuilder.setArmed(true);
+            mtVisible = true;
+            mt.setMeasureShapeType(MeasureTool.SHAPE_CIRCLE);
+            mt.setArmed(true);
             bGraphSel.setText("Close & Accept");
-            ((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
     }//GEN-LAST:event_bGraphSelActionPerformed
 
-    private void bDrawPolyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawPolyActionPerformed
-        App.frame.aois.setSurfPoly(circleToPolygon((double) spCenterLon.getValue(), (double) spCenterLat.getValue(), (double) spRadius.getValue()));
-        App.frame.wwindPane.redraw();
-    }//GEN-LAST:event_bDrawPolyActionPerformed
-
     private void finishGraphSel() {
-        Position center = circBuilder.getCenter();
-        double radius = circBuilder.getRadius();
+        Position center = mt.getCenterPosition();
+        double radius = mt.getWidth() / 2.0;
         if (center != null) {
-            // clear line
-            circBuilder.clear();
+            // unarm and clear line
+            mt.setArmed(false);
+            mt.clear();
             // set spinners
             spCenterLat.setValue(center.getLatitude().getDegrees());
             spCenterLon.setValue(center.getLongitude().getDegrees());
@@ -247,125 +222,11 @@ public class CirclePanel extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * Approximate a circle of the given center and radius with a 40 sided regular polygon.
-     * <p>
-     * Returned geometry is in WKT string format. Calculations are performed on the WGS84 geodetic spheroid.
-     * <p>
-     * @param lon    Center longitude
-     * @param lat    Center latitude
-     * @param radius Radius, in meters
-     * @return The polygon in WKT string
-     */
-    public ArrayList<LatLon> circleToPolygon(double lon, double lat, double radius) {
-        int n_corners = (int) Math.round(2 * Math.PI * radius / 10000);
-        int n_cornersRound = 0;
-        if (n_corners > 800) {
-            n_cornersRound = 360;
-        }
-        if (n_corners <= 800 && n_corners > 100) {
-            n_cornersRound = 180;
-        } else if (n_corners <= 100 && n_corners > 20) {
-            n_cornersRound = 90;
-        } else if (n_corners <= 20) {
-            n_cornersRound = 36;
-        }
-        lCorners.setText(String.format("%d corners", n_cornersRound));
-        ArrayList<LatLon> output = new ArrayList<>(n_cornersRound + 1);
-        Point2D.Double center = new Point2D.Double(lon, lat);
-        // add the first point (0° bearing or heading north)
-        Point2D.Double point0 = directVincenty(center, 0, radius);
-        // repeat calculation increasing bearing by 360° / n_corners
-        output.add(LatLon.fromDegrees(point0.y, point0.x));
-        int alfa = Math.round(360 / n_cornersRound);
-        int angleAlfa = alfa;
-        for (int countFor = 2; angleAlfa < 360; countFor++) {
-            Point2D.Double point = directVincenty(center, angleAlfa, radius);
-            output.add(LatLon.fromDegrees(point.y, point.x));
-            angleAlfa = alfa * countFor;
-        }
-        // repeat the first point to close polygon
-        output.add(LatLon.fromDegrees(point0.y, point0.x));
-        return output;
-    }
-
-    /**
-     * Calculate a destination lat/long point given start point lat/long (in decimal degrees), bearing angle (decimal degrees) and a
-     * distance (meters).
-     * <p>
-     * The code employs the Vincenty direct formula from T.Vincenty, "Direct and Inverse Solutions of Geodesics on the Ellipsoid with
-     * application of nested equations", Survey Review, vol XXII no 176, 1975 http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf
-     * <p>
-     * See http://www.movable-type.co.uk/scripts/latlong-vincenty-direct.html for explanation and sample web application.
-     * <p>
-     * @param point
-     * @param brng
-     * @param distance
-     * @return
-     */
-    public Point2D.Double directVincenty(Point2D.Double point, double brng, double distance) {
-        // WGS-84 ellipsoid parameters
-        double a = 6378137, b = 6356752.3142, f = 1 / 298.257223563;
-        double s = distance;
-        double alpha1 = brng * Math.PI / 180;
-        double sinAlpha1 = Math.sin(alpha1);
-        double cosAlpha1 = Math.cos(alpha1);
-        double tanU1 = (1 - f) * Math.tan(point.y * Math.PI / 180);
-        double cosU1 = 1 / Math.sqrt((1 + tanU1 * tanU1)), sinU1 = tanU1
-                * cosU1;
-        double sigma1 = Math.atan2(tanU1, cosAlpha1);
-        double sinAlpha = cosU1 * sinAlpha1;
-        double cosSqAlpha = 1 - sinAlpha * sinAlpha;
-        double uSq = cosSqAlpha * (a * a - b * b) / (b * b);
-        double A = 1 + uSq / 16384
-                * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
-        double B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
-        double cos2SigmaM = Double.NaN;
-        double sinSigma = Double.NaN;
-        double cosSigma = Double.NaN;
-        double sigma = s / (b * A), sigmaP = 2 * Math.PI;
-        while (Math.abs(sigma - sigmaP) > 1e-12) {
-            cos2SigmaM = Math.cos(2 * sigma1 + sigma);
-            sinSigma = Math.sin(sigma);
-            cosSigma = Math.cos(sigma);
-            double deltaSigma = B
-                    * sinSigma
-                    * (cos2SigmaM + B
-                    / 4
-                    * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B
-                    / 6
-                    * cos2SigmaM
-                    * (-3 + 4 * sinSigma * sinSigma)
-                    * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
-            sigmaP = sigma;
-            sigma = s / (b * A) + deltaSigma;
-        }
-        double tmp = sinU1 * sinSigma - cosU1 * cosSigma * cosAlpha1;
-        double lat2 = Math.atan2(sinU1 * cosSigma + cosU1 * sinSigma
-                * cosAlpha1,
-                (1 - f) * Math.sqrt(sinAlpha * sinAlpha + tmp * tmp));
-        double lambda = Math.atan2(sinSigma * sinAlpha1, cosU1 * cosSigma
-                - sinU1 * sinSigma * cosAlpha1);
-        double C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
-        double L = lambda
-                - (1 - C)
-                * f
-                * sinAlpha
-                * (sigma + C
-                * sinSigma
-                * (cos2SigmaM + C * cosSigma
-                * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
-        // var revAz = Math.atan2(sinAlpha, -tmp); // final bearing
-        return new Point2D.Double(point.x + (L * 180 / Math.PI), lat2 * 180 / Math.PI);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDraw;
-    private javax.swing.JButton bDrawPoly;
     private javax.swing.JButton bGraphSel;
     private javax.swing.JLabel lCenterLat;
     private javax.swing.JLabel lCenterLon;
-    private javax.swing.JLabel lCorners;
     private javax.swing.JLabel lRadius;
     private javax.swing.JLabel lUom1;
     private javax.swing.JLabel lUom2;

@@ -17,10 +17,8 @@ package gui.panels.geo;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Position;
-import gov.nasa.worldwindx.examples.LineBuilder;
+import gov.nasa.worldwind.util.measure.MeasureTool;
 import gui.wwind.AOILayer;
-import java.awt.Component;
-import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -31,9 +29,10 @@ import java.util.Locale;
  */
 public class LineStringPanel extends javax.swing.JPanel {
 
-    private LineBuilder lineBuilder;
     private WorldWindow wwd;
     private AOILayer aoi;
+    private MeasureTool mt;
+    private boolean mtVisible = false;
     private final StringBuilder posList = new StringBuilder(200);
 
     public LineStringPanel() {
@@ -48,10 +47,10 @@ public class LineStringPanel extends javax.swing.JPanel {
 //        bDraw.setEnabled(enabled);
     }
 
-    public void linkTo(WorldWindow wwd, AOILayer aoi) {
-        this.wwd = wwd;
+    public void linkTo(MeasureTool mTool, AOILayer aoi) {
+        this.wwd = mTool.getWwd();
         this.aoi = aoi;
-        lineBuilder = new LineBuilder(wwd, null, null);
+        this.mt = mTool;
     }
 
     /**
@@ -63,20 +62,12 @@ public class LineStringPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblCoords = new javax.swing.JLabel();
-        bGraphSel = new javax.swing.JButton();
         bDraw = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         taCoords = new javax.swing.JTextArea();
+        bGraphSel = new javax.swing.JButton();
 
         lblCoords.setText("Coordinates (deg.)");
-
-        bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_097_vector_path_line.png"))); // NOI18N
-        bGraphSel.setText("Graphical Selection");
-        bGraphSel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bGraphSelActionPerformed(evt);
-            }
-        });
 
         bDraw.setText("Draw");
         bDraw.setEnabled(false);
@@ -91,20 +82,28 @@ public class LineStringPanel extends javax.swing.JPanel {
         taCoords.setRows(3);
         jScrollPane2.setViewportView(taCoords);
 
+        bGraphSel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_097_vector_path_line.png"))); // NOI18N
+        bGraphSel.setText("Graphical Selection");
+        bGraphSel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bGraphSelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(lblCoords)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(bGraphSel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(bDraw)))
                 .addContainerGap())
         );
@@ -115,7 +114,7 @@ public class LineStringPanel extends javax.swing.JPanel {
                 .addComponent(lblCoords)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bGraphSel)
                     .addComponent(bDraw))
@@ -123,36 +122,46 @@ public class LineStringPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        final boolean armed = lineBuilder.isArmed();
-        taCoords.setEnabled(armed);
-        if (armed) {
-            lineBuilder.setArmed(false);
-            bGraphSel.setText("Graphical Selection");
-            ((Component) wwd).setCursor(Cursor.getDefaultCursor());
-            finishGraphSel();
-        } else {
-            lineBuilder.setArmed(true);
-            bGraphSel.setText("Accept");
-            ((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        }
-    }//GEN-LAST:event_bGraphSelActionPerformed
-
     private void bDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawActionPerformed
 
     }//GEN-LAST:event_bDrawActionPerformed
 
+    private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
+        if (mtVisible) {
+            if (mt.isArmed()) {
+                // edit
+                mtVisible = true;
+                mt.setArmed(false);
+                bGraphSel.setText("Accept Selection");
+            } else {
+                //end
+                mtVisible = false;
+                mt.setArmed(false);
+                finishGraphSel();
+                taCoords.setEnabled(true);
+                bGraphSel.setText("Graphical Selection");
+            }
+        } else {
+            if (!mt.isArmed()) {
+                //start
+                mt.setMeasureShapeType(MeasureTool.SHAPE_PATH);
+                mt.setArmed(true);
+                mtVisible = true;
+                taCoords.setEnabled(false);
+                bGraphSel.setText("Edit Selection");
+            }
+        }
+    }//GEN-LAST:event_bGraphSelActionPerformed
+
     private void finishGraphSel() {
         // make a copy of linebuilder pos
         ArrayList<Position> perimeter = new ArrayList<>();
-        for (Position pos : lineBuilder.getLine().getPositions()) {
+        for (Position pos : mt.getPositions()) {
             perimeter.add(pos);
         }
-        // clear line and stringbuilder
-        lineBuilder.clear();
+        // display coordinates
         posList.setLength(0);
         taCoords.setText("");
-        // display coordinates
         Iterator<Position> it = perimeter.iterator();
         while (it.hasNext()) {
             Position pos = it.next();
@@ -164,7 +173,9 @@ public class LineStringPanel extends javax.swing.JPanel {
                 posList.append(' ');
             }
         }
+        taCoords.setCaretPosition(0);
         // add polyline area of interest
+        mt.clear();
         aoi.setSurfLine(perimeter);
         wwd.redraw();
     }
