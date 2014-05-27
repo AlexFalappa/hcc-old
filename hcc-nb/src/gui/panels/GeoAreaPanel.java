@@ -52,7 +52,6 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         measTool.setFillColor(COL_FILL);
         measTool.setLineColor(COL_BOUNDARY);
         measTool.getControlPointsAttributes().setBackgroundColor(COL_BOUNDARY);
-        measTool.getLayer().setPickEnabled(false);
         measTool.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
