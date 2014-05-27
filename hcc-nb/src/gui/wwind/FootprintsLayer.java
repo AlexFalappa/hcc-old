@@ -18,11 +18,15 @@ package gui.wwind;
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.event.SelectEvent;
+import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.layers.RenderableLayer;
+import gov.nasa.worldwind.render.AnnotationAttributes;
 import gov.nasa.worldwind.render.BasicShapeAttributes;
+import gov.nasa.worldwind.render.GlobeAnnotation;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Path;
 import gov.nasa.worldwind.render.Polygon;
@@ -30,18 +34,22 @@ import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
-import gov.nasa.worldwindx.examples.util.ToolTipController;
+import gov.nasa.worldwind.render.SurfaceShape;
 import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FootprintsLayer extends RenderableLayer {
 
 //    private HighlightController highlighter;
-    private ToolTipController tooltipper;
+//    private ToolTipController tooltipper;
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
     private final ArrayList<SurfacePolygon> footprints = new ArrayList<>();
+    private final GlobeAnnotation popupAnnotation = new GlobeAnnotation("", Position.ZERO);
+    private SurfaceShape prevPopupShape;
 
     public FootprintsLayer() {
         // properties of layer
@@ -57,11 +65,53 @@ public class FootprintsLayer extends RenderableLayer {
         attrHigh.setOutlineWidth(2);
         attrHigh.setInteriorMaterial(Material.WHITE);
         attrHigh.setInteriorOpacity(0.7f);
+        // annotation attributes
+        AnnotationAttributes defaultAttributes = new AnnotationAttributes();
+        defaultAttributes.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT);
+        defaultAttributes.setFrameShape(AVKey.SHAPE_RECTANGLE);
+        defaultAttributes.setCornerRadius(3);
+        defaultAttributes.setDrawOffset(new Point(0, 8));
+        defaultAttributes.setLeaderGapWidth(8);
+        defaultAttributes.setTextColor(Color.BLACK);
+        defaultAttributes.setBackgroundColor(new Color(1f, 1f, 1f, .85f));
+        defaultAttributes.setBorderColor(new Color(0xababab));
+        defaultAttributes.setInsets(new Insets(3, 3, 3, 3));
+        defaultAttributes.setVisible(false);
+        popupAnnotation.setAttributes(defaultAttributes);
+        popupAnnotation.setAlwaysOnTop(true);
+        addRenderable(popupAnnotation);
     }
 
-    public void linkTo(WorldWindow wwd) {
+    public void linkTo(final WorldWindow wwd) {
 //        highlighter = new HighlightController(wwd, SelectEvent.LEFT_CLICK);
-        tooltipper = new ToolTipController(wwd);
+//        tooltipper = new ToolTipController(wwd);
+        wwd.addSelectListener(new SelectListener() {
+            @Override
+            public void selected(SelectEvent event) {
+                if (event.isLeftClick()) {
+                    System.out.println("Clicked on");
+                    System.out.println("  point " + event.getPickPoint());
+                    final Object topObject = event.getTopObject();
+                    System.out.println("  top obj " + topObject);
+                    System.out.println(topObject.getClass());
+                    if (topObject instanceof SurfaceShape) {
+                        SurfaceShape shape = (SurfaceShape) topObject;
+                        final Sector boundingSector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+                        Position centroid = new Position(boundingSector.getCentroid(), 0d);
+                        if (popupAnnotation.getAttributes().isVisible() && shape.equals(prevPopupShape)) {
+                            popupAnnotation.getAttributes().setVisible(false);
+                        } else {
+                            String ht = (String) shape.getValue(AVKey.HOVER_TEXT);
+                            popupAnnotation.setText(ht);
+                            popupAnnotation.setPosition(centroid);
+                            popupAnnotation.getAttributes().setVisible(true);
+                            prevPopupShape = shape;
+                            wwd.redraw();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void setColor(Color col) {
@@ -141,6 +191,9 @@ public class FootprintsLayer extends RenderableLayer {
     public void removeAllRenderables() {
         super.removeAllRenderables();
         footprints.clear();
+        // re-add the hidden allnotation
+        popupAnnotation.getAttributes().setVisible(false);
+        addRenderable(popupAnnotation);
     }
 
 }

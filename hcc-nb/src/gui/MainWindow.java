@@ -554,8 +554,8 @@ public class MainWindow extends javax.swing.JFrame {
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
             footprints.addSurfPoly(geopoints, pid);
-            wwindPane.redraw();
         }
+        wwindPane.redraw();
         return res.length;
     }
 
