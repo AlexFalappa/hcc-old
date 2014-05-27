@@ -17,10 +17,13 @@ Features
     * Product collections (multiple selection)
     * Time constraints (contained or overlapping a time range, before or after an instant)
     * Spatial constraints (lat/lon range, polyline, polygon, point or cirle areas of interest)
-* Visual representation of query product footprints on a 3D globe (uses the [World Wind Java SDK](http://goworldwind.org) )
+* Visual representation of query product footprints on a 3D globe or 2D map in four projections (uses the [World Wind Java SDK](http://goworldwind.org) )
 * Base cartography from widely known map providers (e.g. _NASA Blue Marble_ and _Microsoft Bing_)
 * Geographic names and lat/lon graticule overlays
+* Results navigation and highlight
+* Fly to Lat Lon point with flown-to locations history
 * Persistence of catalogue definitions and view settings between invocations
+* Several Look & Feels available
 
 Screenshot
 ----------
