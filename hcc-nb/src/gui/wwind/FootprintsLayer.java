@@ -20,6 +20,7 @@ import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
+import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
@@ -35,20 +36,22 @@ import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceQuad;
 import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwind.render.SurfaceShape;
+import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import net.falappa.wwind.util.HighlightControllerPub;
 
-public class FootprintsLayer extends RenderableLayer {
+public class FootprintsLayer extends RenderableLayer implements SelectListener {
 
-//    private HighlightController highlighter;
-//    private ToolTipController tooltipper;
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
-    private final ArrayList<SurfacePolygon> footprints = new ArrayList<>();
+    private final ArrayList<SurfaceShape> footprints = new ArrayList<>();
     private final GlobeAnnotation popupAnnotation = new GlobeAnnotation("", Position.ZERO);
+    private WorldWindow wwd;
+    private HighlightControllerPub highlighter;
     private SurfaceShape prevPopupShape;
 
     public FootprintsLayer() {
@@ -82,36 +85,10 @@ public class FootprintsLayer extends RenderableLayer {
         addRenderable(popupAnnotation);
     }
 
-    public void linkTo(final WorldWindow wwd) {
-//        highlighter = new HighlightController(wwd, SelectEvent.LEFT_CLICK);
-//        tooltipper = new ToolTipController(wwd);
-        wwd.addSelectListener(new SelectListener() {
-            @Override
-            public void selected(SelectEvent event) {
-                if (event.isLeftClick()) {
-                    System.out.println("Clicked on");
-                    System.out.println("  point " + event.getPickPoint());
-                    final Object topObject = event.getTopObject();
-                    System.out.println("  top obj " + topObject);
-                    System.out.println(topObject.getClass());
-                    if (topObject instanceof SurfaceShape) {
-                        SurfaceShape shape = (SurfaceShape) topObject;
-                        final Sector boundingSector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
-                        Position centroid = new Position(boundingSector.getCentroid(), 0d);
-                        if (popupAnnotation.getAttributes().isVisible() && shape.equals(prevPopupShape)) {
-                            popupAnnotation.getAttributes().setVisible(false);
-                        } else {
-                            String ht = (String) shape.getValue(AVKey.HOVER_TEXT);
-                            popupAnnotation.setText(ht);
-                            popupAnnotation.setPosition(centroid);
-                            popupAnnotation.getAttributes().setVisible(true);
-                            prevPopupShape = shape;
-                            wwd.redraw();
-                        }
-                    }
-                }
-            }
-        });
+    public void linkTo(WorldWindow wwd) {
+        this.wwd = wwd;
+        highlighter = new HighlightControllerPub(wwd, SelectEvent.LEFT_CLICK);
+        wwd.addSelectListener(this);
     }
 
     public void setColor(Color col) {
@@ -183,8 +160,41 @@ public class FootprintsLayer extends RenderableLayer {
         addRenderable(shape);
     }
 
-    public SurfacePolygon getFootPoly(int idx) {
-        return (SurfacePolygon) footprints.get(idx);
+    public SurfaceShape getShape(int idx) {
+        return footprints.get(idx);
+    }
+
+    public SurfacePolygon getPoly(int idx) {
+        final SurfaceShape ret = footprints.get(idx);
+        return ret instanceof SurfacePolygon ? (SurfacePolygon) ret : null;
+    }
+
+    public void flyToShape(int idx) {
+        flyToShape(footprints.get(idx));
+    }
+
+    public void flyToShape(SurfaceShape shape) {
+        Sector sector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+        double delta_x = sector.getDeltaLonRadians();
+        double delta_y = sector.getDeltaLatRadians();
+        double earthRadius = wwd.getModel().getGlobe().getRadius();
+        double horizDistance = earthRadius * delta_x;
+        double vertDistance = earthRadius * delta_y;
+        // Form a triangle consisting of the longest distance on the ground and the ray from the eye to the center point
+        // The ray from the eye to the midpoint on the ground bisects the FOV
+        double distance = Math.max(horizDistance, vertDistance) / 2;
+        double altitude = distance / Math.tan(wwd.getView().getFieldOfView().radians / 2);
+        // double the altitude to leave some space around
+        altitude *= 2;
+        // fly to the calculated position
+        Position pos = new Position(sector.getCentroid(), altitude);
+        BasicOrbitView view = (BasicOrbitView) wwd.getView();
+        view.addPanToAnimator(pos, Angle.ZERO, Angle.ZERO, altitude);
+        highlighter.highlight(shape);
+    }
+
+    public void highlight(SurfaceShape shape) {
+        highlighter.highlight(shape);
     }
 
     @Override
@@ -194,6 +204,29 @@ public class FootprintsLayer extends RenderableLayer {
         // re-add the hidden allnotation
         popupAnnotation.getAttributes().setVisible(false);
         addRenderable(popupAnnotation);
+    }
+
+    // SelectListener interface
+    @Override
+    public void selected(SelectEvent event) {
+        if (event.isLeftClick()) {
+            final Object topObject = event.getTopObject();
+            if (topObject instanceof SurfaceShape) {
+                SurfaceShape shape = (SurfaceShape) topObject;
+                final Sector boundingSector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+                Position centroid = new Position(boundingSector.getCentroid(), 0d);
+                if (popupAnnotation.getAttributes().isVisible() && shape.equals(prevPopupShape)) {
+                    popupAnnotation.getAttributes().setVisible(false);
+                } else {
+                    String ht = (String) shape.getValue(AVKey.HOVER_TEXT);
+                    popupAnnotation.setText(ht);
+                    popupAnnotation.setPosition(centroid);
+                    popupAnnotation.getAttributes().setVisible(true);
+                    prevPopupShape = shape;
+                    wwd.redraw();
+                }
+            }
+        }
     }
 
 }

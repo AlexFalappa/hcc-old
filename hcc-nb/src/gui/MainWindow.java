@@ -115,7 +115,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void flyToSector(SurfaceShape shape) {
-        wwindPane.flyToSector(shape);
+        footprints.flyToShape(shape);
     }
 
     /**

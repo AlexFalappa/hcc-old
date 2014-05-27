@@ -373,7 +373,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_chFootprintsItemStateChanged
 
     private SurfacePolygon flyToCurrFootprint() {
-        SurfacePolygon poly = App.frame.footprints.getFootPoly(currFtpIndex);
+        SurfacePolygon poly = App.frame.footprints.getPoly(currFtpIndex);
         App.frame.flyToSector(poly);
         return poly;
     }
