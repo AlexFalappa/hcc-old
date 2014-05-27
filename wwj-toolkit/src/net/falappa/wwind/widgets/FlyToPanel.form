@@ -45,11 +45,13 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fly to"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="bGo">
       <Properties>
         <Property name="text" type="java.lang.String" value="Go"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bGoActionPerformed"/>
@@ -58,6 +60,7 @@
     <Component class="javax.swing.JTextField" name="txLocation">
       <Properties>
         <Property name="columns" type="int" value="10"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txLocationActionPerformed"/>

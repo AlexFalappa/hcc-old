@@ -27,7 +27,8 @@ import net.falappa.wwind.posparser.PositionParser;
  * A panel allowing to enter a location and moving the view to the entered
  * location.
  * <p>
- * The component also allows to go to the previous, next locations.
+ * The component also allows to go to the previous, next locations. The
+ * component enables after setting the controlled {@link WWindPanel}..
  * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
@@ -51,7 +52,7 @@ public class FlyToPanel extends javax.swing.JPanel {
         this.wp = wp;
     }
 
-    public WWindPanel getWorldWindow() {
+    public WWindPanel getWWindPanel() {
         return wp;
     }
 
@@ -60,6 +61,10 @@ public class FlyToPanel extends javax.swing.JPanel {
             throw new NullPointerException("Null WWindPanel");
         }
         this.wp = wp;
+        // enable widgets
+        jLabel1.setEnabled(true);
+        txLocation.setEnabled(true);
+        bGo.setEnabled(true);
     }
 
     public void addParser(PositionParser parser) {
@@ -90,8 +95,10 @@ public class FlyToPanel extends javax.swing.JPanel {
         bNextLoc = new javax.swing.JButton();
 
         jLabel1.setText("Fly to");
+        jLabel1.setEnabled(false);
 
         bGo.setText("Go");
+        bGo.setEnabled(false);
         bGo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bGoActionPerformed(evt);
@@ -99,6 +106,7 @@ public class FlyToPanel extends javax.swing.JPanel {
         });
 
         txLocation.setColumns(10);
+        txLocation.setEnabled(false);
         txLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txLocationActionPerformed(evt);
