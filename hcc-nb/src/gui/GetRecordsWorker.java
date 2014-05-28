@@ -79,9 +79,9 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             if (ex.getCause() instanceof ServiceExceptionReportFault) {
                 final ServiceExceptionReportFault serf = (ServiceExceptionReportFault) ex.getCause();
                 final ExceptionType exc = serf.getFaultMessage().getExceptionReport().getExceptionArray(0);
-                mw.showErrorDialog("Request error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(), exc.getExceptionTextArray(0)));
+                mw.showErrorDialog("Server error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(), exc.getExceptionTextArray(0)));
             } else {
-                mw.showErrorDialog("Request error", "Could not perform request!", ex);
+                mw.showErrorDialog("Unexpected error", "Could not perform request!", ex);
             }
         }
     }

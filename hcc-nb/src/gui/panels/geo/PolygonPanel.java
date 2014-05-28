@@ -164,11 +164,6 @@ public class PolygonPanel extends javax.swing.JPanel {
             // display coordinates
             posList.setLength(0);
             taCoords.setText("");
-            Position first = it.next();
-            final double latitu = first.getLatitude().getDegrees();
-            final double longitu = first.getLongitude().getDegrees();
-            taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", latitu, longitu));
-            posList.append(latitu).append(' ').append(longitu).append(' ');
             while (it.hasNext()) {
                 Position pos = it.next();
                 final double lat = pos.getLatitude().getDegrees();
@@ -176,9 +171,7 @@ public class PolygonPanel extends javax.swing.JPanel {
                 taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
                 posList.append(lat).append(' ').append(lon).append(' ');
             }
-            taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f", latitu, longitu));
             taCoords.setCaretPosition(0);
-            posList.append(latitu).append(' ').append(longitu);
             // add polygonal area of interest
             mt.clear();
             aoi.setSurfPoly(perimeter);
