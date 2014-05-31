@@ -54,6 +54,7 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     private HighlightControllerPub highlighter;
     private SurfaceShape prevPopupShape;
     private boolean highlightingEnabled = false;
+    private String highlightEvent = SelectEvent.LEFT_CLICK;
 
     public FootprintsLayer() {
         // properties of layer
@@ -88,8 +89,25 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
 
     public void linkTo(WorldWindow wwd) {
         this.wwd = wwd;
-        highlighter = new HighlightControllerPub(wwd, SelectEvent.LEFT_CLICK);
+        highlighter = new HighlightControllerPub(wwd, highlightEvent);
         wwd.addSelectListener(this);
+    }
+
+    public void setHighlightingEnabled(boolean highlightingEnabled) {
+        this.highlightingEnabled = highlightingEnabled;
+    }
+
+    public Color getHighlightColor() {
+        return attrHigh.getOutlineMaterial().getDiffuse();
+    }
+
+    public String getHighlightEvent() {
+        return highlightEvent;
+    }
+
+    public void setHighlightEvent(String highlightEvent) {
+        this.highlightEvent = highlightEvent;
+        highlighter = new HighlightControllerPub(wwd, highlightEvent);
     }
 
     public Color getColor() {
@@ -103,14 +121,6 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
 
     public boolean isHighlightingEnabled() {
         return highlightingEnabled;
-    }
-
-    public void setHighlightingEnabled(boolean highlightingEnabled) {
-        this.highlightingEnabled = highlightingEnabled;
-    }
-
-    public Color getHighlightColor() {
-        return attrHigh.getOutlineMaterial().getDiffuse();
     }
 
     public void setHighlightColor(Color col) {
