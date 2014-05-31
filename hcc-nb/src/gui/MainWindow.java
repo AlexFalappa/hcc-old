@@ -349,13 +349,14 @@ public class MainWindow extends javax.swing.JFrame {
         // create footprints and AOI layers and add them before the place names
         footprints = new FootprintsLayer();
         footprints.linkTo(wwCanvas);
+        footprints.setHighlightingEnabled(true);
         wwindPane.addLayer(footprints);
         aois = new AOILayer();
         wwindPane.addLayer(aois);
         mois = new MOILayer();
         wwindPane.addLayer(mois);
         // link panels to globe
-        pGeo.linkTo(wwCanvas, aois, mois);
+        pGeo.linkTo(wwCanvas, aois, mois, footprints);
         // link view settings panel
         pViewSettings.linkTo(wwCanvas);
     }

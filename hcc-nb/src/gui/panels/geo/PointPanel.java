@@ -17,6 +17,7 @@ package gui.panels.geo;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Position;
+import gui.wwind.FootprintsLayer;
 import gui.wwind.MOILayer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,6 +33,7 @@ public class PointPanel extends javax.swing.JPanel {
 
     private WorldWindow wwd;
     private MOILayer moi;
+    private FootprintsLayer footprints;
     private boolean selecting = false;
     private final MouseAdapter ma = new MouseAdapter() {
         @Override
@@ -68,7 +70,8 @@ public class PointPanel extends javax.swing.JPanel {
         lUom2.setEnabled(enabled);
     }
 
-    public void linkTo(WorldWindow wwd, MOILayer moi) {
+    public void linkTo(WorldWindow wwd, MOILayer moi, FootprintsLayer footprints) {
+        this.footprints = footprints;
         this.wwd = wwd;
         this.moi = moi;
     }
@@ -173,17 +176,16 @@ public class PointPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
+        spLat.setEnabled(selecting);
+        spLon.setEnabled(selecting);
+        footprints.setHighlightingEnabled(selecting);
         if (selecting) {
             this.wwd.getInputHandler().removeMouseListener(ma);
             bGraphSel.setText("Graphical Selection");
-            spLat.setEnabled(true);
-            spLon.setEnabled(true);
             selecting = false;
         } else {
             this.wwd.getInputHandler().addMouseListener(ma);
             bGraphSel.setText("Accept");
-            spLat.setEnabled(false);
-            spLon.setEnabled(false);
             selecting = true;
         }
     }//GEN-LAST:event_bGraphSelActionPerformed

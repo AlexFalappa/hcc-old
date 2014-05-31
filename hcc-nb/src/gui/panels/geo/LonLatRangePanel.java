@@ -19,6 +19,7 @@ import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwindx.examples.util.SectorSelector;
 import gui.panels.GeoAreaPanel;
+import gui.wwind.FootprintsLayer;
 import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,6 +35,7 @@ import main.App;
 public class LonLatRangePanel extends javax.swing.JPanel {
 
     private boolean selecting = false;
+    private FootprintsLayer footprints;
     private SectorSelector selector;
 
     public LonLatRangePanel() {
@@ -57,7 +59,8 @@ public class LonLatRangePanel extends javax.swing.JPanel {
         lUom4.setEnabled(enabled);
     }
 
-    public void linkTo(WorldWindow wwd) {
+    public void linkTo(WorldWindow wwd, FootprintsLayer footprints) {
+        this.footprints = footprints;
         selector = new SectorSelector(wwd);
         selector.setBorderColor(GeoAreaPanel.COL_BOUNDARY);
         selector.setInteriorColor(GeoAreaPanel.COL_FILL);
@@ -219,9 +222,10 @@ public class LonLatRangePanel extends javax.swing.JPanel {
         if (selector == null) {
             return;
         }
+        setSpinnersEnabled(selecting);
+        footprints.setHighlightingEnabled(selecting);
         if (selecting) {
             bGraphSel.setText("Graphical selection");
-            setSpinnersEnabled(true);
             Sector s = selector.getSector();
             updateRanges(s);
             App.frame.aois.setSurfSect(s);
@@ -229,7 +233,6 @@ public class LonLatRangePanel extends javax.swing.JPanel {
             selecting = false;
         } else {
             bGraphSel.setText("Accept");
-            setSpinnersEnabled(false);
             selector.enable();
             selecting = true;
         }

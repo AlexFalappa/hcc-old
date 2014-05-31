@@ -53,7 +53,6 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     private WorldWindow wwd;
     private HighlightControllerPub highlighter;
     private SurfaceShape prevPopupShape;
-    private boolean highlightingEnabled = false;
     private String highlightEvent = SelectEvent.LEFT_CLICK;
 
     public FootprintsLayer() {
@@ -93,8 +92,18 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
         wwd.addSelectListener(this);
     }
 
+    public boolean isHighlightingEnabled() {
+        return highlighter.isEnabled();
+    }
+
     public void setHighlightingEnabled(boolean highlightingEnabled) {
-        this.highlightingEnabled = highlightingEnabled;
+        highlighter.setEnabled(highlightingEnabled);
+        // hide popup and clear highlighed object when disabling
+        if (!highlightingEnabled) {
+            popupAnnotation.getAttributes().setVisible(false);
+            highlighter.highlight(null);
+            wwd.redraw();
+        }
     }
 
     public Color getHighlightColor() {
@@ -117,10 +126,6 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     public void setColor(Color col) {
         attr.setOutlineMaterial(new Material(col));
         attr.setInteriorMaterial(new Material(col.brighter().brighter()));
-    }
-
-    public boolean isHighlightingEnabled() {
-        return highlightingEnabled;
     }
 
     public void setHighlightColor(Color col) {
@@ -221,7 +226,7 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     }
 
     public void highlight(SurfaceShape shape) {
-        if (highlightingEnabled) {
+        if (highlighter.isEnabled()) {
             highlighter.highlight(shape);
         }
     }
@@ -239,7 +244,7 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     @Override
     public void selected(SelectEvent event) {
         // short circuit exit if highlighting is not enabled
-        if (!highlightingEnabled) {
+        if (!highlighter.isEnabled()) {
             return;
         }
         if (event.isLeftClick()) {

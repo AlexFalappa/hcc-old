@@ -21,6 +21,7 @@ public class HighlightControllerPub implements SelectListener {
     protected WorldWindow wwd;
     protected Object highlightEventType = SelectEvent.ROLLOVER;
     protected Highlightable lastHighlightObject;
+    protected boolean enabled = true;
 
     /**
      * Creates a controller for a specified World Window.
@@ -35,12 +36,23 @@ public class HighlightControllerPub implements SelectListener {
         this.wwd.addSelectListener(this);
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void dispose() {
         this.wwd.removeSelectListener(this);
     }
 
     @Override
     public void selected(SelectEvent event) {
+        if (!enabled) {
+            return;
+        }
         try {
             if (this.highlightEventType != null && event.getEventAction().equals(this.highlightEventType)) {
                 highlight(event.getTopObject());

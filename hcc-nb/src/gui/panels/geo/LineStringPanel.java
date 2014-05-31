@@ -19,6 +19,7 @@ import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.util.measure.MeasureTool;
 import gui.wwind.AOILayer;
+import gui.wwind.FootprintsLayer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -31,6 +32,7 @@ public class LineStringPanel extends javax.swing.JPanel {
 
     private WorldWindow wwd;
     private AOILayer aoi;
+    private FootprintsLayer footprints;
     private MeasureTool mt;
     private boolean mtVisible = false;
     private final StringBuilder posList = new StringBuilder(200);
@@ -47,9 +49,10 @@ public class LineStringPanel extends javax.swing.JPanel {
 //        bDraw.setEnabled(enabled);
     }
 
-    public void linkTo(MeasureTool mTool, AOILayer aoi) {
+    public void linkTo(MeasureTool mTool, AOILayer aoi, FootprintsLayer footprints) {
         this.wwd = mTool.getWwd();
         this.aoi = aoi;
+        this.footprints = footprints;
         this.mt = mTool;
     }
 
@@ -139,6 +142,7 @@ public class LineStringPanel extends javax.swing.JPanel {
                 mt.setArmed(false);
                 finishGraphSel();
                 taCoords.setEnabled(true);
+                footprints.setHighlightingEnabled(true);
                 bGraphSel.setText("Graphical Selection");
             }
         } else {
@@ -148,6 +152,7 @@ public class LineStringPanel extends javax.swing.JPanel {
                 mt.setArmed(true);
                 mtVisible = true;
                 taCoords.setEnabled(false);
+                footprints.setHighlightingEnabled(false);
                 bGraphSel.setText("Edit Selection");
             }
         }

@@ -20,6 +20,7 @@ import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.util.measure.MeasureTool;
 import gui.wwind.AOILayer;
+import gui.wwind.FootprintsLayer;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import javax.swing.JSpinner;
@@ -33,6 +34,7 @@ public class CirclePanel extends javax.swing.JPanel {
 
     private WorldWindow wwd;
     private AOILayer aoi;
+    private FootprintsLayer footprints;
     private MeasureTool mt;
     private boolean mtVisible = false;
 
@@ -58,9 +60,10 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom3.setEnabled(enabled);
     }
 
-    public void linkTo(MeasureTool mTool, AOILayer aoi) {
+    public void linkTo(MeasureTool mTool, AOILayer aoi, FootprintsLayer fotprints) {
         this.wwd = mTool.getWwd();
         this.aoi = aoi;
+        this.footprints = fotprints;
         this.mt = mTool;
     }
 
@@ -193,6 +196,7 @@ public class CirclePanel extends javax.swing.JPanel {
         spCenterLat.setEnabled(mtVisible);
         spCenterLon.setEnabled(mtVisible);
         spRadius.setEnabled(mtVisible);
+        footprints.setHighlightingEnabled(mtVisible);
         if (mtVisible) {
             mtVisible = false;
             bGraphSel.setText("Graphical Selection");

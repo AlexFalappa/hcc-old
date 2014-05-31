@@ -19,6 +19,7 @@ import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.util.measure.MeasureTool;
 import gov.nasa.worldwind.util.measure.MeasureToolController;
 import gui.wwind.AOILayer;
+import gui.wwind.FootprintsLayer;
 import gui.wwind.MOILayer;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -42,7 +43,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void linkTo(final WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois) {
+    public void linkTo(final WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois, FootprintsLayer footprints) {
         // create and setup the measure tool
         measTool = new MeasureTool(wwCanvas);
         measTool.setController(new MeasureToolController());
@@ -65,11 +66,11 @@ public class GeoAreaPanel extends javax.swing.JPanel {
             }
         });
         // link the various panes
-        pPolyPane.linkTo(measTool, aois);
-        pLinePane.linkTo(measTool, aois);
-        pCirclePane.linkTo(measTool, aois);
-        pPointPane.linkTo(wwCanvas, mois);
-        pRangePane.linkTo(wwCanvas);
+        pPolyPane.linkTo(measTool, aois, footprints);
+        pLinePane.linkTo(measTool, aois, footprints);
+        pCirclePane.linkTo(measTool, aois, footprints);
+        pPointPane.linkTo(wwCanvas, mois, footprints);
+        pRangePane.linkTo(wwCanvas, footprints);
     }
 
     /**
