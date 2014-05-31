@@ -74,15 +74,19 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
             } else {
                 mw.showInfoDialog("Hits", String.format("Query will give %d records", records));
             }
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException iex) {
+            //ignored currently not supported
         } catch (ExecutionException ex) {
-            if (ex.getCause() instanceof ServiceExceptionReportFault) {
-                final ServiceExceptionReportFault serf = (ServiceExceptionReportFault) ex.getCause();
+            final Throwable cause = ex.getCause();
+            if (cause instanceof ServiceExceptionReportFault) {
+                // decode error from remote service
+                final ServiceExceptionReportFault serf = (ServiceExceptionReportFault) cause;
                 final ExceptionType exc = serf.getFaultMessage().getExceptionReport().getExceptionArray(0);
                 mw.showErrorDialog("Server error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(), exc.getExceptionTextArray(0)));
             } else {
                 mw.showErrorDialog("Unexpected error", "Could not perform request!", ex);
             }
+            mw.lMexs.setText("No record retrieved");
         }
     }
 
