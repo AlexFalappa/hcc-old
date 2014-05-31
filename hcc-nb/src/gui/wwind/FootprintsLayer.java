@@ -53,6 +53,7 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     private WorldWindow wwd;
     private HighlightControllerPub highlighter;
     private SurfaceShape prevPopupShape;
+    private boolean highlightingEnabled = false;
 
     public FootprintsLayer() {
         // properties of layer
@@ -68,7 +69,7 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
         attrHigh.setOutlineWidth(2);
         attrHigh.setInteriorMaterial(Material.WHITE);
         attrHigh.setInteriorOpacity(0.7f);
-        // annotation attributes
+        // popup annotation attributes
         AnnotationAttributes defaultAttributes = new AnnotationAttributes();
         defaultAttributes.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT);
         defaultAttributes.setFrameShape(AVKey.SHAPE_RECTANGLE);
@@ -98,6 +99,14 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     public void setColor(Color col) {
         attr.setOutlineMaterial(new Material(col));
         attr.setInteriorMaterial(new Material(col.brighter().brighter()));
+    }
+
+    public boolean isHighlightingEnabled() {
+        return highlightingEnabled;
+    }
+
+    public void setHighlightingEnabled(boolean highlightingEnabled) {
+        this.highlightingEnabled = highlightingEnabled;
     }
 
     public Color getHighlightColor() {
@@ -202,7 +211,9 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     }
 
     public void highlight(SurfaceShape shape) {
-        highlighter.highlight(shape);
+        if (highlightingEnabled) {
+            highlighter.highlight(shape);
+        }
     }
 
     @Override
@@ -217,6 +228,10 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
     // SelectListener interface
     @Override
     public void selected(SelectEvent event) {
+        // short circuit exit if highlighting is not enabled
+        if (!highlightingEnabled) {
+            return;
+        }
         if (event.isLeftClick()) {
             final Object topObject = event.getTopObject();
             if (topObject instanceof SurfaceShape) {
