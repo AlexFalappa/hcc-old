@@ -91,14 +91,22 @@ public class FootprintsLayer extends RenderableLayer implements SelectListener {
         wwd.addSelectListener(this);
     }
 
+    public Color getColor() {
+        return attr.getOutlineMaterial().getDiffuse();
+    }
+
     public void setColor(Color col) {
         attr.setOutlineMaterial(new Material(col));
         attr.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
+    public Color getHighlightColor() {
+        return attrHigh.getOutlineMaterial().getDiffuse();
+    }
+
     public void setHighlightColor(Color col) {
-        attr.setOutlineMaterial(new Material(col));
-        attr.setInteriorMaterial(new Material(col.brighter().brighter()));
+        attrHigh.setOutlineMaterial(new Material(col));
+        attrHigh.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
     public void addSurfCircle(double lat, double lon, double rad, String tooltip) {
