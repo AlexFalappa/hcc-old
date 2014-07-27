@@ -9,5 +9,5 @@ rem   com.jgoodies.looks.plastic.Plastic3DLookAndFeel
 rem   com.jgoodies.looks.plastic.PlasticXPLookAndFeel
 rem   com.jgoodies.looks.windows.WindowsLookAndFeel
 
-rem launch jvm with natives in windows64 folder
-java -Xms128m -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -Djava.library.path=lib\windows64 -jar hcc.jar
+rem launch jvm
+java -Xms128m -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -jar hcc.jar

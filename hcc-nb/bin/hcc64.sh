@@ -11,5 +11,5 @@
 #   com.jgoodies.looks.plastic.PlasticXPLookAndFeel
 #   com.jgoodies.looks.windows.WindowsLookAndFeel
 
-#launch jvm with OpenGL pipeline and natives in linux64 folder
-java -Xms128m -Dsun.java2d.opengl=true -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -Djava.library.path=lib/linux64 -jar hcc.jar
+#launch jvm with Java2D OpenGL pipeline
+java -Xms128m -Dsun.java2d.opengl=true -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -jar hcc.jar

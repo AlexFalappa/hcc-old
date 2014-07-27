@@ -11,5 +11,5 @@
 #   com.jgoodies.looks.plastic.PlasticXPLookAndFeel
 #   com.jgoodies.looks.windows.WindowsLookAndFeel
 
-#launch jvm with natives in macosx folder
-java -Xms128m -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -Djava.library.path=lib/macosx -jar hcc.jar
+#launch jvm
+java -Xms128m -Dswing.defaultlaf=com.jgoodies.looks.plastic.PlasticXPLookAndFeel -jar hcc.jar

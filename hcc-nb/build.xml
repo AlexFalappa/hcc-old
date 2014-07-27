@@ -73,66 +73,19 @@
     <property name="version" value="0.7" />
     <property name="archive.basename" value="hcc-${version}" />
     <property name="archives.dir" location="archives" />
-    <property name="stage.dir" location="stage" />
-    <property name="stage.base.dir" location="${stage.dir}/hcc" />
-    <property name="stage.lib.dir" location="${stage.base.dir}/lib" />
-    <property name="natives.dir" location="natives" />
-
-    <target name="initstage">
-        <mkdir dir="${stage.base.dir}"/>
-    </target>
-
-    <target name="dist-linux" depends="initstage">
-        <copy toDir="${stage.base.dir}" file="bin/hcc.sh" />
-        <copy toDir="${stage.base.dir}" file="bin/hcc64.sh" />
-        <copy toDir="${stage.base.dir}" file="${dist.jar}/" />
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${dist.dir}/lib"/>
-        </copy>
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${natives.dir}" includes="linux/**"/>
-            <fileset dir="${natives.dir}" includes="linux64/**"/>
-        </copy>
-        <tar destfile="${archives.dir}/${archive.basename}-linux.tar.gz" compression="gzip" basedir="${stage.dir}" />
-        <delete dir="${stage.base.dir}"/>
-    </target>
-
-    <target name="dist-windows" depends="initstage">
-        <copy toDir="${stage.base.dir}" file="bin/hcc.bat" />
-        <copy toDir="${stage.base.dir}" file="bin/hcc64.bat" />
-        <copy toDir="${stage.base.dir}" file="${dist.jar}/" />
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${dist.dir}/lib"/>
-        </copy>
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${natives.dir}" includes="windows/**"/>
-            <fileset dir="${natives.dir}" includes="windows64/**"/>
-        </copy>
-        <zip destfile="${archives.dir}/${archive.basename}-windows.zip" basedir="${stage.dir}" />
-        <delete dir="${stage.base.dir}"/>
-    </target>
-
-    <target name="dist-macosx" depends="initstage">
-        <copy toDir="${stage.base.dir}" file="bin/hcc.macosx.sh" />
-        <copy toDir="${stage.base.dir}" file="${dist.jar}/" />
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${dist.dir}/lib"/>
-        </copy>
-        <copy toDir="${stage.lib.dir}">
-            <fileset dir="${natives.dir}" includes="macosx/**"/>
-        </copy>
-        <tar destfile="${archives.dir}/${archive.basename}-macosx.tar.gz" compression="gzip" basedir="${stage.dir}" />
-        <delete dir="${stage.base.dir}"/>
-    </target>
 
     <target name="-post-jar">
-        <antcall target="dist-linux"/>
-        <antcall target="dist-macosx"/>
-        <antcall target="dist-windows"/>
+        <echo message="Creating distributable zip"/>
+        <delete file="${dist.dir}/README.TXT"/>
+        <copy toDir="${dist.dir}">
+            <fileset dir="bin"/>
+        </copy>
+        <zip destfile="${archives.dir}/${archive.basename}.zip">
+            <zipfileset dir="${dist.dir}" prefix="${archive.basename}"/>
+        </zip>
     </target>
 
     <target name="-post-clean">
-        <delete dir="${stage.dir}"/>
         <delete dir="${archives.dir}"/>
     </target>
 </project>
