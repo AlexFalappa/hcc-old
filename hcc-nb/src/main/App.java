@@ -15,12 +15,12 @@
  */
 package main;
 
-import gov.nasa.worldwind.Configuration;
 import gui.MainWindow;
 import java.util.prefs.Preferences;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import net.falappa.utils.LogUtils;
+import net.falappa.wwind.widgets.WWindPanel;
 
 /**
  * Application entry point.
@@ -33,22 +33,6 @@ public class App {
     public static final String PREF_LAFCLASS = "LAF-classname";
     public static MainWindow frame;
 
-    static {
-        System.setProperty("gov.nasa.worldwind.app.config.document", "main/hcc.worldwind.xml");
-        if (Configuration.isMacOS()) {
-            // Use MacOsX global menu bar and set some propereties
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "HMA Catalogue Client");
-            System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
-        } else if (Configuration.isWindowsOS()) {
-            // prevents flashing during window resizing
-            System.setProperty("sun.awt.noerasebackground", "true");
-            System.setProperty("sun.java2d.noddraw", "true");
-        } else if (Configuration.isLinuxOS()) {
-            System.setProperty("sun.awt.noerasebackground", "true");
-        }
-    }
-
     /**
      * Main method.
      * <p>
@@ -56,6 +40,7 @@ public class App {
      */
     public static void main(String args[]) {
         LogUtils.silenceJUL();
+        WWindPanel.setupPropsForWWind();
         // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

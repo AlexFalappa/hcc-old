@@ -15,14 +15,11 @@
  */
 package gui;
 
-import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.geom.LatLon;
-import gov.nasa.worldwind.render.SurfaceShape;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.dialogs.SettingsDialog;
 import gui.wwind.AOILayer;
-import gui.wwind.FootprintsLayer;
 import gui.wwind.MOILayer;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +31,7 @@ import javax.xml.namespace.QName;
 import main.App;
 import main.data.CatalogueDefinition;
 import main.hma.HmaGetRecordsBuilder;
+import net.falappa.wwind.layers.SurfShapesLayer;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
@@ -52,7 +50,7 @@ import org.apache.xmlbeans.XmlOptions;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    public FootprintsLayer footprints;
+    public static final String LAYER_FOOTPRINTS = "Footprints";
     public AOILayer aois;
     public MOILayer mois;
     private final DefaultComboBoxModel<CatalogueDefinition> dcmCatalogues = new DefaultComboBoxModel<>();
@@ -112,10 +110,6 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void showInfoDialog(String title, String message) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public void flyToSector(SurfaceShape shape) {
-        footprints.flyToShape(shape);
     }
 
     /**
@@ -345,20 +339,17 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bSettingsActionPerformed
 
     private void setupLayers() {
-        WorldWindowGLCanvas wwCanvas = wwindPane.getWWCanvas();
         // create footprints and AOI layers and add them before the place names
-        footprints = new FootprintsLayer();
-        footprints.linkTo(wwCanvas);
-        footprints.setHighlightingEnabled(true);
-        wwindPane.addLayer(footprints);
+        SurfShapesLayer footprints = new SurfShapesLayer(LAYER_FOOTPRINTS);
+        wwindPane.addSurfShapeLayer(footprints);
         aois = new AOILayer();
         wwindPane.addLayer(aois);
         mois = new MOILayer();
         wwindPane.addLayer(mois);
         // link panels to globe
-        pGeo.linkTo(wwCanvas, aois, mois, footprints);
+//        pGeo.linkTo(wwCanvas, aois, mois, footprints);
         // link view settings panel
-        pViewSettings.linkTo(wwCanvas);
+//        pViewSettings.linkTo(wwCanvas);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -533,7 +524,7 @@ public class MainWindow extends javax.swing.JFrame {
         // extract footprints
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
         if (res.length > 0) {
-            App.frame.footprints.removeAllRenderables();
+            App.frame.wwindPane.getSurfShapeLayer(LAYER_FOOTPRINTS).removeAllRenderables();
         }
         for (XmlObject xo : res) {
             // extract pid
@@ -554,7 +545,7 @@ public class MainWindow extends javax.swing.JFrame {
                 double lon = Double.valueOf(coords[i + 1]);
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
-            footprints.addSurfPoly(geopoints, pid);
+            wwindPane.getSurfShapeLayer(LAYER_FOOTPRINTS).addSurfPoly(geopoints, pid);
         }
         wwindPane.redraw();
         return res.length;

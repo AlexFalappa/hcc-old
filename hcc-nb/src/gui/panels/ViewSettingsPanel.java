@@ -321,7 +321,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrevActionPerformed
-        final int numRenderables = App.frame.footprints.getNumRenderables();
+        final int numRenderables = footprints.getNumRenderables();
         if (numRenderables > 0) {
             currFtpIndex--;
             if (currFtpIndex < 0) {
@@ -335,7 +335,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bPrevActionPerformed
 
     private void bNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNextActionPerformed
-        final int numRenderables = App.frame.footprints.getNumRenderables();
+        final int numRenderables = footprints.getNumRenderables();
         if (numRenderables > 0) {
             currFtpIndex++;
             if (currFtpIndex == numRenderables) {
@@ -373,8 +373,8 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_chFootprintsItemStateChanged
 
     private SurfacePolygon flyToCurrFootprint() {
-        SurfacePolygon poly = App.frame.footprints.getPoly(currFtpIndex);
-        App.frame.flyToSector(poly);
+        SurfacePolygon poly = footprints.getPoly(currFtpIndex);
+        footprints.flyToShape(poly);
         return poly;
     }
 
