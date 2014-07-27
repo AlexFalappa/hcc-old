@@ -49,7 +49,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jLabel2.setText("HMA Catalogue Client");
 
-        jLabel3.setText("Version 0.7");
+        jLabel3.setText("Version 0.8");
 
         jLabel4.setText("By Alessandro Falappa");
 
