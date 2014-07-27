@@ -74,15 +74,15 @@ public class SunTerminatorPolyLineTimeDep extends Polyline implements TimeDepRen
     @Override
     public void render(DrawContext dc) {
         javax.media.opengl.GL gl = dc.getGL();
-        gl.glPushAttrib(javax.media.opengl.GL.GL_TEXTURE_BIT | javax.media.opengl.GL.GL_ENABLE_BIT | javax.media.opengl.GL.GL_CURRENT_BIT);
+// the following statement is not valid anymore in jogl 2.1.5, propbably worked in a previous version
+//        gl.glPushAttrib(javax.media.opengl.GL.GL_TEXTURE_BIT | javax.media.opengl.GL.GL_ENABLE_BIT | javax.media.opengl.GL.GL_CURRENT_BIT);
 
         // Added so that the colors wouldn't depend on sun shading
         gl.glDisable(GL.GL_TEXTURE_2D);
-
         super.render(dc);
 
-        gl.glPopAttrib();
-
+// the following statement is not valid anymore in jogl 2.1.5, propbably worked in a previous version
+//        gl.glPopAttrib();
     }
 
     // ======================================================
