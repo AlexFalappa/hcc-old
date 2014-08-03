@@ -1,4 +1,4 @@
-package com.telespazio.wwind.widgets;
+package net.falappa.wwind.widgets;
 
 import com.telespazio.wwind.utils.ToggleVisibilityAction;
 import gov.nasa.worldwind.WorldWindow;

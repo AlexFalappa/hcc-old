@@ -1,6 +1,6 @@
-package com.telespazio.wwind.widgets;
+package net.falappa.wwind.widgets;
 
-import com.telespazio.wwind.layers.SurfShapesLayer;
+import net.falappa.wwind.layers.SurfShapesLayer;
 import com.telespazio.wwind.utils.ToggleVisibilityAction;
 import gov.nasa.worldwind.WorldWindow;
 import javax.swing.JSlider;
@@ -32,7 +32,7 @@ public class LayerPropsPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         chLayerName = new javax.swing.JCheckBox();
-        ccbColor = new com.telespazio.widgets.colorbox.ColorComboBox();
+        ccbColor = new net.falappa.swing.combobox.colorbox.ColorComboBox();
         slOpacity = new javax.swing.JSlider();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 9, 3));
@@ -89,7 +89,7 @@ public class LayerPropsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_slOpacityStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.telespazio.widgets.colorbox.ColorComboBox ccbColor;
+    private net.falappa.swing.combobox.colorbox.ColorComboBox ccbColor;
     private javax.swing.JCheckBox chLayerName;
     private javax.swing.JSlider slOpacity;
     // End of variables declaration//GEN-END:variables

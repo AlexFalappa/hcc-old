@@ -1,6 +1,6 @@
-package com.telespazio.wwind.widgets;
+package net.falappa.wwind.widgets;
 
-import com.telespazio.wwind.layers.SurfShapesLayer;
+import net.falappa.wwind.layers.SurfShapesLayer;
 import gov.nasa.worldwind.WorldWindow;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
