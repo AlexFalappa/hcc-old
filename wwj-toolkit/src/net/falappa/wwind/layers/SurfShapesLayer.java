@@ -34,10 +34,10 @@ import net.falappa.wwind.util.WWindUtils;
  * Each shape is identified by a literal name. All shapes inherit a set of layer wide attributes (color and opacity) that can be overridden
  * shape by shape and optionally reset.
  * <p>
- * The layer also manages shapes selection and highlighting with an annotation (one at a time). Selection listeners can be registered to be
- * notified of shape selection changes.
+ * The layer also manages shapes mouse click selection and highlighting with an annotation (one at a time). Selection listeners can be
+ * registered to be notified of shape selection changes.
  * <p>
- * The layer offers other useful methods such as "flying to" a shape.
+ * The layer offers other useful methods such as "flying to" and programatically highlighting a shape.
  * <p>
  * @author Alessandro Falappa
  */
@@ -50,7 +50,6 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
      * Event fired on shapes selection.
      */
     public static final String EVT_SELECT_SHAPES = "selectShapes";
-
     /**
      * Event fired on shapes deselection.
      */
@@ -64,6 +63,7 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     private SurfaceShape prevPopupShape;
     private String highlightEvent = SelectEvent.LEFT_CLICK;
     private boolean highlightingEnabled = true;
+    private boolean showAnnotation = true;
 
     /**
      * Initializing constructor.
@@ -156,22 +156,39 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         }
     }
 
+    public boolean isShowAnnotation() {
+        return showAnnotation;
+    }
+
+    public void setShowAnnotation(boolean showAnnotation) {
+        this.showAnnotation = showAnnotation;
+        if (!showAnnotation) {
+            popupAnnotation.getAttributes().setVisible(false);
+            wwd.redraw();
+        }
+    }
+
     /**
      * Getter for the current highlighting mouse event.
      * <p>
-     * @return one of the {@link SelectEvent} constants
+     * @return one of the {@link SelectEvent} mouse clicking constants
      */
     public String getHighlightEvent() {
         return highlightEvent;
     }
 
     /**
-     * Setter for the current highlighting mouse event.
+     * Setter for the current highlighting mouse click event.
      * <p>
-     * @param highlightEvent one of the {@link SelectEvent} constants
+     * @param highlightEvent one of {@link SelectEvent#LEFT_CLICK},{@link SelectEvent#LEFT_DOUBLE_CLICK} or {@link SelectEvent#RIGHT_CLICK}
+     * constants
      */
     public void setHighlightEvent(String highlightEvent) {
-        this.highlightEvent = highlightEvent;
+        if (highlightEvent.equals(SelectEvent.LEFT_CLICK) || highlightEvent.equals(SelectEvent.LEFT_DOUBLE_CLICK) || highlightEvent.equals(SelectEvent.RIGHT_CLICK)) {
+            this.highlightEvent = highlightEvent;
+        } else {
+            throw new IllegalArgumentException("Unsupported select event for highlighting!");
+        }
     }
 
     /**
@@ -253,23 +270,30 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param lat
-     * @param lon
-     * @param rad
-     * @param id
+     * Adds or substitutes a named circular surface shape.
+     * <p>
+     * @param lat center latitude in decimal degrees
+     * @param lon center longitude in decimal degrees
+     * @param rad radius in meters
+     * @param id the shape identifier
      */
     public void addSurfCircle(double lat, double lon, double rad, String id) {
         SurfaceCircle shape = new SurfaceCircle(attr, LatLon.fromDegrees(lat, lon), rad);
-        shape.setValue(AVKey.HOVER_TEXT, id);
-        shapesById.put(id, shape);
+        if (id != null) {
+            shape.setValue(AVKey.HOVER_TEXT, id);
+        }
+        SurfaceShape old = shapesById.put(id, shape);
+        if (old != null) {
+            removeRenderable(old);
+        }
         addRenderable(shape);
     }
 
     /**
-     *
-     * @param coords
-     * @param id
+     * Adds or substitutes a named polygonal surface shape.
+     * <p>
+     * @param coords the points of the polygon outer boundary
+     * @param id the shape identifier
      */
     public void addSurfPoly(List<LatLon> coords, String id) {
         SurfacePolygon shape = new SurfacePolygon(coords);
@@ -278,44 +302,64 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         if (id != null) {
             shape.setValue(AVKey.HOVER_TEXT, id);
         }
-        shapesById.put(id, shape);
+        SurfaceShape old = shapesById.put(id, shape);
+        if (old != null) {
+            removeRenderable(old);
+        }
         addRenderable(shape);
     }
 
     /**
-     *
-     * @param lat
-     * @param lon
-     * @param w
-     * @param h
-     * @param id
+     * Adds or substitutes a named regular quadrilateral surface shape.
+     * <p>
+     * @param lat center latitude in decimal degrees
+     * @param lon center longitude in decimal degrees
+     * @param w width in meters
+     * @param h height in meters
+     * @param id the shape identifier
      */
     public void addSurfQuad(double lat, double lon, double w, double h, String id) {
         SurfaceQuad shape = new SurfaceQuad(attr, LatLon.fromDegrees(lat, lon), w, h);
-        shape.setValue(AVKey.HOVER_TEXT, id);
+        shape.setHighlightAttributes(attrHigh);
+        if (id != null) {
+            shape.setValue(AVKey.HOVER_TEXT, id);
+        }
+        SurfaceShape old = shapesById.put(id, shape);
+        if (old != null) {
+            removeRenderable(old);
+        }
         addRenderable(shape);
     }
 
     /**
-     *
-     * @param minlat
-     * @param minlon
-     * @param maxlat
-     * @param maxlon
-     * @param id
+     * Adds or substitutes a named lat lon range (sector) surface shape.
+     * <p>
+     * @param minlat minimum latitude in decimal degrees
+     * @param minlon minimum longitude in decimal degrees
+     * @param maxlat maximum latitude in decimal degrees
+     * @param maxlon maximum longitude in decimal degrees
+     * @param id the shape identifier
      */
     public void addSurfSect(double minlat, double minlon, double maxlat, double maxlon, String id) {
         SurfaceSector shape = new SurfaceSector(attr, Sector.fromDegrees(minlat, maxlat, minlon, maxlon));
         shape.setPathType(AVKey.LINEAR);
-        shapesById.put(id, shape);
+        shape.setHighlightAttributes(attrHigh);
+        if (id != null) {
+            shape.setValue(AVKey.HOVER_TEXT, id);
+        }
+        SurfaceShape old = shapesById.put(id, shape);
+        if (old != null) {
+            removeRenderable(old);
+        }
         addRenderable(shape);
     }
 
     /**
-     *
-     * @param id
-     * @return
-     * @throws NoSuchShapeException
+     * Accessor for a named surface shape.
+     * <p>
+     * @param id the shape identifier
+     * @return the requested shape
+     * @throws NoSuchShapeException if no shape with the given name exists if no shape with the given name exists
      */
     public SurfaceShape getSurfShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -325,10 +369,11 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @return
-     * @throws NoSuchShapeException
+     * Accessor for a named polygonal surface shape.
+     * <p>
+     * @param id the shape identifier
+     * @return the requested shape or null if the shape was not a polygon
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public SurfacePolygon getSurfPoly(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -339,9 +384,10 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @throws NoSuchShapeException
+     * Removes the surface shape of the given name.
+     * <p>
+     * @param id the shape identifier
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void removeSurfShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -352,26 +398,30 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @param col
-     * @param opacity
-     * @throws NoSuchShapeException
+     * Sets the color and opacity of the surface shape with the given name.
+     * <p>
+     * The color and opacity becomes independent from those of the layer.
+     * <p>
+     * @param id the shape identifier
+     * @param col new shape color
+     * @param opacity new shape opacity
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void setSurfShapeColor(String id, Color col, double opacity) throws NoSuchShapeException {
+        SurfaceShape shape = getSurfShape(id);
         BasicShapeAttributes newAttr = new BasicShapeAttributes(attr);
         newAttr.setOutlineMaterial(new Material(col));
         newAttr.setInteriorMaterial(new Material(col.brighter().brighter()));
         newAttr.setOutlineOpacity(opacity);
         newAttr.setInteriorOpacity(NORM_INSIDE_OPACITY * opacity);
-        SurfaceShape shape = getSurfShape(id);
         shape.setAttributes(newAttr);
     }
 
     /**
-     *
-     * @param id
-     * @throws NoSuchShapeException
+     * Reset the color and opacity of the surface shape with the given name to those of the layer.
+     * <p>
+     * @param id the shape identifier
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void resetSurfShapeColor(String id) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
@@ -379,10 +429,11 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @param flag
-     * @throws NoSuchShapeException
+     * Toggles the visibility of the surface shape with the given name.
+     * <p>
+     * @param id the shape identifier
+     * @param flag true to show, false to hide
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void setSurfShapeVisible(String id, boolean flag) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
@@ -390,9 +441,10 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @throws NoSuchShapeException
+     * Animates the map bringing the surface shape with the given name into view and highlights it.
+     * <p>
+     * @param id the shape identifier
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void flyToHiglhlightShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -404,9 +456,10 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param id
-     * @throws NoSuchShapeException
+     * Animates the map bringing the surface shape with the given name into view.
+     * <p>
+     * @param id the shape identifier
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void flyToShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -415,15 +468,11 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         internalFlyTo(shapesById.get(id));
     }
 
-    private void internalFlyTo(SurfaceShape shape) {
-        Sector sector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
-        WWindUtils.flyToSector(wwd, sector);
-    }
-
     /**
-     *
-     * @param id
-     * @throws NoSuchShapeException
+     * Highlights the surface shape with the given name.
+     * <p>
+     * @param id the shape identifier
+     * @throws NoSuchShapeException if no shape with the given name exists
      */
     public void highlightShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
@@ -432,46 +481,8 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         internalHighlight(shapesById.get(id), true);
     }
 
-    private void internalHighlight(SurfaceShape shape, boolean noDeselect) {
-        if (!highlightingEnabled) {
-            return;
-        }
-        String shpId = (String) shape.getValue(AVKey.HOVER_TEXT);
-        // if annotation visible and same shape
-        if (popupAnnotation.getAttributes().isVisible() && shape.equals(prevPopupShape)) {
-            if (!noDeselect) {
-                // hide annotation and de highlight
-                popupAnnotation.getAttributes().setVisible(false);
-                shape.setHighlighted(false);
-                // forget previous highlighted shape and fire deselection event
-                prevPopupShape = null;
-                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, shpId, null));
-            }
-        } else {
-            // find shape centroid
-            final Sector boundingSector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
-            Position centroid = new Position(boundingSector.getCentroid(), 0d);
-            // prepare and show annotation
-            popupAnnotation.setText(shpId);
-            popupAnnotation.setPosition(centroid);
-            popupAnnotation.getAttributes().setVisible(true);
-            // highlight shape
-            shape.setHighlighted(true);
-            if (prevPopupShape != null) {
-                // de highlight previous shape and fire deselection event
-                prevPopupShape.setHighlighted(false);
-                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, prevPopupShape.getValue(AVKey.HOVER_TEXT), shpId));
-            } else {
-                // fire event only
-                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, null, shpId));
-            }
-            // remember shape
-            prevPopupShape = shape;
-        }
-    }
-
     /**
-     *
+     * Removes all the surface shapes of the layer.
      */
     @Override
     public void removeAllRenderables() {
@@ -506,24 +517,27 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
     }
 
     /**
-     *
-     * @param listener
+     * Add a property change listener that will be notified of "shape selection" (highlighting) events.
+     * <p>
+     * @param listener the property change listener
      */
     public void addShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().addPropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
     /**
-     *
-     * @param listener
+     * Removes a previously added property change listener.
+     * <p>
+     * @param listener the property change listener
      */
     public void removeShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().removePropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
     /**
-     *
-     * @return
+     * Gets a list of currently registered shape selection property change listeners
+     * <p>
+     * @return a possibly empty array of property change listeners
      */
     public PropertyChangeListener[] getShapeSelectionListeners() {
         return getChangeSupport().getPropertyChangeListeners(PROPERTY_SELECTION);
@@ -547,4 +561,50 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         // TODO memorizzazione preferences
     }
 
+    // delegates to WWindUtils method
+    private void internalFlyTo(SurfaceShape shape) {
+        Sector sector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+        WWindUtils.flyToSector(wwd, sector);
+    }
+
+    // manages change of attributes for highlighting, annotation bubble toggle, event firing
+    private void internalHighlight(SurfaceShape shape, boolean noDeselect) {
+        if (!highlightingEnabled) {
+            return;
+        }
+        String shpId = (String) shape.getValue(AVKey.HOVER_TEXT);
+        // if annotation visible and same shape
+        if (shape.equals(prevPopupShape) && shape.isHighlighted()) {
+            if (!noDeselect) {
+                // hide annotation and de-highlight
+                popupAnnotation.getAttributes().setVisible(false);
+                shape.setHighlighted(false);
+                // forget previous highlighted shape and fire deselection event
+                prevPopupShape = null;
+                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, shpId, null));
+            }
+        } else {
+            if (showAnnotation) {
+                // find shape centroid
+                final Sector boundingSector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+                Position centroid = new Position(boundingSector.getCentroid(), 0d);
+                // prepare and show annotation
+                popupAnnotation.setText(shpId);
+                popupAnnotation.setPosition(centroid);
+                popupAnnotation.getAttributes().setVisible(true);
+            }
+            // highlight shape
+            shape.setHighlighted(true);
+            if (prevPopupShape != null) {
+                // de-highlight previous shape and fire deselection event
+                prevPopupShape.setHighlighted(false);
+                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, prevPopupShape.getValue(AVKey.HOVER_TEXT), shpId));
+            } else {
+                // fire event only
+                firePropertyChange(new PropertyChangeEvent(this, PROPERTY_SELECTION, null, shpId));
+            }
+            // remember shape
+            prevPopupShape = shape;
+        }
+    }
 }

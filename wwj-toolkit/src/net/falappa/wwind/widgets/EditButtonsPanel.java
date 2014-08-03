@@ -28,7 +28,9 @@ import net.falappa.wwind.layers.EditableMarkerLayer;
 /**
  * Panel to draw shapes on a WorldWind map.
  * <p>
- * Controls a MeasureTool linked to a WorldWindow. The MeasureTool can also be an external, preconfigured, one.
+ * Controls an internal MeasureTool linked to a WorldWindow. The MeasureTool can also be an external, preconfigured, one.
+ * <p>
+ * Controls an internal EditableMarkerLayer linked to a WorldWindow.
  * <p>
  * @author Alessandro Falappa
  */
@@ -47,6 +49,12 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         return ww;
     }
 
+    /**
+     * Setter for the {@link WorldWindow} and {@link MeasureTool}.
+     * <p>
+     * @param wwindow the WorldWindow
+     * @param mt the external MeasureTool
+     */
     public void setWorldWindow(WorldWindow wwindow, MeasureTool mt) {
         if (wwindow == null) {
             throw new NullPointerException("Null WorldWindow!");
@@ -62,6 +70,11 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         postWwdInit();
     }
 
+    /**
+     * Setter for the {@link WorldWindow}.
+     * <p>
+     * @param wwindow the WorldWindow
+     */
     public void setWorldWindow(WorldWindow wwindow) {
         if (wwindow == null) {
             throw new NullPointerException("Null WorldWindow");
@@ -120,31 +133,61 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     public void dispose() {
         mt.dispose();
-        eml.dispose();
         ww.getModel().getLayers().remove(eml);
+        eml.dispose();
     }
 
+    /**
+     * Getter for the edit shape fill color.
+     * <p>
+     * @return the current color
+     */
     public Color getColorFill() {
         return mt.getFillColor();
     }
 
+    /**
+     * Setter for the edit shape fill color.
+     * <p>
+     * @param colorFill the new color
+     */
     public void setColorFill(Color colorFill) {
         this.mt.setFillColor(colorFill);
     }
 
+    /**
+     * Getter for the edit shape outline color.
+     * <p>
+     * @return the current color
+     */
     public Color getColorBoundary() {
         return mt.getLineColor();
     }
 
+    /**
+     * Getter for the edit shape outline color.
+     * <p>
+     * @param colorBoundary the new color
+     */
     public void setColorBoundary(Color colorBoundary) {
         this.mt.setLineColor(colorBoundary);
         this.eml.setColor(colorBoundary);
     }
 
+    /**
+     * Getter for the edit shape control points color.
+     * <p>
+     * @return the current color
+     */
     public Color getColorCtrlPoints() {
         return mt.getControlPointsAttributes().getBackgroundColor();
     }
 
+    /**
+     * setter for the edit shape control points color.
+     * <p>
+     * @param colorCtrlPoints the new color
+     */
     public void setColorCtrlPoints(Color colorCtrlPoints) {
         this.mt.getControlPointsAttributes().setBackgroundColor(colorCtrlPoints);
     }
@@ -168,6 +211,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         bgTools.add(tbPolyTool);
         tbPolyTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_096_vector_path_polygon.png"))); // NOI18N
         tbPolyTool.setEnabled(false);
+        tbPolyTool.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tbPolyTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbPolyToolActionPerformed(evt);
@@ -177,6 +221,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         bgTools.add(tbCircleTool);
         tbCircleTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_095_vector_path_circle.png"))); // NOI18N
         tbCircleTool.setEnabled(false);
+        tbCircleTool.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tbCircleTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbCircleToolActionPerformed(evt);
@@ -186,6 +231,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         bgTools.add(tbLineTool);
         tbLineTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_097_vector_path_line.png"))); // NOI18N
         tbLineTool.setEnabled(false);
+        tbLineTool.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tbLineTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbLineToolActionPerformed(evt);
@@ -195,6 +241,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         bgTools.add(tbPointTool);
         tbPointTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_185_screenshot.png"))); // NOI18N
         tbPointTool.setEnabled(false);
+        tbPointTool.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tbPointTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbPointToolActionPerformed(evt);
@@ -205,6 +252,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         tbSelectTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/mouse-arrow.png"))); // NOI18N
         tbSelectTool.setSelected(true);
         tbSelectTool.setEnabled(false);
+        tbSelectTool.setMargin(new java.awt.Insets(0, 0, 0, 0));
         tbSelectTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbSelectToolActionPerformed(evt);
@@ -212,6 +260,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         });
 
         bClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_197_remove.png"))); // NOI18N
+        bClear.setMargin(new java.awt.Insets(0, 0, 0, 0));
         bClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bClearActionPerformed(evt);

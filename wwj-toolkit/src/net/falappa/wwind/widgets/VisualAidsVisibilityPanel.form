@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+        <TitledBorder title="Visual Aids"/>
+      </Border>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="chCompass" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="chScale" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="chViewContrl" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="chGraticule" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="chMiniMap" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chMiniMap" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chCompass" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chScale" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chViewContrl" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chGraticule" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JCheckBox" name="chCompass">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Compass"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chViewContrl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="View Controls"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chScale">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Scale"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chGraticule">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Graticule"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chMiniMap">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="World Map"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

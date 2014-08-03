@@ -2,6 +2,7 @@ package net.falappa.wwind.widgets;
 
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
+import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
@@ -19,12 +20,15 @@ import gov.nasa.worldwind.render.SurfaceCircle;
 import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.util.measure.MeasureTool;
 import gov.nasa.worldwind.util.measure.MeasureToolController;
+import gov.nasa.worldwind.view.orbit.BasicOrbitView;
+import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,34 +50,46 @@ import net.falappa.wwind.util.WWindUtils;
 /**
  * A base WorldWind panel with a bar containing a {@link FlyToPanel} and a {@link FlatRoundInLinePanel}.
  * <p>
- * Includes a configured WorldWindowGLCanvas with a base known layer definition (contained in an XML file).
+ * Includes a configured {@link WorldWindowGLCanvas} with a base known layer definition (contained in an XML file).
  * <p>
- * Manages a Map of {@link SurfShapesLayer} (indexed by name), an {@link SingleSurfShapeLayer} and a an {@link SingleMarkerLayer}.
- * <tt>SurfShapesLayer</tt>s can be added (if not already present) and removed.
+ * Manages a Map of {@link SurfShapesLayer} (indexed by name), a {@link SingleSurfShapeLayer} and a {@link SingleMarkerLayer}.
+ * <tt>SurfShapesLayer</tt>s can be added (if not already present) and removed, events are fired on addition/removal. The
+ * {@link SingleSurfShapeLayer} and the {@link SingleMarkerLayer} are managed together to expose the concept of a single Area Of Interest.
  * <p>
- * It's also possible to add other WorldWind layers. An utility method aids the placement before the PlaceNames layer.
+ * Manages creation and modification of an editing shape (circle, polygon, polyline, point) that can afterwards be converted to an AOI.
+ * Another editing shape can be controlled trough an editing toolbar.
  * <p>
- * Offers fly to point and area methods to animate going to a point on the Globe or
+ * It's also possible to add other WorldWind layers. An utility method aids the placement before the "PlaceNames" layer.
+ * <p>
+ * Offers fly to point and fly to area methods to animate going to a point on the Globe or bringing an area into view.
  * <p>
  * @author Alessandro Falappa
  */
 public class WWindPanel extends javax.swing.JPanel {
 
+    /**
+     * Types of supported area of interest.
+     */
     public static enum AoiShapes {
 
         POLYGON, CIRCLE, POLYLINE, POINT
     }
 
+    /**
+     * Types of supported edit shapes.
+     */
     public static enum EditModes {
 
         POLYGON, CIRCLE, POLYLINE, POINT
     }
-
+    public static final String EVENT_SURF_LAYER_ADDED = "WWindPanel.SurfShapeLayerAdded";
+    public static final String EVENT_SURF_LAYER_REMOVED = "WWindPanel.SurfShapeLayerRemoved";
     private static final Logger logger = Logger.getLogger(WWindPanel.class.getName());
     private static final Color COLOR_EDIT = new Color(0, 200, 255, 200);
     private final SingleSurfShapeLayer aoi = new SingleSurfShapeLayer("Area of Interest");
     private final SingleMarkerLayer moi = new SingleMarkerLayer("Marker of interest");
     private final HashMap<String, SurfShapesLayer> shapeLayers = new HashMap<>();
+    private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private boolean editing = false;
     private EditModes editMode = EditModes.POLYGON;
     private MeasureTool mt = null;
@@ -90,9 +106,9 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Sets useful system properties for tweaking Java2D, Swing and JOGL behaviours.
+     * Sets useful system properties for tweaking Java2D, Swing and JOGL behaviours to better fit WorldWind.
      * <p>
-     * Recommended to call this method as soon as possible in the main class.
+     * It's recommended to call this method as soon as possible in the main class.
      */
     public static void setupPropsForWWind() {
         // global JOGL properties
@@ -347,27 +363,21 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Adds a listener which gets notified of specified editing actions.
+     * Adds a listener which gets notified of actions on managed {@link SurfShapesLayer} objects.
      * <p>
-     * @param propName the choosen editing action
-     * @param listener a PropertyChangeListener object previously added
+     * @param listener a PropertyChangeListener object
      */
-    public void addEditListener(String propName, PropertyChangeListener listener) {
-        mtInit();
-        mt.addPropertyChangeListener(propName, listener);
-        eml.addPropertyChangeListener(propName, listener);
+    public void addSurfShapeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
     }
 
     /**
-     * Removes a previously added named editing action listener.
+     * Removes a previously added {@link SurfShapesLayer} listener.
      * <p>
-     * @param propName the choosen editing action
-     * @param listener a PropertyChangeListener object receiving all editing notifications
+     * @param listener a PropertyChangeListener object previously added
      */
-    public void removeEditListener(String propName, PropertyChangeListener listener) {
-        mtInit();
-        mt.removePropertyChangeListener(propName, listener);
-        eml.removePropertyChangeListener(propName, listener);
+    public void removeSurfShapeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 
     /**
@@ -399,7 +409,7 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Adds a WorldWind layer to the map.
+     * Adds a generic WorldWind layer to the map.
      * <p>
      * The layer is added on top of the other layers.
      * <p>
@@ -410,7 +420,7 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Removes a WorldWind layer from the map.
+     * Removes a generic WorldWind layer from the map.
      * <p>
      * @param layer the layer to remove
      */
@@ -431,6 +441,7 @@ public class WWindPanel extends javax.swing.JPanel {
             slayer.linkTo(wwCanvas);
             shapeLayers.put(layerName, slayer);
             insertBeforePlacenames(slayer);
+            changeSupport.firePropertyChange(EVENT_SURF_LAYER_ADDED, null, slayer);
         }
     }
 
@@ -468,6 +479,7 @@ public class WWindPanel extends javax.swing.JPanel {
             removedLayer.detach();
             // remove the layer from the map layer list
             wwCanvas.getModel().getLayers().remove(removedLayer);
+            changeSupport.firePropertyChange(EVENT_SURF_LAYER_REMOVED, removedLayer, null);
         }
     }
 
@@ -488,6 +500,7 @@ public class WWindPanel extends javax.swing.JPanel {
             Map.Entry<String, SurfShapesLayer> entry = it.next();
             entry.getValue().dispose();
             wwCanvas.getModel().getLayers().remove(entry.getValue());
+            changeSupport.firePropertyChange(EVENT_SURF_LAYER_REMOVED, entry.getValue(), null);
             it.remove();
         }
     }
@@ -694,20 +707,56 @@ public class WWindPanel extends javax.swing.JPanel {
     /**
      * Animates the map, in a sort of fligth, to bring the given position into view.
      * <p>
-     * @param latlon the coordinates to fly to (1000 Km fixed altitude)
-     */
-    public void flyToPoint(LatLon latlon) {
-        Position pos = Position.fromDegrees(latlon.latitude.degrees, latlon.longitude.degrees);
-        WWindUtils.flyToPoint(wwCanvas, pos);
-    }
-
-    /**
-     * Animates the map, in a sort of fligth, to bring the given position into view.
-     * <p>
      * @param position the coordinates and elevation to fly to
      */
     public void flyToPoint(Position position) {
         WWindUtils.flyToPoint(wwCanvas, position);
+    }
+
+    /**
+     * Instantly moves the point of view of the map as looking to the given lat lon coordinates from the given altitude.
+     * <p>
+     * @param position the coordinates and elevation of the eye
+     */
+    public void eyeToPoint(Position position) {
+        wwCanvas.getView().setEyePosition(position);
+        wwCanvas.redraw();
+    }
+
+    /**
+     * Instantly moves the point of view of the map to the given altitude.
+     * <p>
+     * @param altitude the desired altitude in meters
+     */
+    public void eyeToAltitude(double altitude) {
+        if (wwCanvas.getView() instanceof BasicOrbitView) {
+            BasicOrbitView oview = (BasicOrbitView) wwCanvas.getView();
+            oview.setZoom(altitude);
+        } else if (wwCanvas.getView() instanceof FlatOrbitView) {
+            FlatOrbitView fview = (FlatOrbitView) wwCanvas.getView();
+            fview.setZoom(altitude);
+        }
+        wwCanvas.redraw();
+    }
+
+    /**
+     * Instantly zooms in or out according to the given factor.
+     * <p>
+     * Recalculates the current eye altitude according to the formula: <tt>current_altitude + current_altitude * zFact</tt>
+     * <p>
+     * @param zFact the zoom factor, positive values zoom out while negative ones zoom in
+     */
+    public void eyeZoomAltitude(double zFact) {
+        if (wwCanvas.getView() instanceof BasicOrbitView) {
+            BasicOrbitView oview = (BasicOrbitView) wwCanvas.getView();
+            final double currZoom = oview.getZoom();
+            oview.setZoom(currZoom + currZoom * zFact);
+        } else if (wwCanvas.getView() instanceof FlatOrbitView) {
+            FlatOrbitView fview = (FlatOrbitView) wwCanvas.getView();
+            final double currZoom = fview.getZoom();
+            fview.setZoom(currZoom + currZoom * zFact);
+        }
+        wwCanvas.redraw();
     }
 
     /**
@@ -730,6 +779,23 @@ public class WWindPanel extends javax.swing.JPanel {
                 moi.flyToMOI(wwCanvas);
             } else {
                 aoi.flyToAOI(wwCanvas);
+            }
+        }
+    }
+
+    /**
+     * Animates the map, in a sort of fligth, to bring the current edit shape into view.
+     * <p>
+     * Does nothing if there's no edit shape defined.
+     */
+    public void flyToEditShape() {
+        if (hasEditShape() && editMode != EditModes.POINT) {
+            if (mt.getPositions() != null) {
+                Sector sec = Sector.boundingSector(mt.getPositions());
+                WWindUtils.flyToSector(wwCanvas, sec);
+            } else if (eml.isPositionSet()) {
+                Position pos = new Position(eml.getPosition(), 1_000_000);
+                WWindUtils.flyToPoint(wwCanvas, pos);
             }
         }
     }
@@ -760,14 +826,15 @@ public class WWindPanel extends javax.swing.JPanel {
     public void dumpLayerList() {
         int pos = 1;
         LayerList layers = wwCanvas.getModel().getLayers();
-        System.out.println("Current layer list:");
+        StringBuilder sb = new StringBuilder("Current layer list:\n");
         for (Layer l : layers) {
-            System.out.println(String.format("%d: %s [%s]", pos++, l.getName(), l.getClass().getName()));
+            sb.append(String.format("%2d: %s [%s]\n", pos++, l.getName(), l.getClass().getName()));
         }
+        JOptionPane.showMessageDialog(this, sb.toString(), "Layers", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
-     * Toggles a crosshair cursor over the map.
+     * Toggles a crosshair mouse cursor over the map.
      * <p>
      * @param flag true if cursor should be changed to crosshair false to revert it back to arrow
      */
@@ -848,8 +915,19 @@ public class WWindPanel extends javax.swing.JPanel {
         layers.add(slayer);
         // add a view controls layer and register a controller for it.
         ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
-        layers.add(viewControlsLayer);
+        viewControlsLayer.setLayout(AVKey.VERTICAL);
+        viewControlsLayer.setPosition(AVKey.NORTHEAST);
         wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
+        layers.add(viewControlsLayer);
+        // add a layer list layer
+//        LayerManagerLayer managerLayer = new LayerManagerLayer(wwCanvas);
+//        managerLayer.setFont(UIManager.getFont("Label.font"));
+//        managerLayer.setPosition(AVKey.NORTHEAST);
+//        managerLayer.setBorderWidth(5);
+//        managerLayer.setMinimized(true);
+//        managerLayer.setComponentDragEnabled(false);
+//        managerLayer.setLayerDragEnabled(false);
+//        layers.add(managerLayer);
     }
 
     // lazily construct the MeasureTool and the EditableMarkerLayer

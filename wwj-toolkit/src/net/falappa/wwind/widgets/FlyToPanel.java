@@ -138,6 +138,7 @@ public class FlyToPanel extends javax.swing.JPanel {
         bPrevLoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_224_chevron-left.png"))); // NOI18N
         bPrevLoc.setToolTipText("Previous location");
         bPrevLoc.setEnabled(false);
+        bPrevLoc.setMargin(new java.awt.Insets(0, 0, 0, 0));
         bPrevLoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bPrevLocActionPerformed(evt);
@@ -147,6 +148,7 @@ public class FlyToPanel extends javax.swing.JPanel {
         bNextLoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/falappa/wwind/widgets/img/glyphicons_223_chevron-right.png"))); // NOI18N
         bNextLoc.setToolTipText("Next location");
         bNextLoc.setEnabled(false);
+        bNextLoc.setMargin(new java.awt.Insets(0, 0, 0, 0));
         bNextLoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bNextLocActionPerformed(evt);
