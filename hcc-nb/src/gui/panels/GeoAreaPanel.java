@@ -15,7 +15,6 @@
  */
 package gui.panels;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import main.App;
 import net.falappa.wwind.widgets.WWindPanel;
@@ -32,6 +31,8 @@ public class GeoAreaPanel extends javax.swing.JPanel {
 
     public GeoAreaPanel() {
         initComponents();
+        this.setMinimumSize(this.getPreferredSize());
+        this.setMaximumSize(this.getPreferredSize());
     }
 
     /**
@@ -45,12 +46,8 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         chGeoEnable = new javax.swing.JCheckBox();
         cbOper = new javax.swing.JComboBox();
         cbPrimitive = new javax.swing.JComboBox();
-        pCards = new javax.swing.JPanel();
-        pPolyPane = new gui.panels.geo.PolygonPanel();
-        pCirclePane = new gui.panels.geo.CirclePanel();
-        pLinePane = new gui.panels.geo.LineStringPanel();
-        pPointPane = new gui.panels.geo.PointPanel();
-        pRangePane = new gui.panels.geo.LonLatRangePanel();
+        bDraw = new javax.swing.JButton();
+        bCoords = new javax.swing.JButton();
 
         chGeoEnable.setText("Spatial constraints");
         chGeoEnable.addItemListener(new java.awt.event.ItemListener() {
@@ -70,20 +67,22 @@ public class GeoAreaPanel extends javax.swing.JPanel {
             }
         });
 
-        pCards.setLayout(new java.awt.CardLayout(1, 1));
+        bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_096_vector_path_polygon.png"))); // NOI18N
+        bDraw.setText("Draw");
+        bDraw.setEnabled(false);
+        bDraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bDrawActionPerformed(evt);
+            }
+        });
 
-        pPolyPane.setEnabled(false);
-        pCards.add(pPolyPane, "Polygon");
-        pCards.add(pCirclePane, "Circle");
-
-        pLinePane.setEnabled(false);
-        pCards.add(pLinePane, "Line String");
-
-        pPointPane.setEnabled(false);
-        pCards.add(pPointPane, "Point");
-
-        pRangePane.setEnabled(false);
-        pCards.add(pRangePane, "Lat Lon Range");
+        bCoords.setText("Coordinates");
+        bCoords.setEnabled(false);
+        bCoords.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCoordsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -96,12 +95,14 @@ public class GeoAreaPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pCards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbOper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bCoords)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bDraw))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbOper, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbPrimitive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(cbPrimitive, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -114,30 +115,35 @@ public class GeoAreaPanel extends javax.swing.JPanel {
                     .addComponent(cbOper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbPrimitive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pCards, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bDraw)
+                    .addComponent(bCoords))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbPrimitiveItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbPrimitiveItemStateChanged
-        CardLayout layout = (CardLayout) pCards.getLayout();
-        layout.show(pCards, (String) cbPrimitive.getSelectedItem());
         switch (cbPrimitive.getSelectedIndex()) {
             case 0:
                 App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POLYGON);
+                bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_096_vector_path_polygon.png"))); // NOI18N
                 break;
             case 1:
                 App.frame.wwindPane.setEditMode(WWindPanel.EditModes.CIRCLE);
+                bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_095_vector_path_circle.png"))); // NOI18N
                 break;
             case 2:
                 App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POLYLINE);
+                bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_097_vector_path_line.png"))); // NOI18N
                 break;
             case 3:
                 App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POINT);
+                bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_185_screenshot.png"))); // NOI18N
                 break;
             case 4:
                 //TODO implement sector AOI
                 // App.frame.wwindPane.setEditMode(WWindPanel.EditModes.RANGE);
+                // bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_099_vector_path_all.png"))); // NOI18N
                 break;
         }
     }//GEN-LAST:event_cbPrimitiveItemStateChanged
@@ -146,23 +152,35 @@ public class GeoAreaPanel extends javax.swing.JPanel {
         boolean flag = chGeoEnable.isSelected();
         cbOper.setEnabled(flag);
         cbPrimitive.setEnabled(flag);
-        pCirclePane.setEnabled(flag);
-        pLinePane.setEnabled(flag);
-        pRangePane.setEnabled(flag);
-        pPointPane.setEnabled(flag);
-        pPolyPane.setEnabled(flag);
+        bDraw.setEnabled(flag);
+        bCoords.setEnabled(flag);
     }//GEN-LAST:event_chGeoEnableItemStateChanged
 
+    private void bDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawActionPerformed
+        cbOper.setEnabled(App.frame.wwindPane.isEditing());
+        cbPrimitive.setEnabled(App.frame.wwindPane.isEditing());
+        bCoords.setEnabled(App.frame.wwindPane.isEditing());
+        if (App.frame.wwindPane.isEditing()) {
+            App.frame.wwindPane.stopEditing();
+            App.frame.wwindPane.editShapeToAOI();
+            App.frame.wwindPane.editShapeClear();
+            bDraw.setText("Draw");
+        } else {
+            App.frame.wwindPane.startEditing();
+            bDraw.setText("Done");
+        }
+    }//GEN-LAST:event_bDrawActionPerformed
+
+    private void bCoordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCoordsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bCoordsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bCoords;
+    private javax.swing.JButton bDraw;
     private javax.swing.JComboBox cbOper;
     private javax.swing.JComboBox cbPrimitive;
     private javax.swing.JCheckBox chGeoEnable;
-    private javax.swing.JPanel pCards;
-    private gui.panels.geo.CirclePanel pCirclePane;
-    private gui.panels.geo.LineStringPanel pLinePane;
-    private gui.panels.geo.PointPanel pPointPane;
-    private gui.panels.geo.PolygonPanel pPolyPane;
-    private gui.panels.geo.LonLatRangePanel pRangePane;
     // End of variables declaration//GEN-END:variables
 
     public boolean constraintsEnabled() {
@@ -178,46 +196,57 @@ public class GeoAreaPanel extends javax.swing.JPanel {
     }
 
     public double getRangeLatMin() {
-        return pRangePane.getLatMin();
+//        return pRangePane.getLatMin();
+        return 0.0;
     }
 
     public double getRangeLatMax() {
-        return pRangePane.getLatMax();
+//        return pRangePane.getLatMax();
+        return 0.0;
     }
 
     public double getRangeLonMin() {
-        return pRangePane.getLonMin();
+//        return pRangePane.getLonMin();
+        return 0.0;
     }
 
     public double getRangeLonMax() {
-        return pRangePane.getLonMax();
+//        return pRangePane.getLonMax();
+        return 0.0;
     }
 
     public double getCircleCenterLat() {
-        return pCirclePane.getLat();
+//        return pCirclePane.getLat();
+        return 0.0;
     }
 
     public double getCircleCenterLon() {
-        return pCirclePane.getLon();
+//        return pCirclePane.getLon();
+        return 0.0;
     }
 
     public double getCircleRadius() {
-        return pCirclePane.getRadius();
+//        return pCirclePane.getRadius();
+        return 0.0;
     }
 
     public double getPointLat() {
-        return pPointPane.getLat();
+//        return pPointPane.getLat();
+        return 0.0;
     }
 
     public double getPointLon() {
-        return pPointPane.getLon();
+//        return pPointPane.getLon();
+        return 0.0;
     }
 
     public String getPolygonCoords() {
-        return pPolyPane.getCoords();
+//        return pPolyPane.getCoords();
+        return "0 0 1 0 1 1 0 1 0 0";
     }
 
     public String getPolylineCoords() {
-        return pLinePane.getCoords();
+//        return pLinePane.getCoords();
+        return "0 0 1 0 1 1 0 1 0 0";
     }
 }

@@ -141,14 +141,31 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        pQueryParams.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        pQueryParams.setLayout(new javax.swing.BoxLayout(pQueryParams, javax.swing.BoxLayout.PAGE_AXIS));
-
         pCollections.setButtonsVisible(false);
-        pQueryParams.add(pCollections);
-        pQueryParams.add(pTime);
-        pQueryParams.add(pGeo);
-        pQueryParams.add(pSearchButons);
+
+        javax.swing.GroupLayout pQueryParamsLayout = new javax.swing.GroupLayout(pQueryParams);
+        pQueryParams.setLayout(pQueryParamsLayout);
+        pQueryParamsLayout.setHorizontalGroup(
+            pQueryParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pCollections, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pSearchButons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pQueryParamsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pQueryParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pGeo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        pQueryParamsLayout.setVerticalGroup(
+            pQueryParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pQueryParamsLayout.createSequentialGroup()
+                .addComponent(pCollections, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pGeo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addComponent(pSearchButons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         getContentPane().add(pQueryParams, java.awt.BorderLayout.WEST);
 
@@ -224,7 +241,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEditCat)
                 .addGap(5, 5, 5)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
