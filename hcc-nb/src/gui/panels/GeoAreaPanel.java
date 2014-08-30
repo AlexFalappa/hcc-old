@@ -15,19 +15,10 @@
  */
 package gui.panels;
 
-import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
-import gov.nasa.worldwind.util.measure.MeasureTool;
-import gov.nasa.worldwind.util.measure.MeasureToolController;
-import gui.wwind.AOILayer;
-import gui.wwind.FootprintsLayer;
-import gui.wwind.MOILayer;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import main.App;
+import net.falappa.wwind.widgets.WWindPanel;
 
 /**
  *
@@ -35,42 +26,12 @@ import main.App;
  */
 public class GeoAreaPanel extends javax.swing.JPanel {
 
-    private MeasureTool measTool;
+//    private MeasureTool measTool;
     public static final Color COL_FILL = new Color(255, 255, 255, 63);
     public static final Color COL_BOUNDARY = new Color(255, 20, 0, 200);
 
     public GeoAreaPanel() {
         initComponents();
-    }
-
-    public void linkTo(final WorldWindowGLCanvas wwCanvas, AOILayer aois, MOILayer mois, FootprintsLayer footprints) {
-        // create and setup the measure tool
-        measTool = new MeasureTool(wwCanvas);
-        measTool.setController(new MeasureToolController());
-        // set some attributes of the measure tool
-        measTool.setShowAnnotation(false);
-        measTool.setFollowTerrain(true);
-        measTool.setFillColor(COL_FILL);
-        measTool.setLineColor(COL_BOUNDARY);
-        measTool.getControlPointsAttributes().setBackgroundColor(COL_BOUNDARY);
-        measTool.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals(MeasureTool.EVENT_ARMED)) {
-                    if (measTool.isArmed()) {
-                        ((Component) wwCanvas).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                    } else {
-                        ((Component) wwCanvas).setCursor(Cursor.getDefaultCursor());
-                    }
-                }
-            }
-        });
-        // link the various panes
-        pPolyPane.linkTo(measTool, aois, footprints);
-        pLinePane.linkTo(measTool, aois, footprints);
-        pCirclePane.linkTo(measTool, aois, footprints);
-        pPointPane.linkTo(wwCanvas, mois, footprints);
-        pRangePane.linkTo(wwCanvas, footprints);
     }
 
     /**
@@ -161,8 +122,24 @@ public class GeoAreaPanel extends javax.swing.JPanel {
     private void cbPrimitiveItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbPrimitiveItemStateChanged
         CardLayout layout = (CardLayout) pCards.getLayout();
         layout.show(pCards, (String) cbPrimitive.getSelectedItem());
-        App.frame.mois.setEnabled(cbPrimitive.getSelectedIndex() == 3);
-        App.frame.aois.setEnabled(cbPrimitive.getSelectedIndex() != 3);
+        switch (cbPrimitive.getSelectedIndex()) {
+            case 0:
+                App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POLYGON);
+                break;
+            case 1:
+                App.frame.wwindPane.setEditMode(WWindPanel.EditModes.CIRCLE);
+                break;
+            case 2:
+                App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POLYLINE);
+                break;
+            case 3:
+                App.frame.wwindPane.setEditMode(WWindPanel.EditModes.POINT);
+                break;
+            case 4:
+                //TODO implement sector AOI
+                // App.frame.wwindPane.setEditMode(WWindPanel.EditModes.RANGE);
+                break;
+        }
     }//GEN-LAST:event_cbPrimitiveItemStateChanged
 
     private void chGeoEnableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chGeoEnableItemStateChanged

@@ -26,7 +26,6 @@ import java.beans.PropertyChangeListener;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import javax.swing.JSpinner;
-import main.App;
 
 /**
  *
@@ -228,7 +227,8 @@ public class LonLatRangePanel extends javax.swing.JPanel {
             bGraphSel.setText("Graphical selection");
             Sector s = selector.getSector();
             updateRanges(s);
-            App.frame.aois.setSurfSect(s);
+            //TODO implement sector AOI
+            //            App.frame.aois.setSurfSect(s);
             selector.disable();
             selecting = false;
         } else {

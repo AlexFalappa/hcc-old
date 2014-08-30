@@ -2,7 +2,6 @@ package net.falappa.wwind.widgets;
 
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
-import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
@@ -915,8 +914,6 @@ public class WWindPanel extends javax.swing.JPanel {
         layers.add(slayer);
         // add a view controls layer and register a controller for it.
         ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
-        viewControlsLayer.setLayout(AVKey.VERTICAL);
-        viewControlsLayer.setPosition(AVKey.NORTHEAST);
         wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
         layers.add(viewControlsLayer);
         // add a layer list layer

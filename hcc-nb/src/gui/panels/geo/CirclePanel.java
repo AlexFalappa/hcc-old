@@ -15,12 +15,7 @@
  */
 package gui.panels.geo;
 
-import gov.nasa.worldwind.WorldWindow;
-import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
-import gov.nasa.worldwind.util.measure.MeasureTool;
-import gui.wwind.AOILayer;
-import gui.wwind.FootprintsLayer;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import javax.swing.JSpinner;
@@ -32,10 +27,10 @@ import main.App;
  */
 public class CirclePanel extends javax.swing.JPanel {
 
-    private WorldWindow wwd;
-    private AOILayer aoi;
-    private FootprintsLayer footprints;
-    private MeasureTool mt;
+//    private WorldWindow wwd;
+//    private AOILayer aoi;
+//    private FootprintsLayer footprints;
+//    private MeasureTool mt;
     private boolean mtVisible = false;
 
     public CirclePanel() {
@@ -58,13 +53,6 @@ public class CirclePanel extends javax.swing.JPanel {
         lUom1.setEnabled(enabled);
         lUom2.setEnabled(enabled);
         lUom3.setEnabled(enabled);
-    }
-
-    public void linkTo(MeasureTool mTool, AOILayer aoi, FootprintsLayer fotprints) {
-        this.wwd = mTool.getWwd();
-        this.aoi = aoi;
-        this.footprints = fotprints;
-        this.mt = mTool;
     }
 
     /**
@@ -187,45 +175,44 @@ public class CirclePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDrawActionPerformed
-        LatLon center = LatLon.fromDegrees((double) spCenterLat.getValue(), (double) spCenterLon.getValue());
-        App.frame.aois.setSurfCircle(center, (double) spRadius.getValue());
+        Position center = Position.fromDegrees((double) spCenterLat.getValue(), (double) spCenterLon.getValue());
+        App.frame.wwindPane.setAOICircle(center, (double) spRadius.getValue());
         App.frame.wwindPane.redraw();
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        spCenterLat.setEnabled(mtVisible);
-        spCenterLon.setEnabled(mtVisible);
-        spRadius.setEnabled(mtVisible);
-        footprints.setHighlightingEnabled(mtVisible);
-        if (mtVisible) {
-            mtVisible = false;
-            bGraphSel.setText("Graphical Selection");
-            finishGraphSel();
-        } else {
-            mtVisible = true;
-            mt.setMeasureShapeType(MeasureTool.SHAPE_CIRCLE);
-            mt.setArmed(true);
-            bGraphSel.setText("Close & Accept");
-        }
+//        spCenterLat.setEnabled(mtVisible);
+//        spCenterLon.setEnabled(mtVisible);
+//        spRadius.setEnabled(mtVisible);
+//        footprints.setHighlightingEnabled(mtVisible);
+//        if (mtVisible) {
+//            mtVisible = false;
+//            bGraphSel.setText("Graphical Selection");
+//            finishGraphSel();
+//        } else {
+//            mtVisible = true;
+//            mt.setMeasureShapeType(MeasureTool.SHAPE_CIRCLE);
+//            mt.setArmed(true);
+//            bGraphSel.setText("Close & Accept");
+//        }
     }//GEN-LAST:event_bGraphSelActionPerformed
 
-    private void finishGraphSel() {
-        Position center = mt.getCenterPosition();
-        double radius = mt.getWidth() / 2.0;
-        if (center != null) {
-            // unarm and clear line
-            mt.setArmed(false);
-            mt.clear();
-            // set spinners
-            spCenterLat.setValue(center.getLatitude().getDegrees());
-            spCenterLon.setValue(center.getLongitude().getDegrees());
-            spRadius.setValue(radius);
-            // add circular area of interest
-            aoi.setSurfCircle(center, radius);
-            wwd.redraw();
-        }
-    }
-
+//    private void finishGraphSel() {
+//        Position center = mt.getCenterPosition();
+//        double radius = mt.getWidth() / 2.0;
+//        if (center != null) {
+//            // unarm and clear line
+//            mt.setArmed(false);
+//            mt.clear();
+//            // set spinners
+//            spCenterLat.setValue(center.getLatitude().getDegrees());
+//            spCenterLon.setValue(center.getLongitude().getDegrees());
+//            spRadius.setValue(radius);
+//            // add circular area of interest
+//            aoi.setSurfCircle(center, radius);
+//            wwd.redraw();
+//        }
+//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDraw;
     private javax.swing.JButton bGraphSel;

@@ -15,25 +15,16 @@
  */
 package gui.panels.geo;
 
-import gov.nasa.worldwind.WorldWindow;
-import gov.nasa.worldwind.geom.Position;
-import gov.nasa.worldwind.util.measure.MeasureTool;
-import gui.wwind.AOILayer;
-import gui.wwind.FootprintsLayer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-
 /**
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class PolygonPanel extends javax.swing.JPanel {
 
-    private WorldWindow wwd;
-    private AOILayer aoi;
-    private FootprintsLayer footprints;
-    private MeasureTool mt;
+//    private WorldWindow wwd;
+//    private AOILayer aoi;
+//    private FootprintsLayer footprints;
+//    private MeasureTool mt;
     private boolean mtVisible = false;
     private final StringBuilder posList = new StringBuilder(200);
 
@@ -47,13 +38,6 @@ public class PolygonPanel extends javax.swing.JPanel {
         taCoords.setEnabled(enabled);
         bGraphSel.setEnabled(enabled);
 //        bDraw.setEnabled(enabled);
-    }
-
-    public void linkTo(MeasureTool mTool, AOILayer aoi, FootprintsLayer footprints) {
-        this.wwd = mTool.getWwd();
-        this.aoi = aoi;
-        this.footprints = footprints;
-        this.mt = mTool;
     }
 
     /**
@@ -130,60 +114,59 @@ public class PolygonPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bGraphSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGraphSelActionPerformed
-        if (mtVisible) {
-            if (mt.isArmed()) {
-                // edit
-                mtVisible = true;
-                mt.setArmed(false);
-                bGraphSel.setText("Accept Selection");
-            } else {
-                //end
-                mtVisible = false;
-                mt.setArmed(false);
-                finishGraphSel();
-                taCoords.setEnabled(true);
-                footprints.setHighlightingEnabled(true);
-                bGraphSel.setText("Graphical Selection");
-            }
-        } else {
-            if (!mt.isArmed()) {
-                //start
-                mt.setMeasureShapeType(MeasureTool.SHAPE_POLYGON);
-                mt.setArmed(true);
-                mtVisible = true;
-                taCoords.setEnabled(false);
-                footprints.setHighlightingEnabled(false);
-                bGraphSel.setText("Edit Selection");
-            }
-        }
+//        if (mtVisible) {
+//            if (mt.isArmed()) {
+//                // edit
+//                mtVisible = true;
+//                mt.setArmed(false);
+//                bGraphSel.setText("Accept Selection");
+//            } else {
+//                //end
+//                mtVisible = false;
+//                mt.setArmed(false);
+//                finishGraphSel();
+//                taCoords.setEnabled(true);
+//                footprints.setHighlightingEnabled(true);
+//                bGraphSel.setText("Graphical Selection");
+//            }
+//        } else {
+//            if (!mt.isArmed()) {
+//                //start
+//                mt.setMeasureShapeType(MeasureTool.SHAPE_POLYGON);
+//                mt.setArmed(true);
+//                mtVisible = true;
+//                taCoords.setEnabled(false);
+//                footprints.setHighlightingEnabled(false);
+//                bGraphSel.setText("Edit Selection");
+//            }
+//        }
     }//GEN-LAST:event_bGraphSelActionPerformed
 
-    private void finishGraphSel() {
-        // make a copy of linebuilder pos
-        ArrayList<Position> perimeter = new ArrayList<>();
-        for (Position pos : mt.getPositions()) {
-            perimeter.add(pos);
-        }
-        Iterator<Position> it = perimeter.iterator();
-        if (!perimeter.isEmpty()) {
-            // display coordinates
-            posList.setLength(0);
-            taCoords.setText("");
-            while (it.hasNext()) {
-                Position pos = it.next();
-                final double lat = pos.getLatitude().getDegrees();
-                final double lon = pos.getLongitude().getDegrees();
-                taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
-                posList.append(lat).append(' ').append(lon).append(' ');
-            }
-            taCoords.setCaretPosition(0);
-            // add polygonal area of interest
-            mt.clear();
-            aoi.setSurfPoly(perimeter);
-            wwd.redraw();
-        }
-    }
-
+//    private void finishGraphSel() {
+//        // make a copy of linebuilder pos
+//        ArrayList<Position> perimeter = new ArrayList<>();
+//        for (Position pos : mt.getPositions()) {
+//            perimeter.add(pos);
+//        }
+//        Iterator<Position> it = perimeter.iterator();
+//        if (!perimeter.isEmpty()) {
+//            // display coordinates
+//            posList.setLength(0);
+//            taCoords.setText("");
+//            while (it.hasNext()) {
+//                Position pos = it.next();
+//                final double lat = pos.getLatitude().getDegrees();
+//                final double lon = pos.getLongitude().getDegrees();
+//                taCoords.append(String.format(Locale.ENGLISH, "%.6f %.6f\n", lat, lon));
+//                posList.append(lat).append(' ').append(lon).append(' ');
+//            }
+//            taCoords.setCaretPosition(0);
+//            // add polygonal area of interest
+//            mt.clear();
+//            aoi.setSurfPoly(perimeter);
+//            wwd.redraw();
+//        }
+//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDraw;
     private javax.swing.JButton bGraphSel;

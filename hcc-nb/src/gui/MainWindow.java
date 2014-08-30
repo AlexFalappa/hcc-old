@@ -19,8 +19,6 @@ import gov.nasa.worldwind.geom.LatLon;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.dialogs.SettingsDialog;
-import gui.wwind.AOILayer;
-import gui.wwind.MOILayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
@@ -51,8 +49,6 @@ import org.apache.xmlbeans.XmlOptions;
 public class MainWindow extends javax.swing.JFrame {
 
     public static final String LAYER_FOOTPRINTS = "Footprints";
-    public AOILayer aois;
-    public MOILayer mois;
     private final DefaultComboBoxModel<CatalogueDefinition> dcmCatalogues = new DefaultComboBoxModel<>();
     private final HmaGetRecordsBuilder builder = new HmaGetRecordsBuilder();
     private CatalogueStub stub = null;
@@ -339,15 +335,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bSettingsActionPerformed
 
     private void setupLayers() {
-        // create footprints and AOI layers and add them before the place names
+        // create surface shapes footprints layer
         SurfShapesLayer footprints = new SurfShapesLayer(LAYER_FOOTPRINTS);
         wwindPane.addSurfShapeLayer(footprints);
-        aois = new AOILayer();
-        wwindPane.addLayer(aois);
-        mois = new MOILayer();
-        wwindPane.addLayer(mois);
-        // link panels to globe
-//        pGeo.linkTo(wwCanvas, aois, mois, footprints);
         // link view settings panel
 //        pViewSettings.linkTo(wwCanvas);
     }
