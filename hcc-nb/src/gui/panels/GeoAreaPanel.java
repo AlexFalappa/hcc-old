@@ -15,6 +15,10 @@
  */
 package gui.panels;
 
+import gui.dialogs.coords.CircleDialog;
+import gui.dialogs.coords.CoordsDialog;
+import gui.dialogs.coords.LonLatRangeDialog;
+import gui.dialogs.coords.PointDialog;
 import java.awt.Color;
 import main.App;
 import net.falappa.wwind.widgets.WWindPanel;
@@ -100,7 +104,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(bDraw))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbOper, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbOper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbPrimitive, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -143,7 +147,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
             case 4:
                 //TODO implement sector AOI
                 // App.frame.wwindPane.setEditMode(WWindPanel.EditModes.RANGE);
-                // bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_099_vector_path_all.png"))); // NOI18N
+                bDraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_099_vector_path_all.png"))); // NOI18N
                 break;
         }
     }//GEN-LAST:event_cbPrimitiveItemStateChanged
@@ -172,7 +176,35 @@ public class GeoAreaPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bDrawActionPerformed
 
     private void bCoordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCoordsActionPerformed
-        // TODO add your handling code here:
+        switch (cbPrimitive.getSelectedIndex()) {
+            case 0:
+                CoordsDialog pcd = new CoordsDialog(App.frame);
+                pcd.setTitle("Polygon coordinates");
+                pcd.setLocationRelativeTo(this);
+                pcd.setVisible(true);
+                break;
+            case 1:
+                CircleDialog cd = new CircleDialog(App.frame);
+                cd.setLocationRelativeTo(this);
+                cd.setVisible(true);
+                break;
+            case 2:
+                CoordsDialog lcd = new CoordsDialog(App.frame);
+                lcd.setTitle("Line coordinates");
+                lcd.setLocationRelativeTo(this);
+                lcd.setVisible(true);
+                break;
+            case 3:
+                PointDialog pd = new PointDialog(App.frame);
+                pd.setLocationRelativeTo(this);
+                pd.setVisible(true);
+                break;
+            case 4:
+                LonLatRangeDialog rd = new LonLatRangeDialog(App.frame);
+                rd.setLocationRelativeTo(this);
+                rd.setVisible(true);
+                break;
+        }
     }//GEN-LAST:event_bCoordsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
