@@ -25,7 +25,7 @@ public class PolygonPanel extends javax.swing.JPanel {
 //    private AOILayer aoi;
 //    private FootprintsLayer footprints;
 //    private MeasureTool mt;
-    private boolean mtVisible = false;
+//    private boolean mtVisible = false;
     private final StringBuilder posList = new StringBuilder(200);
 
     public PolygonPanel() {

@@ -25,7 +25,7 @@ import javax.swing.JSpinner;
  */
 public class PointDialog extends javax.swing.JDialog {
 
-    boolean okPressed = false;
+    private boolean okPressed = false;
 
     public PointDialog(java.awt.Frame parent) {
         super(parent);

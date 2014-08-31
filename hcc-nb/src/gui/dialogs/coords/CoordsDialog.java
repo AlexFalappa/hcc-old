@@ -21,8 +21,9 @@ package gui.dialogs.coords;
  */
 public class CoordsDialog extends javax.swing.JDialog {
 
-    boolean okPressed = false;
-    boolean closedLoop = false;
+    private boolean okPressed = false;
+    private boolean closedLoop = false;
+    private final StringBuilder posList = new StringBuilder(200);
 
     public CoordsDialog(java.awt.Frame parent) {
         super(parent);

@@ -25,7 +25,7 @@ import javax.swing.JSpinner;
  */
 public class CircleDialog extends javax.swing.JDialog {
 
-    boolean okPressed = false;
+    private boolean okPressed = false;
 
     public CircleDialog(java.awt.Frame parent) {
         super(parent);

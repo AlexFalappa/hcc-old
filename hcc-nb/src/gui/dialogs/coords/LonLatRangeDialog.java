@@ -25,7 +25,7 @@ import javax.swing.JSpinner;
  */
 public class LonLatRangeDialog extends javax.swing.JDialog {
 
-    boolean okPressed = false;
+    private boolean okPressed = false;
 
     public LonLatRangeDialog(java.awt.Frame parent) {
         super(parent);

@@ -19,7 +19,6 @@ import gui.dialogs.coords.CircleDialog;
 import gui.dialogs.coords.CoordsDialog;
 import gui.dialogs.coords.LonLatRangeDialog;
 import gui.dialogs.coords.PointDialog;
-import java.awt.Color;
 import main.App;
 import net.falappa.wwind.widgets.WWindPanel;
 
@@ -29,14 +28,8 @@ import net.falappa.wwind.widgets.WWindPanel;
  */
 public class GeoAreaPanel extends javax.swing.JPanel {
 
-//    private MeasureTool measTool;
-    public static final Color COL_FILL = new Color(255, 255, 255, 63);
-    public static final Color COL_BOUNDARY = new Color(255, 20, 0, 200);
-
     public GeoAreaPanel() {
         initComponents();
-        this.setMinimumSize(this.getPreferredSize());
-        this.setMaximumSize(this.getPreferredSize());
     }
 
     /**
