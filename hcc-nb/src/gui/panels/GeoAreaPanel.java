@@ -173,6 +173,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
             case 0:
                 CoordsDialog pcd = new CoordsDialog(App.frame);
                 pcd.setTitle("Polygon coordinates");
+                pcd.setClosed(true);
                 pcd.setLocationRelativeTo(this);
                 pcd.setVisible(true);
                 break;
@@ -184,6 +185,7 @@ public class GeoAreaPanel extends javax.swing.JPanel {
             case 2:
                 CoordsDialog lcd = new CoordsDialog(App.frame);
                 lcd.setTitle("Line coordinates");
+                lcd.setClosed(false);
                 lcd.setLocationRelativeTo(this);
                 lcd.setVisible(true);
                 break;

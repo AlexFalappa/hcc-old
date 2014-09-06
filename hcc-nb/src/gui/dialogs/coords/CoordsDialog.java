@@ -15,6 +15,11 @@
  */
 package gui.dialogs.coords;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
+import net.falappa.utils.GisUtils;
+
 /**
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
@@ -22,20 +27,26 @@ package gui.dialogs.coords;
 public class CoordsDialog extends javax.swing.JDialog {
 
     private boolean okPressed = false;
-    private boolean closedLoop = false;
-    private final StringBuilder posList = new StringBuilder(200);
+    private boolean closed = false;
+    private final Timer labelTimer = new Timer(2000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            lErrMexs.setText("");
+        }
+    });
 
     public CoordsDialog(java.awt.Frame parent) {
         super(parent);
         initComponents();
+        labelTimer.setRepeats(false);
     }
 
     public boolean isOkPressed() {
         return okPressed;
     }
 
-    public void setClosedLoop(boolean closedLoop) {
-        this.closedLoop = closedLoop;
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
     public String getCoordsString() {
@@ -51,6 +62,7 @@ public class CoordsDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         lCoords = new javax.swing.JLabel();
+        lErrMexs = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         taCoords = new javax.swing.JTextArea();
         lExplain = new javax.swing.JLabel();
@@ -60,6 +72,8 @@ public class CoordsDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lCoords.setText("Coordinates");
+
+        lErrMexs.setForeground(new java.awt.Color(204, 0, 0));
 
         taCoords.setColumns(10);
         taCoords.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
@@ -91,16 +105,16 @@ public class CoordsDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lErrMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bOk)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bCancel))
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lCoords)
-                            .addComponent(lExplain))
-                        .addGap(0, 105, Short.MAX_VALUE)))
+                        .addComponent(lCoords)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(lExplain, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -111,14 +125,16 @@ public class CoordsDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lCoords)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lExplain)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bCancel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(bOk, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(bCancel, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(bOk, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(lErrMexs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -126,13 +142,15 @@ public class CoordsDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
-        boolean correct = false;
-        //TODO add correctness check of coordinates
-        if (closedLoop) {
-            //TODO add check last equal first
+        final String errMex = GisUtils.checkIsPolySeq(taCoords.getText(), closed);
+        // correctness check of coordinates
+        if (errMex != null) {
+            lErrMexs.setText(errMex);
+            labelTimer.start();
+        } else {
+            okPressed = true;
+            setVisible(false);
         }
-        okPressed = true;
-        setVisible(false);
     }//GEN-LAST:event_bOkActionPerformed
 
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
@@ -144,6 +162,7 @@ public class CoordsDialog extends javax.swing.JDialog {
     private javax.swing.JButton bOk;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lCoords;
+    private javax.swing.JLabel lErrMexs;
     private javax.swing.JLabel lExplain;
     private javax.swing.JTextArea taCoords;
     // End of variables declaration//GEN-END:variables
