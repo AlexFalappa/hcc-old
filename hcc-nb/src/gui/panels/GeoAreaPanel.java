@@ -176,11 +176,19 @@ public class GeoAreaPanel extends javax.swing.JPanel {
                 pcd.setClosed(true);
                 pcd.setLocationRelativeTo(this);
                 pcd.setVisible(true);
+                if (pcd.isOkPressed()) {
+                    App.frame.wwindPane.setAOIPolygon(pcd.getCoords());
+                    App.frame.wwindPane.flyToAOI();
+                }
                 break;
             case 1:
                 CircleDialog cd = new CircleDialog(App.frame);
                 cd.setLocationRelativeTo(this);
                 cd.setVisible(true);
+                if (cd.isOkPressed()) {
+                    App.frame.wwindPane.setAOICircle(cd.getCenter(), cd.getRadius());
+                    App.frame.wwindPane.flyToAOI();
+                }
                 break;
             case 2:
                 CoordsDialog lcd = new CoordsDialog(App.frame);
@@ -188,16 +196,30 @@ public class GeoAreaPanel extends javax.swing.JPanel {
                 lcd.setClosed(false);
                 lcd.setLocationRelativeTo(this);
                 lcd.setVisible(true);
+                if (lcd.isOkPressed()) {
+                    App.frame.wwindPane.setAOIPolyline(lcd.getCoords());
+                    App.frame.wwindPane.flyToAOI();
+                }
                 break;
             case 3:
                 PointDialog pd = new PointDialog(App.frame);
                 pd.setLocationRelativeTo(this);
                 pd.setVisible(true);
+                if (pd.isOkPressed()) {
+                    App.frame.wwindPane.setAOIPoint(pd.getPoint());
+                    App.frame.wwindPane.flyToAOI();
+                }
                 break;
             case 4:
                 LonLatRangeDialog rd = new LonLatRangeDialog(App.frame);
                 rd.setLocationRelativeTo(this);
                 rd.setVisible(true);
+                if (rd.isOkPressed()) {
+                    System.out.println(rd.getSector());
+                    //TODO set AOI instead (currently not available in WWindPane)
+//                    App.frame.wwindPane.setAOIRange(rd.getSector());
+//                    App.frame.wwindPane.flyToAOI();
+                }
                 break;
         }
     }//GEN-LAST:event_bCoordsActionPerformed

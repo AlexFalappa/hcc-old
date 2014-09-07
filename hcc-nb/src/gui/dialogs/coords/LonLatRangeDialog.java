@@ -15,6 +15,7 @@
  */
 package gui.dialogs.coords;
 
+import gov.nasa.worldwind.geom.Sector;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import javax.swing.JSpinner;
@@ -28,7 +29,7 @@ public class LonLatRangeDialog extends javax.swing.JDialog {
     private boolean okPressed = false;
 
     public LonLatRangeDialog(java.awt.Frame parent) {
-        super(parent);
+        super(parent, true);
         initComponents();
         // set spinners locale to english (to get point as decimal separator)
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -36,6 +37,14 @@ public class LonLatRangeDialog extends javax.swing.JDialog {
         ((JSpinner.NumberEditor) spMaxLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
         ((JSpinner.NumberEditor) spMinLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
         ((JSpinner.NumberEditor) spMinLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+    }
+
+    public boolean isOkPressed() {
+        return okPressed;
+    }
+
+    public Sector getSector() {
+        return Sector.fromDegrees((double) spMinLat.getValue(), (double) spMaxLat.getValue(), (double) spMinLon.getValue(), (double) spMaxLon.getValue());
     }
 
     /** This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this

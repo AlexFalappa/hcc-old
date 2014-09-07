@@ -15,6 +15,7 @@
  */
 package gui.dialogs.coords;
 
+import gov.nasa.worldwind.geom.Position;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import javax.swing.JSpinner;
@@ -28,12 +29,20 @@ public class PointDialog extends javax.swing.JDialog {
     private boolean okPressed = false;
 
     public PointDialog(java.awt.Frame parent) {
-        super(parent);
+        super(parent, true);
         initComponents();
         // set spinners locale to english (to get point as decimal separator)
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         ((JSpinner.NumberEditor) spCenterLat.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
         ((JSpinner.NumberEditor) spCenterLon.getEditor()).getFormat().setDecimalFormatSymbols(decimalFormatSymbols);
+    }
+
+    public boolean isOkPressed() {
+        return okPressed;
+    }
+
+    public Position getPoint() {
+        return Position.fromDegrees((double) spCenterLat.getValue(), (double) spCenterLon.getValue());
     }
 
     /** This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this

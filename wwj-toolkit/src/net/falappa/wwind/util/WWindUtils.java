@@ -9,7 +9,6 @@ import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.widgets.WWindPanel;
 
@@ -19,8 +18,6 @@ import net.falappa.wwind.widgets.WWindPanel;
  * @author Alessandro Falappa
  */
 public final class WWindUtils {
-
-    private static Random rgen = new Random();
 
     /**
      * Pivate to prevent instantiation
@@ -36,7 +33,7 @@ public final class WWindUtils {
      */
     public static List<LatLon> posList2LatLonList(String posList) {
         List<LatLon> ret = new ArrayList<>();
-        String[] coords = posList.split("\\s");
+        String[] coords = posList.split("\\s+");
         if (coords.length % 2 != 0) {
             throw new IllegalArgumentException("Odd number of coordinates in given posList");
         }
@@ -61,10 +58,10 @@ public final class WWindUtils {
         List<LatLon> positions;
         for (int i = 0; i < 20; i++) {
             positions = new ArrayList<>();
-            double btmLat = 10 + rgen.nextDouble() * 50;
-            double btmLon = rgen.nextDouble() * 70;
-            double w = 2 + rgen.nextDouble() * 3;
-            double h = 2 + rgen.nextDouble() * 3;
+            double btmLat = 10 + Math.random() * 50;
+            double btmLon = Math.random() * 70;
+            double w = 2 + Math.random() * 3;
+            double h = 2 + Math.random() * 3;
             positions.add(LatLon.fromDegrees(btmLat, btmLon));
             positions.add(LatLon.fromDegrees(btmLat, btmLon + w));
             positions.add(LatLon.fromDegrees(btmLat + h, btmLon + w));
