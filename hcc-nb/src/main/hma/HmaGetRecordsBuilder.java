@@ -180,162 +180,58 @@ public class HmaGetRecordsBuilder {
         xc.dispose();
     }
 
-    public void addSpatialOverlapsPoint(double lat, double lon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Overlaps", NS_OGC);
+    private void insertSpatialOperator(int operator, XmlCursor xc) {
+        //    0="Overlaps", 1="Contains", 2="Intersect", 3="Is contained"
+        switch (operator) {
+            case 0:
+                xc.beginElement("Overlaps", NS_OGC);
+                break;
+            case 1:
+                xc.beginElement("Contains", NS_OGC);
+                break;
+            case 2:
+                xc.beginElement("Intersects", NS_OGC);
+                break;
+            case 3:
+                xc.beginElement("Within", NS_OGC);
+                break;
+            default:
+                throw new AssertionError("unknown spatial operator");
+        }
         xc.toEndToken();
+    }
+
+    public void addSpatialPoint(int operator, double lat, double lon) {
+        XmlCursor xc = getGlobalAndCur();
+        insertSpatialOperator(operator, xc);
         insertPointBlock(xc, lat, lon);
         xc.dispose();
     }
 
-    public void addSpatialOverlapsPolygon(String coords) {
+    public void addSpatialPolygon(int operator, String coords) {
         XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Overlaps", NS_OGC);
-        xc.toEndToken();
+        insertSpatialOperator(operator, xc);
         insertPolygonBlock(xc, coords);
         xc.dispose();
     }
 
-    public void addSpatialOverlapsPolyline(String coords) {
+    public void addSpatialPolyline(int operator, String coords) {
         XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Overlaps", NS_OGC);
-        xc.toEndToken();
+        insertSpatialOperator(operator, xc);
         insertLinestringBlock(xc, coords);
         xc.dispose();
     }
 
-    public void addSpatialOverlapsRange(double minlat, double maxlat, double minlon, double maxlon) {
+    public void addSpatialRange(int operator, double minlat, double maxlat, double minlon, double maxlon) {
         XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Overlaps", NS_OGC);
-        xc.toEndToken();
+        insertSpatialOperator(operator, xc);
         insertEnvelopeBlock(xc, minlat, minlon, maxlat, maxlon);
         xc.dispose();
     }
 
-    public void addSpatialOverlapsCircle(double lat, double lon, double radius) {
+    public void addSpatialCircle(int operator, double lat, double lon, double radius) {
         XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Overlaps", NS_OGC);
-        xc.toEndToken();
-        insertCircleBlock(xc, lat, lon, radius);
-        xc.dispose();
-    }
-
-    public void addSpatialIntersectsPoint(double lat, double lon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Intersects", NS_OGC);
-        xc.toEndToken();
-        insertPointBlock(xc, lat, lon);
-        xc.dispose();
-    }
-
-    public void addSpatialIntersectsPolygon(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Intersects", NS_OGC);
-        xc.toEndToken();
-        insertPolygonBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialIntersectsPolyline(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Intersects", NS_OGC);
-        xc.toEndToken();
-        insertLinestringBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialIntersectsRange(double minlat, double maxlat, double minlon, double maxlon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Intersects", NS_OGC);
-        xc.toEndToken();
-        insertEnvelopeBlock(xc, minlat, minlon, maxlat, maxlon);
-        xc.dispose();
-    }
-
-    public void addSpatialIntersectsCircle(double lat, double lon, double radius) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Intersects", NS_OGC);
-        xc.toEndToken();
-        insertCircleBlock(xc, lat, lon, radius);
-        xc.dispose();
-    }
-
-    public void addSpatialContainsPoint(double lat, double lon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Contains", NS_OGC);
-        xc.toEndToken();
-        insertPointBlock(xc, lat, lon);
-        xc.dispose();
-    }
-
-    public void addSpatialContainsPolygon(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Contains", NS_OGC);
-        xc.toEndToken();
-        insertPolygonBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialContainsPolyline(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Contains", NS_OGC);
-        xc.toEndToken();
-        insertLinestringBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialContainsRange(double minlat, double maxlat, double minlon, double maxlon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Contains", NS_OGC);
-        xc.toEndToken();
-        insertEnvelopeBlock(xc, minlat, minlon, maxlat, maxlon);
-        xc.dispose();
-    }
-
-    public void addSpatialContainsCircle(double lat, double lon, double radius) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Contains", NS_OGC);
-        xc.toEndToken();
-        insertCircleBlock(xc, lat, lon, radius);
-        xc.dispose();
-    }
-
-    public void addSpatialIsContainedPoint(double lat, double lon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Within", NS_OGC);
-        xc.toEndToken();
-        insertPointBlock(xc, lat, lon);
-        xc.dispose();
-    }
-
-    public void addSpatialIsContainedPolygon(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Within", NS_OGC);
-        xc.toEndToken();
-        insertPolygonBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialIsContainedPolyline(String coords) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Within", NS_OGC);
-        xc.toEndToken();
-        insertLinestringBlock(xc, coords);
-        xc.dispose();
-    }
-
-    public void addSpatialIsContainedRange(double minlat, double maxlat, double minlon, double maxlon) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Within", NS_OGC);
-        xc.toEndToken();
-        insertEnvelopeBlock(xc, minlat, minlon, maxlat, maxlon);
-        xc.dispose();
-    }
-
-    public void addSpatialIsContainedCircle(double lat, double lon, double radius) {
-        XmlCursor xc = getGlobalAndCur();
-        xc.beginElement("Within", NS_OGC);
-        xc.toEndToken();
+        insertSpatialOperator(operator, xc);
         insertCircleBlock(xc, lat, lon, radius);
         xc.dispose();
     }
