@@ -9,6 +9,7 @@ import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.widgets.WWindPanel;
 
@@ -43,6 +44,21 @@ public final class WWindUtils {
             ret.add(LatLon.fromDegrees(lat, lon));
         }
         return ret;
+    }
+
+    /**
+     * Converts a list of <code>LatLon</code> derived objects into a string of Lat Lon coordinates in degrees.
+     * <p>
+     * @param latlonList a List of LatLon derived objects
+     * @return a GML posList coordinates string (lat lon pairs)
+     */
+    public static String latLonList2PosList(Iterable<? extends LatLon> latlonList) {
+        StringBuilder sb = new StringBuilder();
+        for (LatLon ll : latlonList) {
+            sb.append(String.format(Locale.ENGLISH, "%f %f ", ll.latitude.degrees, ll.longitude.degrees));
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 
     /**
