@@ -75,7 +75,6 @@
     <property name="archives.dir" location="archives" />
 
     <target name="-post-jar">
-        <echo message="Creating distributable zip"/>
         <delete file="${dist.dir}/README.TXT"/>
         <copy toDir="${dist.dir}">
             <fileset dir="bin"/>
