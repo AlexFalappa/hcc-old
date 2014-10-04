@@ -41,8 +41,10 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import net.falappa.wwind.layers.EditableMarkerLayer;
 import net.falappa.wwind.layers.MultiPolygonShapesLayer;
+import net.falappa.wwind.layers.ShapeSelectionSource;
 import net.falappa.wwind.layers.SingleMarkerLayer;
 import net.falappa.wwind.layers.SingleSurfShapeLayer;
+import net.falappa.wwind.layers.SurfShapeLayer;
 import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.posparser.LatLonParser;
 import net.falappa.wwind.util.WWindUtils;
@@ -88,7 +90,7 @@ public class WWindPanel extends javax.swing.JPanel {
     private static final Color COLOR_EDIT = new Color(0, 200, 255, 200);
     private final SingleSurfShapeLayer aoi = new SingleSurfShapeLayer("Area of Interest");
     private final SingleMarkerLayer moi = new SingleMarkerLayer("Marker of interest");
-    private final HashMap<String, SurfShapesLayer> shapeLayers = new HashMap<>();
+    private final HashMap<String, SurfShapeLayer> shapeLayers = new HashMap<>();
     private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private boolean editing = false;
     private EditModes editMode = EditModes.POLYGON;
@@ -478,7 +480,7 @@ public class WWindPanel extends javax.swing.JPanel {
      * @param name the name of the layer
      * @return the layer object reference or null if not present
      */
-    public SurfShapesLayer getSurfShapeLayer(String name) {
+    public SurfShapeLayer getSurfShapeLayer(String name) {
         return shapeLayers.get(name);
     }
 
@@ -490,10 +492,12 @@ public class WWindPanel extends javax.swing.JPanel {
      * @param name the name of the layer
      */
     public void removeSurfShapeLayer(String name) {
-        SurfShapesLayer removedLayer = shapeLayers.remove(name);
+        SurfShapeLayer removedLayer = shapeLayers.remove(name);
         if (removedLayer != null) {
             // detach the layer listeners from the WorldWindow
-            removedLayer.detach();
+            if (removedLayer instanceof ShapeSelectionSource) {
+                ((ShapeSelectionSource) removedLayer).detach();
+            }
             // remove the layer from the map layer list
             wwCanvas.getModel().getLayers().remove(removedLayer);
             changeSupport.firePropertyChange(EVENT_SURF_LAYER_REMOVED, removedLayer, null);
@@ -505,7 +509,7 @@ public class WWindPanel extends javax.swing.JPanel {
      * <p>
      * @return a reference to the layers map values (as a Collection object) see {@link Map#values()}.
      */
-    public Collection<SurfShapesLayer> getAllSurfShapeLayers() {
+    public Collection<SurfShapeLayer> getAllSurfShapeLayers() {
         return shapeLayers.values();
     }
 
@@ -513,8 +517,8 @@ public class WWindPanel extends javax.swing.JPanel {
      * Removes all SurfaceShapeLayer layers from the map.
      */
     public void removeAllSurfShapeLayers() {
-        for (Iterator<Map.Entry<String, SurfShapesLayer>> it = shapeLayers.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<String, SurfShapesLayer> entry = it.next();
+        for (Iterator<Map.Entry<String, SurfShapeLayer>> it = shapeLayers.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, SurfShapeLayer> entry = it.next();
             entry.getValue().dispose();
             wwCanvas.getModel().getLayers().remove(entry.getValue());
             changeSupport.firePropertyChange(EVENT_SURF_LAYER_REMOVED, entry.getValue(), null);

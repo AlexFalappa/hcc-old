@@ -72,6 +72,7 @@ public final class WWindUtils {
      */
     public static void randPolys(WWindPanel wwp, String lname, String idPrefix) {
         List<LatLon> positions;
+        SurfShapesLayer ssl = (SurfShapesLayer) wwp.getSurfShapeLayer(lname);
         for (int i = 0; i < 20; i++) {
             positions = new ArrayList<>();
             double btmLat = 10 + Math.random() * 50;
@@ -82,7 +83,7 @@ public final class WWindUtils {
             positions.add(LatLon.fromDegrees(btmLat, btmLon + w));
             positions.add(LatLon.fromDegrees(btmLat + h, btmLon + w));
             positions.add(LatLon.fromDegrees(btmLat + h, btmLon));
-            wwp.getSurfShapeLayer(lname).addSurfPoly(positions, String.format("%s%d", idPrefix, i));
+            ssl.addSurfPoly(positions, String.format("%s%d", idPrefix, i));
         }
         wwp.redraw();
     }

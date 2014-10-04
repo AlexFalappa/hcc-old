@@ -1,9 +1,9 @@
 package net.falappa.wwind.widgets;
 
-import net.falappa.wwind.layers.SurfShapesLayer;
 import com.telespazio.wwind.utils.ToggleVisibilityAction;
 import gov.nasa.worldwind.WorldWindow;
 import javax.swing.JSlider;
+import net.falappa.wwind.layers.SurfShapeLayer;
 
 /**
  *
@@ -12,9 +12,9 @@ import javax.swing.JSlider;
 public class LayerPropsPanel extends javax.swing.JPanel {
 
     WorldWindow wwd;
-    SurfShapesLayer sl;
+    SurfShapeLayer sl;
 
-    public LayerPropsPanel(WorldWindow wwd, SurfShapesLayer layer) {
+    public LayerPropsPanel(WorldWindow wwd, SurfShapeLayer layer) {
         initComponents();
         this.sl = layer;
         this.wwd = wwd;

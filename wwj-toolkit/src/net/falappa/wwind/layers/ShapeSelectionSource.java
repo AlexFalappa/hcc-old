@@ -5,6 +5,7 @@
  */
 package net.falappa.wwind.layers;
 
+import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.event.SelectListener;
 import java.beans.PropertyChangeListener;
 
@@ -23,6 +24,18 @@ public interface ShapeSelectionSource extends SelectListener {
      * Event fired on shapes deselection.
      */
     public static final String EVT_DESELECT_SHAPES = "deselectShapes";
+
+    /**
+     * Links the layer to a given WorldWindow for receiving selection events.
+     * <p>
+     * @param wwd the worldwindow to attach to
+     */
+    void linkTo(WorldWindow wwd);
+
+    /**
+     * Detaches the layer from the WorldWindow with regard to event processing.
+     */
+    void detach();
 
     /**
      * Add a property change listener that will be notified of "shape selection" (highlighting) events.

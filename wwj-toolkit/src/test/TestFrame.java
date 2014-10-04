@@ -135,7 +135,7 @@ public class TestFrame extends javax.swing.JFrame {
 
     private void bChgColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bChgColorActionPerformed
         try {
-            mpsl.setMultiPolyColor("primo", Color.red, 0.5);
+            mpsl.setSurfShapeColor("primo", Color.red, 0.5);
             wWindPanel1.redraw();
         } catch (NoSuchShapeException ex) {
         }
@@ -161,7 +161,7 @@ public class TestFrame extends javax.swing.JFrame {
 
     private void bResetColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResetColorActionPerformed
         try {
-            mpsl.resetMultiPolyColor("primo");
+            mpsl.resetSurfShapeColor("primo");
             wWindPanel1.redraw();
         } catch (NoSuchShapeException ex) {
         }

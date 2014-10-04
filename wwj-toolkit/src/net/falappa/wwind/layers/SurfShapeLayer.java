@@ -5,33 +5,16 @@
  */
 package net.falappa.wwind.layers;
 
-import gov.nasa.worldwind.WorldWindow;
+import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.render.SurfaceShape;
 import java.awt.Color;
 
 /**
- * A
+ * A layer managing a set of named surface shapes.
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
-public interface SurfShapeLayer {
-
-    /**
-     * Links the layer to a given WorldWindow.
-     * <p>
-     * @param wwd the worldwindow to attach to
-     */
-    void linkTo(WorldWindow wwd);
-
-    /**
-     * Detaches the layer from the WorldWindow.
-     */
-    void detach();
-
-    /**
-     * Detaches the layer and clears all its shapes.
-     */
-    void dispose();
+public interface SurfShapeLayer extends Layer {
 
     /**
      * Returns the current color of all layer shapes.
@@ -46,20 +29,6 @@ public interface SurfShapeLayer {
      * @param col the new color
      */
     void setColor(Color col);
-
-    /**
-     * Returns the current opacity of all layer shapes.
-     * <p>
-     * @return the current opacity
-     */
-    double getOpacity();
-
-    /**
-     * Set the opacity of all layer shapes.
-     * <p>
-     * @param opacity the new opacity
-     */
-    void setOpacity(double opacity);
 
     /**
      * Accessor for a named surface shape.
