@@ -49,7 +49,7 @@ import org.apache.xmlbeans.XmlOptions;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    public static final String LAYER_FOOTPRINTS = "Footprints";
+    private final SurfShapesLayer footprints = new SurfShapesLayer("Footprints");
     private final DefaultComboBoxModel<CatalogueDefinition> dcmCatalogues = new DefaultComboBoxModel<>();
     private final HmaGetRecordsBuilder builder = new HmaGetRecordsBuilder();
     private CatalogueStub stub = null;
@@ -353,8 +353,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bSettingsActionPerformed
 
     private void setupLayers() {
-        // create surface shapes footprints layer
-        SurfShapesLayer footprints = new SurfShapesLayer(LAYER_FOOTPRINTS);
         wwindPane.addSurfShapeLayer(footprints);
         // link view settings panel
 //        pViewSettings.linkTo(wwCanvas);
@@ -554,7 +552,7 @@ public class MainWindow extends javax.swing.JFrame {
         // extract footprints
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
         if (res.length > 0) {
-            App.frame.wwindPane.getSurfShapeLayer(LAYER_FOOTPRINTS).removeAllRenderables();
+            footprints.removeAllRenderables();
         }
         for (XmlObject xo : res) {
             // extract pid
@@ -575,7 +573,7 @@ public class MainWindow extends javax.swing.JFrame {
                 double lon = Double.valueOf(coords[i + 1]);
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
-            wwindPane.getSurfShapeLayer(LAYER_FOOTPRINTS).addSurfPoly(geopoints, pid);
+            footprints.addSurfPoly(geopoints, pid);
         }
         wwindPane.redraw();
         return res.length;
