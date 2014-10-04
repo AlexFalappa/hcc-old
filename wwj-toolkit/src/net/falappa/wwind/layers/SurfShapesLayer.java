@@ -28,7 +28,7 @@ import java.util.prefs.Preferences;
 import net.falappa.wwind.util.WWindUtils;
 
 /**
- * A WorldWind layer (<tt>RenderableLayer</tt> implementation) managing a set of surface shapes (polgons, polylines, circles, sectors and
+ * A WorldWind layer (<tt>RenderableLayer</tt> implementation) managing a set of surface shapes (polygons, polylines, circles, sectors and
  * quads).
  * <p>
  * Each shape is identified by a literal name. All shapes inherit a set of layer wide attributes (color and opacity) that can be overridden
@@ -184,7 +184,8 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
      * constants
      */
     public void setHighlightEvent(String highlightEvent) {
-        if (highlightEvent.equals(SelectEvent.LEFT_CLICK) || highlightEvent.equals(SelectEvent.LEFT_DOUBLE_CLICK) || highlightEvent.equals(SelectEvent.RIGHT_CLICK)) {
+        if (highlightEvent.equals(SelectEvent.LEFT_CLICK) || highlightEvent.equals(SelectEvent.LEFT_DOUBLE_CLICK) || highlightEvent.equals(
+                SelectEvent.RIGHT_CLICK)) {
             this.highlightEvent = highlightEvent;
         } else {
             throw new IllegalArgumentException("Unsupported select event for highlighting!");
