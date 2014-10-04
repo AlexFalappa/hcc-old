@@ -40,12 +40,10 @@ import javax.swing.Box;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import net.falappa.wwind.layers.EditableMarkerLayer;
-import net.falappa.wwind.layers.MultiPolygonShapesLayer;
 import net.falappa.wwind.layers.ShapeSelectionSource;
 import net.falappa.wwind.layers.SingleMarkerLayer;
 import net.falappa.wwind.layers.SingleSurfShapeLayer;
 import net.falappa.wwind.layers.SurfShapeLayer;
-import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.posparser.LatLonParser;
 import net.falappa.wwind.util.WWindUtils;
 
@@ -437,28 +435,14 @@ public class WWindPanel extends javax.swing.JPanel {
      * <p>
      * @param slayer the layer to add
      */
-    public void addSurfShapeLayer(SurfShapesLayer slayer) {
+    public void addSurfShapeLayer(SurfShapeLayer slayer) {
         final String layerName = slayer.getName();
         if (!shapeLayers.containsKey(layerName)) {
-            slayer.linkTo(wwCanvas);
+            //link layer for selection processing
+            if (slayer instanceof ShapeSelectionSource) {
+                ((ShapeSelectionSource) slayer).linkTo(wwCanvas);
+            }
             shapeLayers.put(layerName, slayer);
-            insertBeforePlacenames(slayer);
-            changeSupport.firePropertyChange(EVENT_SURF_LAYER_ADDED, null, slayer);
-        }
-    }
-
-    /**
-     * Adds a MultiPolygonShapesLayer to the map and to the map of managed layers.
-     * <p>
-     * The layer is added if not already present in the map. The layer is linked to the map for event processing (e.g. selection)
-     * <p>
-     * @param slayer the layer to add
-     */
-    public void addMultiPolyLayer(MultiPolygonShapesLayer slayer) {
-        final String layerName = slayer.getName();
-        if (!shapeLayers.containsKey(layerName)) {
-            slayer.linkTo(wwCanvas);
-//            shapeLayers.put(layerName, slayer);
             insertBeforePlacenames(slayer);
             changeSupport.firePropertyChange(EVENT_SURF_LAYER_ADDED, null, slayer);
         }

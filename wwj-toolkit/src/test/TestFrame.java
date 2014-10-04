@@ -25,7 +25,7 @@ public class TestFrame extends javax.swing.JFrame {
     public TestFrame() {
         initComponents();
         mpsl = new MultiPolygonShapesLayer("mp");
-        wWindPanel1.addMultiPolyLayer(mpsl);
+        wWindPanel1.addSurfShapeLayer(mpsl);
     }
     private final MultiPolygonShapesLayer mpsl;
 
@@ -45,6 +45,7 @@ public class TestFrame extends javax.swing.JFrame {
         bResetColor = new javax.swing.JButton();
         bFlyToPrimo = new javax.swing.JButton();
         bFlyToPrimo1 = new javax.swing.JButton();
+        surfShapeLayersVisibilityPanel1 = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
         wWindPanel1 = new net.falappa.wwind.widgets.WWindPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,6 +109,7 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(bFlyToPrimo1);
+        jPanel1.add(surfShapeLayersVisibilityPanel1);
 
         splitter.setLeftComponent(jPanel1);
         splitter.setRightComponent(wWindPanel1);
@@ -226,6 +228,7 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton bResetColor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane splitter;
+    private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel surfShapeLayersVisibilityPanel1;
     private net.falappa.wwind.widgets.WWindPanel wWindPanel1;
     // End of variables declaration//GEN-END:variables
 }

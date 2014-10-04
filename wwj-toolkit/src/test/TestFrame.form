@@ -111,6 +111,8 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bFlyToPrimo1ActionPerformed"/>
               </Events>
             </Component>
+            <Component class="net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel" name="surfShapeLayersVisibilityPanel1">
+            </Component>
           </SubComponents>
         </Container>
         <Component class="net.falappa.wwind.widgets.WWindPanel" name="wWindPanel1">
