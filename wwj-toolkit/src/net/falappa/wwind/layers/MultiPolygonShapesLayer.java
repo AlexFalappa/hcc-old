@@ -3,7 +3,6 @@ package net.falappa.wwind.layers;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.SelectEvent;
-import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
@@ -38,18 +37,10 @@ import net.falappa.wwind.util.WWindUtils;
  * <p>
  * @author Alessandro Falappa
  */
-public class MultiPolygonShapesLayer extends RenderableLayer implements SelectListener {
+public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShapeLayer, ShapeSelectionSource {
 
     private static final float HIGHL_INSIDE_OPACITY = 0.7f;
     private static final float NORM_INSIDE_OPACITY = 0.4f;
-    /**
-     * Event fired on shapes selection.
-     */
-    public static final String EVT_SELECT_SHAPES = "selectShapes";
-    /**
-     * Event fired on shapes deselection.
-     */
-    public static final String EVT_DESELECT_SHAPES = "deselectShapes";
     private static final String PROPERTY_SELECTION = "shapeSelection";
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
@@ -98,26 +89,17 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         addRenderable(popupAnnotation);
     }
 
-    /**
-     * Links the layer to a given WorldWindow.
-     * <p>
-     * @param wwd the worldwindow to attach to
-     */
+    @Override
     public void linkTo(WorldWindow wwd) {
         this.wwd = wwd;
         wwd.addSelectListener(this);
     }
 
-    /**
-     * Detaches the layer from the WorldWindow.
-     */
+    @Override
     public void detach() {
         wwd.removeSelectListener(this);
     }
 
-    /**
-     * Detaches the layer and clears all its shapes.
-     */
     @Override
     public void dispose() {
         detach();
@@ -188,40 +170,22 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         }
     }
 
-    /**
-     * Returns the current layer wide shape color.
-     * <p>
-     * @return the current color
-     */
+    @Override
     public Color getColor() {
         return attr.getOutlineMaterial().getDiffuse();
     }
 
-    /**
-     * Set the layer wide shape color.
-     * <p>
-     * @param col the new color
-     */
+    @Override
     public void setColor(Color col) {
         attr.setOutlineMaterial(new Material(col));
         attr.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
-    /**
-     * Returns the current layer wide shape opacity.
-     * <p>
-     * @return the current opacity
-     */
     @Override
     public double getOpacity() {
         return attr.getOutlineOpacity();
     }
 
-    /**
-     * Set the current layer wide shape opacity.
-     * <p>
-     * @param opacity the new opacity
-     */
     @Override
     public void setOpacity(double opacity) {
         attr.setOutlineOpacity(opacity);
@@ -312,13 +276,16 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         return multiPolysById.get(id);
     }
 
-    /**
-     * Removes the surface shape of the given name.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
-    public void removeMultiPoly(String id) throws NoSuchShapeException {
+    @Override
+    public SurfaceShape getSurfShape(String id) throws NoSuchShapeException {
+        if (!multiPolysById.containsKey(id)) {
+            throw new NoSuchShapeException(String.format("No such shape: %s", id));
+        }
+        return multiPolysById.get(id).get(0);
+    }
+
+    @Override
+    public void removeSurfShape(String id) throws NoSuchShapeException {
         if (!multiPolysById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
         }
@@ -328,17 +295,8 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         }
     }
 
-    /**
-     * Sets the color and opacity of the surface shape with the given name.
-     * <p>
-     * The color and opacity becomes independent from those of the layer.
-     * <p>
-     * @param id the shape identifier
-     * @param col new shape color
-     * @param opacity new shape opacity
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
-    public void setMultiPolyColor(String id, Color col, double opacity) throws NoSuchShapeException {
+    @Override
+    public void setSurfShapeColor(String id, Color col, double opacity) throws NoSuchShapeException {
         BasicShapeAttributes newAttr = new BasicShapeAttributes(attr);
         newAttr.setOutlineMaterial(new Material(col));
         newAttr.setInteriorMaterial(new Material(col.brighter().brighter()));
@@ -350,39 +308,23 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         }
     }
 
-    /**
-     * Reset the color and opacity of the surface shape with the given name to those of the layer.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
-    public void resetMultiPolyColor(String id) throws NoSuchShapeException {
+    @Override
+    public void resetSurfShapeColor(String id) throws NoSuchShapeException {
         List<SurfacePolygon> mp = getMultiPoly(id);
         for (SurfacePolygon sp : mp) {
             sp.setAttributes(attr);
         }
     }
 
-    /**
-     * Toggles the visibility of the surface shape with the given name.
-     * <p>
-     * @param id the shape identifier
-     * @param flag true to show, false to hide
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
-    public void setMultiPolyVisible(String id, boolean flag) throws NoSuchShapeException {
+    @Override
+    public void setSurfShapeVisible(String id, boolean flag) throws NoSuchShapeException {
         List<SurfacePolygon> mp = getMultiPoly(id);
         for (SurfacePolygon sp : mp) {
             sp.setVisible(flag);
         }
     }
 
-    /**
-     * Animates the map bringing the surface shape with the given name into view and highlights it.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void flyToHiglhlightShape(String id) throws NoSuchShapeException {
         if (!multiPolysById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -392,12 +334,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         internalHighlight(mp, true);
     }
 
-    /**
-     * Animates the map bringing the surface shape with the given name into view.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void flyToShape(String id) throws NoSuchShapeException {
         if (!multiPolysById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -418,9 +355,6 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         internalHighlight(multiPolysById.get(id), true);// TODO to be perfected with extent visibility support
     }
 
-    /**
-     * Removes all the surface shapes of the layer.
-     */
     @Override
     public void removeAllRenderables() {
         super.removeAllRenderables();
@@ -454,29 +388,17 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SelectLi
         }
     }
 
-    /**
-     * Add a property change listener that will be notified of "shape selection" (highlighting) events.
-     * <p>
-     * @param listener the property change listener
-     */
+    @Override
     public void addShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().addPropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
-    /**
-     * Removes a previously added property change listener.
-     * <p>
-     * @param listener the property change listener
-     */
+    @Override
     public void removeShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().removePropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
-    /**
-     * Gets a list of currently registered shape selection property change listeners
-     * <p>
-     * @return a possibly empty array of property change listeners
-     */
+    @Override
     public PropertyChangeListener[] getShapeSelectionListeners() {
         return getChangeSupport().getPropertyChangeListeners(PROPERTY_SELECTION);
     }

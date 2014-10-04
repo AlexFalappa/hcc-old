@@ -3,7 +3,6 @@ package net.falappa.wwind.layers;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.SelectEvent;
-import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
@@ -41,19 +40,11 @@ import net.falappa.wwind.util.WWindUtils;
  * <p>
  * @author Alessandro Falappa
  */
-public class SurfShapesLayer extends RenderableLayer implements SelectListener {
+public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSource, SurfShapeLayer {
 
     private static final float HIGHL_INSIDE_OPACITY = 0.7f;
     private static final float NORM_INSIDE_OPACITY = 0.4f;
 
-    /**
-     * Event fired on shapes selection.
-     */
-    public static final String EVT_SELECT_SHAPES = "selectShapes";
-    /**
-     * Event fired on shapes deselection.
-     */
-    public static final String EVT_DESELECT_SHAPES = "deselectShapes";
     private static final String PROPERTY_SELECTION = "shapeSelection";
     private final BasicShapeAttributes attr = new BasicShapeAttributes();
     private final BasicShapeAttributes attrHigh = new BasicShapeAttributes();
@@ -102,26 +93,17 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         addRenderable(popupAnnotation);
     }
 
-    /**
-     * Links the layer to a given WorldWindow.
-     * <p>
-     * @param wwd the worldwindow to attach to
-     */
+    @Override
     public void linkTo(WorldWindow wwd) {
         this.wwd = wwd;
         wwd.addSelectListener(this);
     }
 
-    /**
-     * Detaches the layer from the WorldWindow.
-     */
+    @Override
     public void detach() {
         wwd.removeSelectListener(this);
     }
 
-    /**
-     * Detaches the layer and clears all its shapes.
-     */
     @Override
     public void dispose() {
         detach();
@@ -192,40 +174,22 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         }
     }
 
-    /**
-     * Returns the current layer wide shape color.
-     * <p>
-     * @return the current color
-     */
+    @Override
     public Color getColor() {
         return attr.getOutlineMaterial().getDiffuse();
     }
 
-    /**
-     * Set the layer wide shape color.
-     * <p>
-     * @param col the new color
-     */
+    @Override
     public void setColor(Color col) {
         attr.setOutlineMaterial(new Material(col));
         attr.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
-    /**
-     * Returns the current layer wide shape opacity.
-     * <p>
-     * @return the current opacity
-     */
     @Override
     public double getOpacity() {
         return attr.getOutlineOpacity();
     }
 
-    /**
-     * Set the current layer wide shape opacity.
-     * <p>
-     * @param opacity the new opacity
-     */
     @Override
     public void setOpacity(double opacity) {
         attr.setOutlineOpacity(opacity);
@@ -355,13 +319,7 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         addRenderable(shape);
     }
 
-    /**
-     * Accessor for a named surface shape.
-     * <p>
-     * @param id the shape identifier
-     * @return the requested shape
-     * @throws NoSuchShapeException if no shape with the given name exists if no shape with the given name exists
-     */
+    @Override
     public SurfaceShape getSurfShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -384,12 +342,7 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         return ret instanceof SurfacePolygon ? (SurfacePolygon) ret : null;
     }
 
-    /**
-     * Removes the surface shape of the given name.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void removeSurfShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -398,16 +351,7 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         removeRenderable(ret);
     }
 
-    /**
-     * Sets the color and opacity of the surface shape with the given name.
-     * <p>
-     * The color and opacity becomes independent from those of the layer.
-     * <p>
-     * @param id the shape identifier
-     * @param col new shape color
-     * @param opacity new shape opacity
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void setSurfShapeColor(String id, Color col, double opacity) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
         BasicShapeAttributes newAttr = new BasicShapeAttributes(attr);
@@ -418,35 +362,19 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         shape.setAttributes(newAttr);
     }
 
-    /**
-     * Reset the color and opacity of the surface shape with the given name to those of the layer.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void resetSurfShapeColor(String id) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
         shape.setAttributes(attr);
     }
 
-    /**
-     * Toggles the visibility of the surface shape with the given name.
-     * <p>
-     * @param id the shape identifier
-     * @param flag true to show, false to hide
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void setSurfShapeVisible(String id, boolean flag) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
         shape.setVisible(flag);
     }
 
-    /**
-     * Animates the map bringing the surface shape with the given name into view and highlights it.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void flyToHiglhlightShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -456,12 +384,7 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         internalHighlight(shape, true);
     }
 
-    /**
-     * Animates the map bringing the surface shape with the given name into view.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
+    @Override
     public void flyToShape(String id) throws NoSuchShapeException {
         if (!shapesById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
@@ -482,9 +405,6 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         internalHighlight(shapesById.get(id), true);
     }
 
-    /**
-     * Removes all the surface shapes of the layer.
-     */
     @Override
     public void removeAllRenderables() {
         super.removeAllRenderables();
@@ -517,29 +437,17 @@ public class SurfShapesLayer extends RenderableLayer implements SelectListener {
         }
     }
 
-    /**
-     * Add a property change listener that will be notified of "shape selection" (highlighting) events.
-     * <p>
-     * @param listener the property change listener
-     */
+    @Override
     public void addShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().addPropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
-    /**
-     * Removes a previously added property change listener.
-     * <p>
-     * @param listener the property change listener
-     */
+    @Override
     public void removeShapeSelectionListener(PropertyChangeListener listener) {
         getChangeSupport().removePropertyChangeListener(PROPERTY_SELECTION, listener);
     }
 
-    /**
-     * Gets a list of currently registered shape selection property change listeners
-     * <p>
-     * @return a possibly empty array of property change listeners
-     */
+    @Override
     public PropertyChangeListener[] getShapeSelectionListeners() {
         return getChangeSupport().getPropertyChangeListeners(PROPERTY_SELECTION);
     }
