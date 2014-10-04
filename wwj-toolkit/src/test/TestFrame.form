@@ -104,14 +104,32 @@
             </Component>
             <Component class="javax.swing.JButton" name="bFlyToPrimo1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Fly-highlight first"/>
+                <Property name="text" type="java.lang.String" value="Fly-highlight second"/>
                 <Property name="alignmentX" type="float" value="0.5"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bFlyToPrimo1ActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.Box$Filler" name="filler1">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32767, 30]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 50]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 80]"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.VerticalStrut"/>
+              </AuxValues>
+            </Component>
             <Component class="net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel" name="surfShapeLayersVisibilityPanel1">
+            </Component>
+            <Component class="net.falappa.wwind.widgets.VisualAidsVisibilityPanel" name="visualAidsVisibilityPanel1">
             </Component>
           </SubComponents>
         </Container>

@@ -19,15 +19,15 @@ import net.falappa.wwind.widgets.WWindPanel;
  */
 public class TestFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TestFrame
-     */
+    private final MultiPolygonShapesLayer mpsl;
+
     public TestFrame() {
         initComponents();
         mpsl = new MultiPolygonShapesLayer("mp");
         wWindPanel1.addSurfShapeLayer(mpsl);
+        surfShapeLayersVisibilityPanel1.linkTo(wWindPanel1);
+        visualAidsVisibilityPanel1.linkTo(wWindPanel1);
     }
-    private final MultiPolygonShapesLayer mpsl;
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
@@ -45,7 +45,9 @@ public class TestFrame extends javax.swing.JFrame {
         bResetColor = new javax.swing.JButton();
         bFlyToPrimo = new javax.swing.JButton();
         bFlyToPrimo1 = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 50), new java.awt.Dimension(0, 80), new java.awt.Dimension(32767, 30));
         surfShapeLayersVisibilityPanel1 = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
+        visualAidsVisibilityPanel1 = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
         wWindPanel1 = new net.falappa.wwind.widgets.WWindPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -101,7 +103,7 @@ public class TestFrame extends javax.swing.JFrame {
         });
         jPanel1.add(bFlyToPrimo);
 
-        bFlyToPrimo1.setText("Fly-highlight first");
+        bFlyToPrimo1.setText("Fly-highlight second");
         bFlyToPrimo1.setAlignmentX(0.5F);
         bFlyToPrimo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +111,9 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(bFlyToPrimo1);
+        jPanel1.add(filler1);
         jPanel1.add(surfShapeLayersVisibilityPanel1);
+        jPanel1.add(visualAidsVisibilityPanel1);
 
         splitter.setLeftComponent(jPanel1);
         splitter.setRightComponent(wWindPanel1);
@@ -178,7 +182,7 @@ public class TestFrame extends javax.swing.JFrame {
 
     private void bFlyToPrimo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyToPrimo1ActionPerformed
         try {
-            mpsl.flyToHiglhlightShape("primo");
+            mpsl.flyToHiglhlightShape("secondo");
         } catch (NoSuchShapeException ex) {
         }
     }//GEN-LAST:event_bFlyToPrimo1ActionPerformed
@@ -226,9 +230,11 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton bFlyToPrimo;
     private javax.swing.JButton bFlyToPrimo1;
     private javax.swing.JButton bResetColor;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane splitter;
     private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel surfShapeLayersVisibilityPanel1;
+    private net.falappa.wwind.widgets.VisualAidsVisibilityPanel visualAidsVisibilityPanel1;
     private net.falappa.wwind.widgets.WWindPanel wWindPanel1;
     // End of variables declaration//GEN-END:variables
 }
