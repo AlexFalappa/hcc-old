@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.Preferences;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  * A WorldWind layer (<tt>RenderableLayer</tt> implementation) managing a set of multipolygons shapes.

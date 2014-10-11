@@ -22,7 +22,7 @@ import net.falappa.wwind.helpers.DraggableMarker;
  * A layer for editing a single marker placement.
  * <p>
  * Fires property change events during editing.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class EditableMarkerLayer extends AbstractLayer {
@@ -101,7 +101,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Getter for the marker color.
-     * <p>
+     *
      * @return the current color
      */
     public Color getColor() {
@@ -110,7 +110,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Setter for the marker color.
-     * <p>
+     *
      * @param col the new color
      */
     public void setColor(Color col) {
@@ -119,7 +119,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Setter for the marker position.
-     * <p>
+     *
      * @param coords the new position
      */
     public void setPosition(Position coords) {
@@ -136,7 +136,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Getter for the marker position.
-     * <p>
+     *
      * @return the current position or null if no position has ever been set (no marker)
      */
     public Position getPosition() {
@@ -157,7 +157,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Tells if the marker has ever been set.
-     * <p>
+     *
      * @return true if the marker has been positioned, false otherwise
      */
     public boolean isPositionSet() {
@@ -166,9 +166,9 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Toggles between editing mode and normal mode.
-     * <p>
+     *
      * While in editing mode user clicks create/place the marker, while user drags move it.
-     * <p>
+     *
      * @param flag true to enable editing mode, false otherwise
      */
     public void setEditing(boolean flag) {
@@ -184,7 +184,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Load SurfShapesLayer preferences from Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to look for this class own node
      */
     public void loadPrefs(Preferences baseNode) {
@@ -193,7 +193,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Store SurfShapesLayer preferences using Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to store this class own node
      */
     public void storePrefs(Preferences baseNode) {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.falappa.wwind.util;
+package net.falappa.wwind.utils;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.event.SelectEvent;

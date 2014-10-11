@@ -1,4 +1,4 @@
-package net.falappa.wwind.util;
+package net.falappa.wwind.utils;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Angle;
@@ -10,6 +10,7 @@ import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import net.falappa.wwind.helpers.ExtVisibilityViewController;
 import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.widgets.WWindPanel;
 
@@ -64,7 +65,7 @@ public final class WWindUtils {
     /**
      * Add some random polygons to the {@link SurfShapesLayer} of the given name.
      * <p>
-     * The polygons will have an od generated from the given prefix and an appended counter. The polygons will be generated over Europe.
+     * The polygons will have an id generated from the given prefix and an appended counter. The polygons will be generated over Europe.
      * <p>
      * @param wwp the WWindPanel holding the layers
      * @param lname the SurfShapesLayer to add to
@@ -89,9 +90,53 @@ public final class WWindUtils {
     }
 
     /**
+     * Add some random rectangular polygons in the given lat lon range to the {@link SurfShapesLayer} of the given name.
+     * <p>
+     * The polygons will have an id generated from the given prefix and an appended counter. The rectangles will be lat lon axis oriented
+     * and have the specified maximum height and width.
+     * <p>
+     * <b>Note:</b> it is assumed that minLat &lt; maxLat , that minLon &lt; maxLon , that maxWidth &lt; (maxLon-minLon) and that maxHeight
+     * &lt; (maxLat-minLat).
+     * <p>
+     * @param wwp the WWindPanel holding the layers
+     * @param lname the SurfShapesLayer to add to
+     * @param idPrefix the shape id prefix
+     * @param minLat minimum latitude
+     * @param maxLat maximum latitude
+     * @param minLon minimum longitude
+     * @param maxLon maximum longitude
+     * @param maxWidth maximum width
+     * @param maxHeight maximum height
+     */
+    public static void randPolys(WWindPanel wwp, String lname, String idPrefix, double minLat, double maxLat, double minLon, double maxLon, double maxWidth, double maxHeight) {
+        List<LatLon> positions;
+        final double deltaLon = maxLon - minLon;
+        final double deltaLat = maxLat - minLat;
+        final double minWidth = maxWidth * 0.2;
+        final double minHeight = maxHeight * 0.2;
+        SurfShapesLayer ssl = (SurfShapesLayer) wwp.getSurfShapeLayer(lname);
+        for (int i = 0; i < 20; i++) {
+            positions = new ArrayList<>();
+            double btmLat = minLat + Math.random() * deltaLat;
+            double btmLon = minLon + Math.random() * deltaLon;
+            double w = minWidth + Math.random() * maxWidth;
+            double h = minHeight + Math.random() * maxHeight;
+            positions.add(LatLon.fromDegrees(btmLat, btmLon));
+            positions.add(LatLon.fromDegrees(btmLat, btmLon + w));
+            positions.add(LatLon.fromDegrees(btmLat + h, btmLon + w));
+            positions.add(LatLon.fromDegrees(btmLat + h, btmLon));
+            ssl.addSurfPoly(positions, String.format("%s%d", idPrefix, i));
+        }
+        wwp.redraw();
+    }
+
+    /**
      * Animates the map, in a sort of fligth, to bring the given area into view.
      * <p>
-     * @param wwd the WorldWindow reference for calculations
+     * <b>Note:</b> the algorithm employed in this method works mainly for 2D views, on the 3D globe it works progressively worse as the
+     * sector approaches the poles. Use {@link #flyToObjects(gov.nasa.worldwind.WorldWindow, java.lang.Iterable)} for better results.
+     * <p>
+     * @param wwd the WorldWindow used for calculations
      * @param sector the lat lon range sector to fly to
      */
     public static void flyToSector(WorldWindow wwd, Sector sector) {
@@ -120,17 +165,28 @@ public final class WWindUtils {
     /**
      * Animates the map, in a sort of fligth, to bring the given position into view.
      * <p>
-     * @param wwd
+     * @param wwd the WorldWindow used for calculations
      * @param position the coordinates and elevation to fly to
      */
     public static void flyToPoint(WorldWindow wwd, Position position) {
         if (wwd.getView() instanceof BasicOrbitView) {
             BasicOrbitView view = (BasicOrbitView) wwd.getView();
-            view.addPanToAnimator(position, Angle.ZERO, Angle.ZERO, position.getAltitude());
+            view.addPanToAnimator(position, Angle.ZERO, Angle.ZERO, 10);
         } else if (wwd.getView() instanceof FlatOrbitView) {
             FlatOrbitView fview = (FlatOrbitView) wwd.getView();
-            fview.addPanToAnimator(position, Angle.ZERO, Angle.ZERO, position.getAltitude());
+            fview.addPanToAnimator(position, Angle.ZERO, Angle.ZERO, 10);
         }
     }
 
+    /**
+     * Animates the map, in a sort of fligth, to bring the given objects into view.
+     * <p>
+     * @param wwd the WorldWindow used for calculations
+     * @param objs an array of WorldWind objects
+     */
+    public static void flyToObjects(WorldWindow wwd, Iterable<?> objs) {
+        ExtVisibilityViewController extVisViewCtrl = new ExtVisibilityViewController(wwd);
+        extVisViewCtrl.setObjectsToTrack(objs);
+        extVisViewCtrl.gotoScene();
+    }
 }

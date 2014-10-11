@@ -21,10 +21,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.Preferences;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  * A WorldWind layer (<tt>RenderableLayer</tt> implementation) managing a set of surface shapes (polygons, polylines, circles, sectors and
@@ -380,7 +381,7 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
         }
         final SurfaceShape shape = shapesById.get(id);
-        internalFlyTo(shape);
+        WWindUtils.flyToObjects(wwd, Arrays.asList(shape));
         internalHighlight(shape, true);
     }
 
@@ -389,7 +390,7 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
         if (!shapesById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
         }
-        internalFlyTo(shapesById.get(id));
+        WWindUtils.flyToObjects(wwd, Arrays.asList(shapesById.get(id)));
     }
 
     /**
@@ -468,12 +469,6 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
      */
     public void storePrefs(Preferences baseNode) {
         // TODO memorizzazione preferences
-    }
-
-    // delegates to WWindUtils method
-    private void internalFlyTo(SurfaceShape shape) {
-        Sector sector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
-        WWindUtils.flyToSector(wwd, sector);
     }
 
     // manages change of attributes for highlighting, annotation bubble toggle, event firing

@@ -45,7 +45,7 @@ import net.falappa.wwind.layers.SingleMarkerLayer;
 import net.falappa.wwind.layers.SingleSurfShapeLayer;
 import net.falappa.wwind.layers.SurfShapeLayer;
 import net.falappa.wwind.posparser.LatLonParser;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  * A base WorldWind panel with a bar containing a {@link FlyToPanel} and a {@link FlatRoundInLinePanel}.

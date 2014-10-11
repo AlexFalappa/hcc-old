@@ -1,6 +1,6 @@
 package net.falappa.wwind.widgets;
 
-import com.telespazio.wwind.utils.ToggleVisibilityAction;
+import net.falappa.wwind.utils.ToggleVisibilityAction;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.layers.Layer;

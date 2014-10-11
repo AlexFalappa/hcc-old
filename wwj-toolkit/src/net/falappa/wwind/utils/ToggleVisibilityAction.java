@@ -1,4 +1,4 @@
-package com.telespazio.wwind.utils;
+package net.falappa.wwind.utils;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.Layer;

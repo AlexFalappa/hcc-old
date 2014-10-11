@@ -17,7 +17,7 @@ import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwind.render.SurfaceShape;
 import java.awt.Color;
 import java.util.prefs.Preferences;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  * A layer containing a single surface shape.

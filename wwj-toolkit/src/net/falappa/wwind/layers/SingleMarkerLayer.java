@@ -14,7 +14,7 @@ import gov.nasa.worldwind.terrain.SectorGeometryList;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  * Layer containing a single spherical marker.
