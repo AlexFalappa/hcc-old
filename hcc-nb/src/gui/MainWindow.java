@@ -30,7 +30,7 @@ import main.App;
 import main.data.CatalogueDefinition;
 import main.hma.HmaGetRecordsBuilder;
 import net.falappa.wwind.layers.SurfShapesLayer;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;

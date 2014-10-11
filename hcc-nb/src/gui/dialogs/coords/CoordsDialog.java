@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.Timer;
 import net.falappa.utils.GisUtils;
-import net.falappa.wwind.util.WWindUtils;
+import net.falappa.wwind.utils.WWindUtils;
 
 /**
  *

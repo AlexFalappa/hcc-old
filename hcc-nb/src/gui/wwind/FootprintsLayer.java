@@ -42,7 +42,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import net.falappa.wwind.util.HighlightControllerPub;
+import net.falappa.wwind.utils.HighlightControllerPub;
 
 public class FootprintsLayer extends RenderableLayer implements SelectListener {
 
