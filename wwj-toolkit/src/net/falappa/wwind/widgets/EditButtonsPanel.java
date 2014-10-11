@@ -45,6 +45,11 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     * Getter for the current {@link WorldWindow}.
+     * <p>
+     * @return the current WorldWindow
+     */
     public WorldWindow getWorldWindow() {
         return ww;
     }
@@ -105,32 +110,9 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         postWwdInit();
     }
 
-    private void postWwdInit() {
-        // add editable marker layer to worldwindow
-        this.eml = new EditableMarkerLayer(ww, "EditableMarkerLayer");
-        this.eml.setColor(COLOR_EDIT);
-        this.eml.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals(EditableMarkerLayer.EVENT_EDITING_START)) {
-                    setCrosshair(true);
-                }
-                if (evt.getPropertyName().equals(EditableMarkerLayer.EVENT_POSITION_SET)) {
-                    setCrosshair(false);
-                    tbSelectTool.setSelected(true);
-                    tbSelectToolActionPerformed(null);
-                }
-            }
-        });
-        this.ww.getModel().getLayers().add(eml);
-        // enable widgets
-        tbCircleTool.setEnabled(true);
-        tbLineTool.setEnabled(true);
-        tbPointTool.setEnabled(true);
-        tbPolyTool.setEnabled(true);
-        tbSelectTool.setEnabled(true);
-    }
-
+    /**
+     * Cleans up internal MeasureTool and EditableMarkerLayer.
+     */
     public void dispose() {
         mt.dispose();
         ww.getModel().getLayers().remove(eml);
@@ -352,5 +334,31 @@ public class EditButtonsPanel extends javax.swing.JPanel {
         } else {
             ((Component) ww).setCursor(Cursor.getDefaultCursor());
         }
+    }
+
+    private void postWwdInit() {
+        // add editable marker layer to worldwindow
+        this.eml = new EditableMarkerLayer(ww, "EditableMarkerLayer");
+        this.eml.setColor(COLOR_EDIT);
+        this.eml.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals(EditableMarkerLayer.EVENT_EDITING_START)) {
+                    setCrosshair(true);
+                }
+                if (evt.getPropertyName().equals(EditableMarkerLayer.EVENT_POSITION_SET)) {
+                    setCrosshair(false);
+                    tbSelectTool.setSelected(true);
+                    tbSelectToolActionPerformed(null);
+                }
+            }
+        });
+        this.ww.getModel().getLayers().add(eml);
+        // enable widgets
+        tbCircleTool.setEnabled(true);
+        tbLineTool.setEnabled(true);
+        tbPointTool.setEnabled(true);
+        tbPolyTool.setEnabled(true);
+        tbSelectTool.setEnabled(true);
     }
 }

@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ import net.falappa.wwind.layers.ShapeSelectionSource;
 import net.falappa.wwind.layers.SingleMarkerLayer;
 import net.falappa.wwind.layers.SingleSurfShapeLayer;
 import net.falappa.wwind.layers.SurfShapeLayer;
+import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.posparser.LatLonParser;
 import net.falappa.wwind.utils.WWindUtils;
 
@@ -710,15 +712,6 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Animates the map, in a sort of fligth, to bring the given position into view.
-     * <p>
-     * @param position the coordinates and elevation to fly to
-     */
-    public void flyToPoint(Position position) {
-        WWindUtils.flyToPoint(wwCanvas, position);
-    }
-
-    /**
      * Instantly moves the point of view of the map as looking to the given lat lon coordinates from the given altitude.
      * <p>
      * @param position the coordinates and elevation of the eye
@@ -765,6 +758,15 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Animates the map, in a sort of fligth, to bring the given position into view.
+     * <p>
+     * @param position the coordinates and elevation to fly to
+     */
+    public void flyToPoint(Position position) {
+        WWindUtils.flyToPoint(wwCanvas, position);
+    }
+
+    /**
      * Animates the map, in a sort of fligth, to bring the given area into view.
      * <p>
      * @param sector the lat lon range sector to fly to
@@ -794,15 +796,27 @@ public class WWindPanel extends javax.swing.JPanel {
      * Does nothing if there's no edit shape defined.
      */
     public void flyToEditShape() {
-        if (hasEditShape() && editMode != EditModes.POINT) {
-            if (mt.getPositions() != null) {
-                Sector sec = Sector.boundingSector(mt.getPositions());
-                WWindUtils.flyToSector(wwCanvas, sec);
-            } else if (eml.isPositionSet()) {
+        if (hasEditShape()) {
+            if (editMode == EditModes.POLYLINE) {
+                WWindUtils.flyToObjects(wwCanvas, Arrays.asList(mt.getLine()));
+            } else if (editMode == EditModes.POINT) {
                 Position pos = new Position(eml.getPosition(), 1_000_000);
                 WWindUtils.flyToPoint(wwCanvas, pos);
+            } else {
+                WWindUtils.flyToObjects(wwCanvas, Arrays.asList(mt.getSurfaceShape()));
             }
         }
+    }
+
+    /**
+     * Animates the map, in a sort of fligth, to bring the given WorldWind objects into view.
+     * <p>
+     * Delegates to {@link WWindUtils#flyToObjects(gov.nasa.worldwind.WorldWindow, java.lang.Iterable)}.
+     *
+     * @param itrs a collection of objects
+     */
+    public void flyToObjects(Iterable<?> itrs) {
+        WWindUtils.flyToObjects(wwCanvas, itrs);
     }
 
     /**
