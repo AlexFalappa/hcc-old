@@ -16,14 +16,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel3" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="sslVisibility" max="32767" attributes="0"/>
+                  <Component id="jPanel3" alignment="1" pref="0" max="32767" attributes="0"/>
                   <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="visAidsVisibility" alignment="0" max="32767" attributes="0"/>
+                  <Component id="baseVisibility" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -33,227 +34,23 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="sslVisibility" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="baseVisibility" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="visAidsVisibility" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="50" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel2">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Layers"/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chAoi" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chFootprints" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chBMImage" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chBMWMS" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chMsVirtEarth" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chBoundaries" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chPlaceNames" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chBing" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="ccbFootprints" max="32767" attributes="0"/>
-                              <Component id="ccbAoi" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chAoi" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="ccbAoi" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chFootprints" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="ccbFootprints" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chPlaceNames" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chBoundaries" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chBMImage" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chBMWMS" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chMsVirtEarth" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chBing" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JCheckBox" name="chAoi">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Area of Interest"/>
-          </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chAoiItemStateChanged"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chFootprints">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Footprints"/>
-          </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chFootprintsItemStateChanged"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chPlaceNames">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Place Names"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chBoundaries">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Political Boundaries"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chBMImage">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="BlueMarble Image"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chBMWMS">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="BlueMarble WMS"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chMsVirtEarth">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="MS Virtual Earth"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chBing">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Bing"/>
-          </Properties>
-        </Component>
-        <Component class="net.falappa.swing.combobox.colorbox.ColorComboBox" name="ccbAoi">
-          <Properties>
-            <Property name="selectedIndex" type="int" value="10"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbAoiItemStateChanged"/>
-          </Events>
-        </Component>
-        <Component class="net.falappa.swing.combobox.colorbox.ColorComboBox" name="ccbFootprints">
-          <Properties>
-            <Property name="selectedIndex" type="int" value="8"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="ccbFootprintsItemStateChanged"/>
-          </Events>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="jPanel1">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Visual aids"/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="chCompass" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="chScale" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="chViewContrl" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="chGraticule" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="chMiniMap" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chMiniMap" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chCompass" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chScale" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chViewContrl" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chGraticule" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JCheckBox" name="chMiniMap">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="World Map"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chCompass">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Compass"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chScale">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Scale"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chViewContrl">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="View Controls"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chGraticule">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Graticule"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
@@ -310,5 +107,11 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="net.falappa.wwind.widgets.VisualAidsVisibilityPanel" name="visAidsVisibility">
+    </Component>
+    <Component class="net.falappa.wwind.widgets.BaseCartoVisibilityPanel" name="baseVisibility">
+    </Component>
+    <Component class="net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel" name="sslVisibility">
+    </Component>
   </SubComponents>
 </Form>
