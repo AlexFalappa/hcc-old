@@ -1,4 +1,4 @@
-package net.falappa.wwind.objects;
+package net.falappa.wwind.helpers;
 
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.geom.Angle;

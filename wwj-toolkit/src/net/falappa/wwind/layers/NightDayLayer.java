@@ -4,7 +4,7 @@ import gov.nasa.worldwind.layers.RenderableLayer;
 import java.util.Date;
 import name.gano.astro.bodies.Sun;
 import name.gano.astro.time.Time;
-import net.falappa.wwind.objects.EarthNightSurfacePolygon;
+import net.falappa.wwind.helpers.EarthNightSurfacePolygon;
 
 /**
  * A layer containing a night and day overlay.

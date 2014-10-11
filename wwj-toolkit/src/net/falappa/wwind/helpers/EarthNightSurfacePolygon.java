@@ -20,7 +20,7 @@
  * =====================================================================
  * Created 20 June 2009
  */
-package net.falappa.wwind.objects;
+package net.falappa.wwind.helpers;
 
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.layers.RenderableLayer;

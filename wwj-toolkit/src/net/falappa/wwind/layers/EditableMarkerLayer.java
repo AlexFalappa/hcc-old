@@ -16,7 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
-import net.falappa.wwind.objects.DraggableMarker;
+import net.falappa.wwind.helpers.DraggableMarker;
 
 /**
  * A layer for editing a single marker placement.
