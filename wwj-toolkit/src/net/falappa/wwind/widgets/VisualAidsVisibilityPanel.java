@@ -1,6 +1,5 @@
 package net.falappa.wwind.widgets;
 
-import net.falappa.wwind.utils.ToggleVisibilityAction;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.layers.Layer;
@@ -9,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.util.prefs.Preferences;
 import javax.swing.Action;
 import javax.swing.JCheckBox;
+import net.falappa.wwind.utils.ToggleVisibilityAction;
 
 /**
  * A panel listing and controlling the visibility of the default visual aids in a {@link WWindPanel} (mini world map, compass, scale bar,
@@ -112,19 +112,19 @@ public class VisualAidsVisibilityPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chCompass)
                     .addComponent(chScale)
                     .addComponent(chViewContrl)
                     .addComponent(chGraticule)
                     .addComponent(chMiniMap))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(chMiniMap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chCompass)
@@ -134,7 +134,7 @@ public class VisualAidsVisibilityPanel extends javax.swing.JPanel {
                 .addComponent(chViewContrl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chGraticule)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
