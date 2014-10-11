@@ -19,7 +19,9 @@ import gov.nasa.worldwind.geom.LatLon;
 import gui.dialogs.AboutDialog;
 import gui.dialogs.CatDefinitionDialog;
 import gui.dialogs.SettingsDialog;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -49,10 +51,17 @@ import org.apache.xmlbeans.XmlOptions;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private final SurfShapesLayer footprints = new SurfShapesLayer("Footprints");
     private final DefaultComboBoxModel<CatalogueDefinition> dcmCatalogues = new DefaultComboBoxModel<>();
     private final HmaGetRecordsBuilder builder = new HmaGetRecordsBuilder();
     private CatalogueStub stub = null;
+    private final static Color[] LAYER_COLORS = new Color[]{
+        Color.ORANGE,
+        Color.MAGENTA,
+        Color.RED,
+        Color.YELLOW,
+        Color.GREEN,
+        Color.CYAN,
+        Color.WHITE,};
 
     public MainWindow() {
         initComponents();
@@ -62,7 +71,7 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (AxisFault ex) {
             ex.printStackTrace(System.err);
         }
-        setupLayers();
+        pViewSettings.linkTo(wwindPane);
         loadPrefs();
     }
 
@@ -352,12 +361,6 @@ public class MainWindow extends javax.swing.JFrame {
         sd.setVisible(true);
     }//GEN-LAST:event_bSettingsActionPerformed
 
-    private void setupLayers() {
-        wwindPane.addSurfShapeLayer(footprints);
-        // link view settings panel
-//        pViewSettings.linkTo(wwCanvas);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddCat;
     private javax.swing.JButton bDelCat;
@@ -549,23 +552,34 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     int processResults(GetRecordsResponseDocument resp) {
-        // extract footprints
+        // clear previous surface shape layers
+        wwindPane.removeAllSurfShapeLayers();
+        HashMap<String, SurfShapesLayer> layerMap = new HashMap<>();
+        // extract registry packages
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
-        if (res.length > 0) {
-            footprints.removeAllRenderables();
-        }
         for (XmlObject xo : res) {
             // extract pid
             XmlCursor xc = xo.newCursor();
             String pid = xc.getAttributeText(new QName("id"));
             xc.dispose();
+            // extract collection
+            String collection = "None";
+            XmlObject[] xpos = xo.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[@name='urn:ogc:def:slot:OGC-CSW-ebRIM-EO::parentIdentifier']");
+//            XmlObject[] xpos = xo.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[contains(@name,'parentIdentifier')]");
+            if (xpos.length > 0) {
+                xc = xpos[0].newCursor();
+                xc.toFirstChild();
+                xc.toFirstChild();
+                collection = xc.getTextValue();
+                xc.dispose();
+            }
             // extract footprint coordinates
-            XmlObject[] xpos = xo.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
+            xpos = xo.selectPath("declare namespace gml='http://www.opengis.net/gml' .//gml:posList");
             if (xpos.length == 0) {
                 continue;
             }
             xc = xpos[0].newCursor();
-            String[] coords = xc.getTextValue().split("\\s");
+            String[] coords = xc.getTextValue().split("\\s+");
             xc.dispose();
             List<LatLon> geopoints = new ArrayList<>();
             for (int i = 0; i < coords.length; i += 2) {
@@ -573,7 +587,16 @@ public class MainWindow extends javax.swing.JFrame {
                 double lon = Double.valueOf(coords[i + 1]);
                 geopoints.add(LatLon.fromDegrees(lat, lon));
             }
-            footprints.addSurfPoly(geopoints, pid);
+            // get the collection layer or create one and add id to the wwindPane
+            SurfShapesLayer ssl = layerMap.get(collection);
+            if (ssl == null) {
+                ssl = new SurfShapesLayer(collection);
+                ssl.setColor(LAYER_COLORS[layerMap.size() % LAYER_COLORS.length]);
+                wwindPane.addSurfShapeLayer(ssl);
+                layerMap.put(collection, ssl);
+            }
+            // add a polygon to the layer
+            ssl.addSurfPoly(geopoints, pid);
         }
         wwindPane.redraw();
         return res.length;
