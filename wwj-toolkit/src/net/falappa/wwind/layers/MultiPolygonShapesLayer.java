@@ -296,6 +296,11 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
     }
 
     @Override
+    public int getNumShapes() {
+        return getNumRenderables();
+    }
+
+    @Override
     public void setSurfShapeColor(String id, Color col, double opacity) throws NoSuchShapeException {
         BasicShapeAttributes newAttr = new BasicShapeAttributes(attr);
         newAttr.setOutlineMaterial(new Material(col));
@@ -356,7 +361,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
     }
 
     @Override
-    public void removeAllRenderables() {
+    public void removeAllShapes() {
         super.removeAllRenderables();
         multiPolysById.clear();
         // re-add the hidden notation

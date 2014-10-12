@@ -50,7 +50,14 @@ public interface SurfShapeLayer extends Layer {
     /**
      * Removes all the surface shapes of the layer.
      */
-    void removeAllRenderables();
+    void removeAllShapes();
+
+    /**
+     * Get the total number of shapes in the layer.
+     *
+     * @return the number of shapes
+     */
+    int getNumShapes();
 
     /**
      * Sets the color and opacity of the surface shape with the given name.

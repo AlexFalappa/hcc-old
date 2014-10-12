@@ -353,6 +353,11 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
     }
 
     @Override
+    public int getNumShapes() {
+        return getNumRenderables();
+    }
+
+    @Override
     public void setSurfShapeColor(String id, Color col, double opacity) throws NoSuchShapeException {
         SurfaceShape shape = getSurfShape(id);
         BasicShapeAttributes newAttr = new BasicShapeAttributes(attr);
@@ -407,7 +412,7 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
     }
 
     @Override
-    public void removeAllRenderables() {
+    public void removeAllShapes() {
         super.removeAllRenderables();
         shapesById.clear();
         // re-add the hidden notation
