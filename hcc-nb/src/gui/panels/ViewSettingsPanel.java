@@ -220,23 +220,9 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     public void storePrefs(Preferences prefs) {
         // create a subnode for view settings
         Preferences vnode = prefs.node("view");
-        // store layer enablement
-//        putChbInPrefs(chAoi, vnode);
-//        putChbInPrefs(chBMImage, vnode);
-//        putChbInPrefs(chBMWMS, vnode);
-//        putChbInPrefs(chBing, vnode);
-//        putChbInPrefs(chBoundaries, vnode);
-//        putChbInPrefs(chCompass, vnode);
-//        putChbInPrefs(chFootprints, vnode);
-//        putChbInPrefs(chGraticule, vnode);
-//        putChbInPrefs(chMiniMap, vnode);
-//        putChbInPrefs(chMsVirtEarth, vnode);
-//        putChbInPrefs(chPlaceNames, vnode);
-//        putChbInPrefs(chScale, vnode);
-//        putChbInPrefs(chViewContrl, vnode);
-        // store layers color
-//        vnode.putInt("AoiColor", ccbAoi.getSelectedColor().getRGB());
-//        vnode.putInt("FootpColor", ccbFootprints.getSelectedColor().getRGB());
+        // store cartography and visual aids visibility
+        baseVisibility.storePrefs(vnode);
+        visAidsVisibility.storePrefs(vnode);
     }
 
     private void putChbInPrefs(JCheckBox chb, Preferences vnode) {
@@ -246,23 +232,9 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     public void loadPrefs(Preferences prefs) {
         // get view settings subnode
         Preferences vnode = prefs.node("view");
-        // load layer enablement
-//        getChbFromPrefs(chAoi, vnode, true);
-//        getChbFromPrefs(chBMImage, vnode, true);
-//        getChbFromPrefs(chBMWMS, vnode, true);
-//        getChbFromPrefs(chBing, vnode, false);
-//        getChbFromPrefs(chBoundaries, vnode, false);
-//        getChbFromPrefs(chCompass, vnode, false);
-//        getChbFromPrefs(chFootprints, vnode, true);
-//        getChbFromPrefs(chGraticule, vnode, false);
-//        getChbFromPrefs(chMiniMap, vnode, false);
-//        getChbFromPrefs(chMsVirtEarth, vnode, false);
-//        getChbFromPrefs(chPlaceNames, vnode, false);
-//        getChbFromPrefs(chScale, vnode, true);
-//        getChbFromPrefs(chViewContrl, vnode, true);
-        // load layers color
-//        ccbAoi.setSelectedColor(new Color(vnode.getInt("AoiColor", Color.red.getRGB())));
-//        ccbFootprints.setSelectedColor(new Color(vnode.getInt("FootpColor", Color.orange.getRGB())));
+        // load cartography and visual aids visibility
+        baseVisibility.loadPrefs(vnode);
+        visAidsVisibility.loadPrefs(vnode);
     }
 
     private void getChbFromPrefs(JCheckBox chb, Preferences vnode, boolean flag) {
