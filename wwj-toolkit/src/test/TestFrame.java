@@ -1,32 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package test;
 
+import gov.nasa.worldwind.event.SelectEvent;
+import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.util.Logging;
+import gov.nasa.worldwind.util.measure.MeasureTool;
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import net.falappa.wwind.layers.MultiPolygonShapesLayer;
+import java.util.logging.LogManager;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import net.falappa.wwind.layers.NoSuchShapeException;
+import net.falappa.wwind.layers.ShapeSelectionSource;
+import net.falappa.wwind.layers.SurfShapeLayer;
+import net.falappa.wwind.layers.SurfShapesLayer;
+import net.falappa.wwind.utils.WWindUtils;
 import net.falappa.wwind.widgets.WWindPanel;
 
-/**
- *
- * @author Alessandro Falappa <alex.falappa@gmail.com>
- */
 public class TestFrame extends javax.swing.JFrame {
 
-    private final MultiPolygonShapesLayer mpsl;
+    private static final String LAY_FOOTPRINTS = "footprints";
+    private static final String LAY_RULES = "rules";
+    private static final String PREFIX_FOOTPRINTS = "Footprint ";
+    private static final String PREFIX_RULES = "Rule ";
 
     public TestFrame() {
         initComponents();
-        mpsl = new MultiPolygonShapesLayer("mp");
-        wWindPanel1.addSurfShapeLayer(mpsl);
-        surfShapeLayersVisibilityPanel1.linkTo(wWindPanel1);
-        visualAidsVisibilityPanel1.linkTo(wWindPanel1);
+        Logging.logger().severe("Severe message trough WorldWind logger");
+        Logging.logger().warning("Warning message trough WorldWind logger");
+        Logging.logger().info("Info message trough WorldWind logger");
+        Logging.logger().config("Config message trough WorldWind logger");
+        Logging.logger().fine("Fine message trough WorldWind logger");
+        Logging.logger().finer("Finer message trough WorldWind logger");
+        Logging.logger().finest("Finest message trough WorldWind logger");
+        wwp.addEditListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (!evt.getPropertyName().equalsIgnoreCase(MeasureTool.EVENT_METRIC_CHANGED)) {
+                    final String mex = String.format("%s from %s to %s", evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                    lMexs.setText(mex);
+                    System.out.println(mex);
+                }
+            }
+        });
+        paneVisAid.linkTo(wwp);
+        paneBaseCarto.linkTo(wwp);
+        paneSSVisibility.linkTo(wwp);
     }
 
     /**
@@ -37,204 +60,1156 @@ public class TestFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         splitter = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
-        bAdd = new javax.swing.JButton();
-        bAdd2 = new javax.swing.JButton();
-        bChgColor = new javax.swing.JButton();
-        bResetColor = new javax.swing.JButton();
-        bFlyToPrimo = new javax.swing.JButton();
-        bFlyToPrimo1 = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 50), new java.awt.Dimension(0, 80), new java.awt.Dimension(32767, 30));
-        surfShapeLayersVisibilityPanel1 = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
-        visualAidsVisibilityPanel1 = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
-        wWindPanel1 = new net.falappa.wwind.widgets.WWindPanel();
+        pControls = new javax.swing.JPanel();
+        bDelAll = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        pSelMove = new javax.swing.JPanel();
+        txFtpNum = new javax.swing.JTextField();
+        txRulNum = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        bSelectF = new javax.swing.JButton();
+        bSelectR = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        bFlyTo = new javax.swing.JButton();
+        bViewTo = new javax.swing.JButton();
+        bJump = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        bZoomIn = new javax.swing.JButton();
+        bZoomOut = new javax.swing.JButton();
+        spZmFact = new javax.swing.JSpinner();
+        jLabel20 = new javax.swing.JLabel();
+        bFlyThreeFootprints = new javax.swing.JButton();
+        pViewSets = new javax.swing.JPanel();
+        paneVisAid = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
+        paneBaseCarto = new net.falappa.wwind.widgets.BaseCartoVisibilityPanel();
+        pAoi = new javax.swing.JPanel();
+        ccbLay3 = new net.falappa.swing.combobox.colorbox.ColorComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        bAOIClear = new javax.swing.JButton();
+        bAOI = new javax.swing.JButton();
+        bFlyAoi = new javax.swing.JButton();
+        bAoiInfo = new javax.swing.JButton();
+        pShapes = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        ccbFirstShape = new net.falappa.swing.combobox.colorbox.ColorComboBox();
+        bAddListnr = new javax.swing.JButton();
+        tgFirstShapeVisibility = new javax.swing.JToggleButton();
+        jLabel5 = new javax.swing.JLabel();
+        bDelListnr = new javax.swing.JButton();
+        bDelSlayer1 = new javax.swing.JButton();
+        bAddSLayer1 = new javax.swing.JButton();
+        bFirstShape = new javax.swing.JButton();
+        bClearSLayer1 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        bFirstShapeReset = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        tgVisibleLayer1 = new javax.swing.JToggleButton();
+        jLabel21 = new javax.swing.JLabel();
+        bAddSlayer2 = new javax.swing.JButton();
+        bSecondShape = new javax.swing.JButton();
+        bClearSlayer2 = new javax.swing.JButton();
+        chAnnoSlayer2 = new javax.swing.JCheckBox();
+        bDelSlayer2 = new javax.swing.JButton();
+        jLabel22 = new javax.swing.JLabel();
+        pEdit = new javax.swing.JPanel();
+        tbEditPoint = new javax.swing.JToggleButton();
+        tbEditCirc = new javax.swing.JToggleButton();
+        tbEditLine = new javax.swing.JToggleButton();
+        tbEditPoly = new javax.swing.JToggleButton();
+        chEdBarToggle = new javax.swing.JCheckBox();
+        bClear = new javax.swing.JButton();
+        bToAOI = new javax.swing.JButton();
+        bToggleEdit = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        chRubberband = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        paneSSVisibility = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
+        wwp = new net.falappa.wwind.widgets.WWindPanel();
+        lMexs = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Test");
+        setTitle("WWJTOOLKIT test app");
 
-        splitter.setResizeWeight(0.3);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
-
-        bAdd.setText("Add multipolygon");
-        bAdd.setAlignmentX(0.5F);
-        bAdd.addActionListener(new java.awt.event.ActionListener() {
+        bDelAll.setText("Remove all shape layers");
+        bDelAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAddActionPerformed(evt);
+                bDelAllActionPerformed(evt);
             }
         });
-        jPanel1.add(bAdd);
 
-        bAdd2.setText("Add anothrt multipolygon");
-        bAdd2.setAlignmentX(0.5F);
-        bAdd2.addActionListener(new java.awt.event.ActionListener() {
+        txFtpNum.setColumns(3);
+
+        txRulNum.setColumns(3);
+
+        jLabel11.setText("Footprint");
+
+        jLabel12.setText("Rule");
+
+        bSelectF.setText("Select and fly to");
+        bSelectF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAdd2ActionPerformed(evt);
+                bSelectFActionPerformed(evt);
             }
         });
-        jPanel1.add(bAdd2);
 
-        bChgColor.setText("Change color");
-        bChgColor.setAlignmentX(0.5F);
-        bChgColor.addActionListener(new java.awt.event.ActionListener() {
+        bSelectR.setText("Select");
+        bSelectR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bChgColorActionPerformed(evt);
+                bSelectRActionPerformed(evt);
             }
         });
-        jPanel1.add(bChgColor);
 
-        bResetColor.setText("Reset color");
-        bResetColor.setAlignmentX(0.5F);
-        bResetColor.addActionListener(new java.awt.event.ActionListener() {
+        jLabel10.setText("Selection by id");
+
+        jLabel3.setText("Eye animation");
+
+        bFlyTo.setText("Fly to lat lon 0° 0° elev 1000 km");
+        bFlyTo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bResetColorActionPerformed(evt);
+                bFlyToActionPerformed(evt);
             }
         });
-        jPanel1.add(bResetColor);
 
-        bFlyToPrimo.setText("Fly to first");
-        bFlyToPrimo.setAlignmentX(0.5F);
-        bFlyToPrimo.addActionListener(new java.awt.event.ActionListener() {
+        bViewTo.setText("lat lon 12° 42° elevation 100 km");
+        bViewTo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bFlyToPrimoActionPerformed(evt);
+                bViewToActionPerformed(evt);
             }
         });
-        jPanel1.add(bFlyToPrimo);
 
-        bFlyToPrimo1.setText("Fly-highlight second");
-        bFlyToPrimo1.setAlignmentX(0.5F);
-        bFlyToPrimo1.addActionListener(new java.awt.event.ActionListener() {
+        bJump.setText("elevation 10.000 Km");
+        bJump.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bFlyToPrimo1ActionPerformed(evt);
+                bJumpActionPerformed(evt);
             }
         });
-        jPanel1.add(bFlyToPrimo1);
-        jPanel1.add(filler1);
-        jPanel1.add(surfShapeLayersVisibilityPanel1);
-        jPanel1.add(visualAidsVisibilityPanel1);
 
-        splitter.setLeftComponent(jPanel1);
-        splitter.setRightComponent(wWindPanel1);
+        jLabel4.setText("Eye instant movement");
+
+        jLabel13.setText("Zoom");
+
+        bZoomIn.setText("In");
+        bZoomIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bZoomInActionPerformed(evt);
+            }
+        });
+
+        bZoomOut.setText("Out");
+        bZoomOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bZoomOutActionPerformed(evt);
+            }
+        });
+
+        spZmFact.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 50.0d, 0.1d));
+
+        jLabel20.setText("fact.");
+
+        bFlyThreeFootprints.setText("Fly to first three footprints");
+        bFlyThreeFootprints.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFlyThreeFootprintsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pSelMoveLayout = new javax.swing.GroupLayout(pSelMove);
+        pSelMove.setLayout(pSelMoveLayout);
+        pSelMoveLayout.setHorizontalGroup(
+            pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pSelMoveLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addGroup(pSelMoveLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bFlyTo)
+                            .addGroup(pSelMoveLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txRulNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bSelectR))
+                            .addGroup(pSelMoveLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txFtpNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bSelectF))
+                            .addComponent(bJump)
+                            .addGroup(pSelMoveLayout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bZoomIn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bZoomOut)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spZmFact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(bViewTo)
+                            .addComponent(bFlyThreeFootprints))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pSelMoveLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bZoomIn, bZoomOut});
+
+        pSelMoveLayout.setVerticalGroup(
+            pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pSelMoveLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txFtpNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bSelectF))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txRulNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(bSelectR))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bFlyTo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bFlyThreeFootprints)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bViewTo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bJump)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pSelMoveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(bZoomIn)
+                    .addComponent(bZoomOut)
+                    .addComponent(spZmFact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Select & Move", pSelMove);
+
+        javax.swing.GroupLayout pViewSetsLayout = new javax.swing.GroupLayout(pViewSets);
+        pViewSets.setLayout(pViewSetsLayout);
+        pViewSetsLayout.setHorizontalGroup(
+            pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pViewSetsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(paneVisAid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        pViewSetsLayout.setVerticalGroup(
+            pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pViewSetsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paneVisAid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("View Settings", pViewSets);
+
+        ccbLay3.setSelectedIndex(10);
+        ccbLay3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ccbLay3ItemStateChanged(evt);
+            }
+        });
+
+        jLabel14.setText("Color");
+
+        bAOIClear.setText("Clear");
+        bAOIClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAOIClearActionPerformed(evt);
+            }
+        });
+
+        bAOI.setText("Draw sample");
+        bAOI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAOIActionPerformed(evt);
+            }
+        });
+
+        bFlyAoi.setText("Fly to current");
+        bFlyAoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFlyAoiActionPerformed(evt);
+            }
+        });
+
+        bAoiInfo.setText("Info");
+        bAoiInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAoiInfoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pAoiLayout = new javax.swing.GroupLayout(pAoi);
+        pAoi.setLayout(pAoiLayout);
+        pAoiLayout.setHorizontalGroup(
+            pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pAoiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pAoiLayout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ccbLay3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pAoiLayout.createSequentialGroup()
+                        .addComponent(bAOI)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bFlyAoi))
+                    .addGroup(pAoiLayout.createSequentialGroup()
+                        .addComponent(bAOIClear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bAoiInfo)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pAoiLayout.setVerticalGroup(
+            pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pAoiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ccbLay3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAOI)
+                    .addComponent(bFlyAoi))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pAoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAOIClear)
+                    .addComponent(bAoiInfo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("AOI", pAoi);
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel15.setText("First shape");
+
+        ccbFirstShape.setSelectedIndex(8);
+        ccbFirstShape.setEnabled(false);
+        ccbFirstShape.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ccbFirstShapeItemStateChanged(evt);
+            }
+        });
+
+        bAddListnr.setText("Add");
+        bAddListnr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAddListnrActionPerformed(evt);
+            }
+        });
+
+        tgFirstShapeVisibility.setText("Toggle visibility");
+        tgFirstShapeVisibility.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tgFirstShapeVisibilityActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("Listener");
+
+        bDelListnr.setText("Del");
+        bDelListnr.setEnabled(false);
+        bDelListnr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bDelListnrActionPerformed(evt);
+            }
+        });
+
+        bDelSlayer1.setText("Del");
+        bDelSlayer1.setEnabled(false);
+        bDelSlayer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bDelSlayer1ActionPerformed(evt);
+            }
+        });
+
+        bAddSLayer1.setText("Add");
+        bAddSLayer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAddSLayer1ActionPerformed(evt);
+            }
+        });
+
+        bFirstShape.setText("Create random");
+        bFirstShape.setEnabled(false);
+        bFirstShape.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFirstShapeActionPerformed(evt);
+            }
+        });
+
+        bClearSLayer1.setText("Clear");
+        bClearSLayer1.setEnabled(false);
+        bClearSLayer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bClearSLayer1ActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel17.setText("Shapes");
+
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel18.setText("Layer \"footprints\"");
+
+        bFirstShapeReset.setText("Reset");
+        bFirstShapeReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFirstShapeResetActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel1.setText("Visibility");
+
+        tgVisibleLayer1.setText("Toggle");
+        tgVisibleLayer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tgVisibleLayer1ActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel21.setText("Layer \"rules\"");
+
+        bAddSlayer2.setText("Add");
+        bAddSlayer2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAddSlayer2ActionPerformed(evt);
+            }
+        });
+
+        bSecondShape.setText("Create random");
+        bSecondShape.setEnabled(false);
+        bSecondShape.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSecondShapeActionPerformed(evt);
+            }
+        });
+
+        bClearSlayer2.setText("Clear");
+        bClearSlayer2.setEnabled(false);
+        bClearSlayer2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bClearSlayer2ActionPerformed(evt);
+            }
+        });
+
+        chAnnoSlayer2.setSelected(true);
+        chAnnoSlayer2.setText("Show annotation on selection");
+        chAnnoSlayer2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chAnnoSlayer2ItemStateChanged(evt);
+            }
+        });
+
+        bDelSlayer2.setText("Del");
+        bDelSlayer2.setEnabled(false);
+        bDelSlayer2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bDelSlayer2ActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel22.setText("Shapes");
+
+        javax.swing.GroupLayout pShapesLayout = new javax.swing.GroupLayout(pShapes);
+        pShapes.setLayout(pShapesLayout);
+        pShapesLayout.setHorizontalGroup(
+            pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pShapesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pShapesLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bAddSLayer1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bDelSlayer1))
+                    .addGroup(pShapesLayout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bAddSlayer2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bDelSlayer2))
+                    .addGroup(pShapesLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
+                                        .addComponent(bAddListnr)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bDelListnr))
+                                    .addComponent(tgVisibleLayer1)))
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bFirstShape)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bClearSLayer1))
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tgFirstShapeVisibility)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
+                                        .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bFirstShapeReset))))
+                            .addComponent(chAnnoSlayer2)
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bSecondShape)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bClearSlayer2)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pShapesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddListnr, bDelListnr});
+
+        pShapesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddSlayer2, bDelSlayer2});
+
+        pShapesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddSLayer1, bDelSlayer1});
+
+        pShapesLayout.setVerticalGroup(
+            pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pShapesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(bAddSLayer1)
+                    .addComponent(bDelSlayer1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(bFirstShape)
+                    .addComponent(bClearSLayer1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(bAddListnr)
+                    .addComponent(bDelListnr))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(tgVisibleLayer1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bFirstShapeReset))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tgFirstShapeVisibility)
+                .addGap(18, 18, 18)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(bAddSlayer2)
+                    .addComponent(bDelSlayer2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bSecondShape)
+                    .addComponent(bClearSlayer2)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chAnnoSlayer2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Shapes", pShapes);
+
+        buttonGroup1.add(tbEditPoint);
+        tbEditPoint.setText("Point");
+        tbEditPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbEditPointActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(tbEditCirc);
+        tbEditCirc.setText("Circle");
+        tbEditCirc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbEditCircActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(tbEditLine);
+        tbEditLine.setText("Line");
+        tbEditLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbEditLineActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(tbEditPoly);
+        tbEditPoly.setSelected(true);
+        tbEditPoly.setText("Poly");
+        tbEditPoly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbEditPolyActionPerformed(evt);
+            }
+        });
+
+        chEdBarToggle.setText("Toggle edit bar");
+        chEdBarToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chEdBarToggleItemStateChanged(evt);
+            }
+        });
+
+        bClear.setText("Clear");
+        bClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bClearActionPerformed(evt);
+            }
+        });
+
+        bToAOI.setText("Convert in AOI");
+        bToAOI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bToAOIActionPerformed(evt);
+            }
+        });
+
+        bToggleEdit.setText("Start");
+        bToggleEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bToggleEditActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Shape");
+
+        chRubberband.setText("Rubberbanding");
+        chRubberband.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chRubberbandItemStateChanged(evt);
+            }
+        });
+
+        jButton2.setText("Fly to edit shape");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pEditLayout = new javax.swing.GroupLayout(pEdit);
+        pEdit.setLayout(pEditLayout);
+        pEditLayout.setHorizontalGroup(
+            pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chEdBarToggle)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
+                        .addComponent(bToggleEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bClear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bToAOI))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbEditPoly)
+                        .addGap(0, 0, 0)
+                        .addComponent(tbEditLine)
+                        .addGap(0, 0, 0)
+                        .addComponent(tbEditCirc)
+                        .addGap(0, 0, 0)
+                        .addComponent(tbEditPoint))
+                    .addComponent(chRubberband)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pEditLayout.setVerticalGroup(
+            pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tbEditPoly)
+                    .addComponent(tbEditLine)
+                    .addComponent(tbEditCirc)
+                    .addComponent(tbEditPoint)
+                    .addComponent(jLabel16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chRubberband)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bToggleEdit)
+                    .addComponent(bToAOI)
+                    .addComponent(bClear))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chEdBarToggle)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Editing", pEdit);
+
+        javax.swing.GroupLayout pControlsLayout = new javax.swing.GroupLayout(pControls);
+        pControls.setLayout(pControlsLayout);
+        pControlsLayout.setHorizontalGroup(
+            pControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(paneSSVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1)
+                    .addComponent(jSeparator1)
+                    .addComponent(bDelAll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        pControlsLayout.setVerticalGroup(
+            pControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bDelAll)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paneSSVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        splitter.setLeftComponent(pControls);
+        splitter.setRightComponent(wwp);
 
         getContentPane().add(splitter, java.awt.BorderLayout.CENTER);
 
-        setBounds(0, 0, 810, 630);
+        lMexs.setText("Status messages");
+        lMexs.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEtchedBorder(), javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4)));
+        getContentPane().add(lMexs, java.awt.BorderLayout.SOUTH);
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
-        ArrayList<LatLon> p1 = new ArrayList<>();
-        p1.add(LatLon.fromDegrees(-30, 0));
-        p1.add(LatLon.fromDegrees(-30, 10));
-        p1.add(LatLon.fromDegrees(4, 4));
-        ArrayList<LatLon> p2 = new ArrayList<>();
-        p2.add(LatLon.fromDegrees(10, 0));
-        p2.add(LatLon.fromDegrees(10, 10));
-        p2.add(LatLon.fromDegrees(4, 6));
-        List<List<LatLon>> mp = new ArrayList<>();
-        mp.add(p2);
-        mp.add(p1);
-        mpsl.addMultiPoly("primo", mp);
-        wWindPanel1.redraw();
-    }//GEN-LAST:event_bAddActionPerformed
+    private void bAOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAOIActionPerformed
+        wwp.setAOICircle(Position.fromDegrees(42, 12), 100000);
+        wwp.redraw();
+    }//GEN-LAST:event_bAOIActionPerformed
 
-    private void bChgColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bChgColorActionPerformed
-        try {
-            mpsl.setSurfShapeColor("primo", Color.red, 0.5);
-            wWindPanel1.redraw();
-        } catch (NoSuchShapeException ex) {
+    private void bFirstShapeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFirstShapeActionPerformed
+        WWindUtils.randPolys(wwp, LAY_FOOTPRINTS, PREFIX_FOOTPRINTS, 40, 80, 10, 70, 5, 5);
+    }//GEN-LAST:event_bFirstShapeActionPerformed
+
+    private void bAddSLayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddSLayer1ActionPerformed
+        final SurfShapesLayer lFoot = new SurfShapesLayer(LAY_FOOTPRINTS);
+        lFoot.setHighlightEvent(SelectEvent.RIGHT_CLICK);
+        wwp.addSurfShapeLayer(lFoot);
+        wwp.dumpLayerList();
+        bFirstShape.setEnabled(true);
+        bDelSlayer1.setEnabled(true);
+        bClearSLayer1.setEnabled(true);
+        ccbFirstShape.setEnabled(true);
+    }//GEN-LAST:event_bAddSLayer1ActionPerformed
+
+    private void bClearSLayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearSLayer1ActionPerformed
+        wwp.getSurfShapeLayer(LAY_FOOTPRINTS).removeAllShapes();
+        wwp.redraw();
+    }//GEN-LAST:event_bClearSLayer1ActionPerformed
+
+    private void bAddSlayer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddSlayer2ActionPerformed
+        wwp.addSurfShapeLayer(new SurfShapesLayer(LAY_RULES));
+        wwp.dumpLayerList();
+        bSecondShape.setEnabled(true);
+        bDelSlayer2.setEnabled(true);
+        bClearSlayer2.setEnabled(true);
+    }//GEN-LAST:event_bAddSlayer2ActionPerformed
+
+    private void bSecondShapeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSecondShapeActionPerformed
+        WWindUtils.randPolys(wwp, LAY_RULES, PREFIX_RULES);
+    }//GEN-LAST:event_bSecondShapeActionPerformed
+
+    private void bClearSlayer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearSlayer2ActionPerformed
+        wwp.getSurfShapeLayer(LAY_RULES).removeAllShapes();
+        wwp.redraw();
+    }//GEN-LAST:event_bClearSlayer2ActionPerformed
+
+    private void bDelAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelAllActionPerformed
+        wwp.removeAllSurfShapeLayers();
+        wwp.redraw();
+        wwp.dumpLayerList();
+    }//GEN-LAST:event_bDelAllActionPerformed
+
+    private void ccbLay3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbLay3ItemStateChanged
+        wwp.setAOIColor(ccbLay3.getSelectedColor());
+        wwp.redraw();
+    }//GEN-LAST:event_ccbLay3ItemStateChanged
+
+    private void bAddListnrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddListnrActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            ((ShapeSelectionSource) wwp.getSurfShapeLayer(LAY_FOOTPRINTS)).addShapeSelectionListener(shapeSelListnr);
+            bDelListnr.setEnabled(true);
+            bAddListnr.setEnabled(false);
         }
-    }//GEN-LAST:event_bChgColorActionPerformed
+    }//GEN-LAST:event_bAddListnrActionPerformed
 
-    private void bAdd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAdd2ActionPerformed
-        ArrayList<LatLon> p1 = new ArrayList<>();
-        p1.add(LatLon.fromDegrees(0, 20));
-        p1.add(LatLon.fromDegrees(0, 25));
-        p1.add(LatLon.fromDegrees(5, 25));
-        p1.add(LatLon.fromDegrees(5, 20));
-        ArrayList<LatLon> p2 = new ArrayList<>();
-        p2.add(LatLon.fromDegrees(10, 20));
-        p2.add(LatLon.fromDegrees(10, 25));
-        p2.add(LatLon.fromDegrees(15, 25));
-        p2.add(LatLon.fromDegrees(15, 20));
-        List<List<LatLon>> mp = new ArrayList<>();
-        mp.add(p2);
-        mp.add(p1);
-        mpsl.addMultiPoly("secondo", mp);
-        wWindPanel1.redraw();
-    }//GEN-LAST:event_bAdd2ActionPerformed
-
-    private void bResetColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResetColorActionPerformed
-        try {
-            mpsl.resetSurfShapeColor("primo");
-            wWindPanel1.redraw();
-        } catch (NoSuchShapeException ex) {
+    private final PropertyChangeListener shapeSelListnr = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            final String mex = String.format("%s from %s to %s", evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            System.out.println(mex);
+            lMexs.setText(mex);
         }
-    }//GEN-LAST:event_bResetColorActionPerformed
+    };
 
-    private void bFlyToPrimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyToPrimoActionPerformed
-        try {
-            mpsl.flyToShape("primo");
-        } catch (NoSuchShapeException ex) {
+    private void bDelListnrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelListnrActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            ((ShapeSelectionSource) wwp.getSurfShapeLayer(LAY_FOOTPRINTS)).removeShapeSelectionListener(shapeSelListnr);
+            bDelListnr.setEnabled(false);
+            bAddListnr.setEnabled(true);
         }
-    }//GEN-LAST:event_bFlyToPrimoActionPerformed
+    }//GEN-LAST:event_bDelListnrActionPerformed
 
-    private void bFlyToPrimo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyToPrimo1ActionPerformed
-        try {
-            mpsl.flyToHiglhlightShape("secondo");
-        } catch (NoSuchShapeException ex) {
+    private void bSelectFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSelectFActionPerformed
+        if (!txFtpNum.getText().isEmpty()) {
+            try {
+                wwp.getSurfShapeLayer(LAY_FOOTPRINTS).flyToHiglhlightShape(PREFIX_FOOTPRINTS.concat(txFtpNum.getText()));
+            } catch (NoSuchShapeException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
         }
-    }//GEN-LAST:event_bFlyToPrimo1ActionPerformed
+    }//GEN-LAST:event_bSelectFActionPerformed
+
+    private void bSelectRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSelectRActionPerformed
+        if (!txRulNum.getText().isEmpty()) {
+            try {
+                wwp.getSurfShapeLayer(LAY_RULES).highlightShape(PREFIX_RULES.concat(txRulNum.getText()));
+            } catch (NoSuchShapeException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_bSelectRActionPerformed
+
+    private void tbEditPolyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbEditPolyActionPerformed
+        wwp.setEditMode(WWindPanel.EditModes.POLYGON);
+    }//GEN-LAST:event_tbEditPolyActionPerformed
+
+    private void tbEditLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbEditLineActionPerformed
+        wwp.setEditMode(WWindPanel.EditModes.POLYLINE);
+    }//GEN-LAST:event_tbEditLineActionPerformed
+
+    private void tbEditCircActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbEditCircActionPerformed
+        wwp.setEditMode(WWindPanel.EditModes.CIRCLE);
+    }//GEN-LAST:event_tbEditCircActionPerformed
+
+    private void tbEditPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbEditPointActionPerformed
+        wwp.setEditMode(WWindPanel.EditModes.POINT);
+    }//GEN-LAST:event_tbEditPointActionPerformed
+
+    private void bToAOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bToAOIActionPerformed
+        if (wwp.hasEditShape()) {
+            wwp.editShapeToAOI();
+            wwp.editShapeClear();
+            wwp.redraw();
+        }
+    }//GEN-LAST:event_bToAOIActionPerformed
+
+    private void bClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearActionPerformed
+        wwp.editShapeClear();
+        wwp.redraw();
+    }//GEN-LAST:event_bClearActionPerformed
+
+    private void bAOIClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAOIClearActionPerformed
+        wwp.clearAOI();
+        wwp.redraw();
+    }//GEN-LAST:event_bAOIClearActionPerformed
+
+    private void bToggleEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bToggleEditActionPerformed
+        if (wwp.isEditing()) {
+            wwp.stopEditing();
+            bToggleEdit.setText("Start");
+        } else {
+            wwp.startEditing();
+            bToggleEdit.setText("Stop");
+        }
+    }//GEN-LAST:event_bToggleEditActionPerformed
+
+    private void chEdBarToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chEdBarToggleItemStateChanged
+        wwp.setEditBarVisible(chEdBarToggle.isSelected());
+    }//GEN-LAST:event_chEdBarToggleItemStateChanged
+
+    private void bAoiInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAoiInfoActionPerformed
+        StringBuilder sb = new StringBuilder("Area of Interest type: ");
+        if (wwp.hasAOI()) {
+            switch (wwp.getAOIType()) {
+                case CIRCLE:
+                    sb.append("Circle");
+                    sb.append("\nCenter: ").append(wwp.getAOICenter());
+                    sb.append("\nRadius: ").append(wwp.getAOIRadius());
+                    break;
+                case POINT:
+                    sb.append("Point");
+                    sb.append("\nCenter: ").append(wwp.getAOICenter());
+                    break;
+                case POLYGON:
+                    sb.append("Polygon");
+                    sb.append("\nCoords:\n");
+                    for (LatLon c : wwp.getAOICoordinates()) {
+                        sb.append(c).append("\n");
+                    }
+                    break;
+                case POLYLINE:
+                    sb.append("Polyline");
+                    sb.append("\nCoords:\n");
+                    for (LatLon c : wwp.getAOICoordinates()) {
+                        sb.append(c).append("\n");
+                    }
+                    break;
+                default:
+                    sb.append("None");
+            }
+        } else {
+            sb.append("None");
+        }
+        JOptionPane.showMessageDialog(this, sb.toString(), "AOI Info", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_bAoiInfoActionPerformed
+
+    private void bFlyAoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyAoiActionPerformed
+        wwp.flyToAOI();
+    }//GEN-LAST:event_bFlyAoiActionPerformed
+
+    private void ccbFirstShapeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ccbFirstShapeItemStateChanged
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            try {
+                wwp.getSurfShapeLayer(LAY_FOOTPRINTS).setSurfShapeColor(PREFIX_FOOTPRINTS + "1", ccbFirstShape.getSelectedColor(), 1.0);
+                wwp.redraw();
+            } catch (NoSuchShapeException ex) {
+                // ignored
+            }
+        }
+    }//GEN-LAST:event_ccbFirstShapeItemStateChanged
+
+    private void bFirstShapeResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFirstShapeResetActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            try {
+                wwp.getSurfShapeLayer(LAY_FOOTPRINTS).resetSurfShapeColor(PREFIX_FOOTPRINTS + "1");
+                wwp.redraw();
+            } catch (NoSuchShapeException ex) {
+                // ignored
+            }
+        }
+    }//GEN-LAST:event_bFirstShapeResetActionPerformed
+
+    private void tgFirstShapeVisibilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgFirstShapeVisibilityActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            try {
+                wwp.getSurfShapeLayer(LAY_FOOTPRINTS).setSurfShapeVisible(PREFIX_FOOTPRINTS + "1", !tgFirstShapeVisibility.isSelected());
+                wwp.redraw();
+            } catch (NoSuchShapeException ex) {
+                // ignored
+            }
+        }
+    }//GEN-LAST:event_tgFirstShapeVisibilityActionPerformed
+
+    private void tgVisibleLayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgVisibleLayer1ActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            wwp.setSurfShapeLayerVisible(LAY_FOOTPRINTS, !tgVisibleLayer1.isSelected());
+            wwp.redraw();
+        }
+    }//GEN-LAST:event_tgVisibleLayer1ActionPerformed
+
+    private void chRubberbandItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chRubberbandItemStateChanged
+        wwp.setEditRubberbanding(chRubberband.isSelected());
+    }//GEN-LAST:event_chRubberbandItemStateChanged
+
+    private void bFlyToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyToActionPerformed
+        wwp.flyToPoint(new Position(Angle.ZERO, Angle.ZERO, 1_000_000));
+    }//GEN-LAST:event_bFlyToActionPerformed
+
+    private void bViewToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bViewToActionPerformed
+        wwp.eyeToPoint(new Position(LatLon.fromDegrees(42, 12), 100_000));
+    }//GEN-LAST:event_bViewToActionPerformed
+
+    private void bJumpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bJumpActionPerformed
+        wwp.eyeToAltitude(10_000_000);
+    }//GEN-LAST:event_bJumpActionPerformed
+
+    private void bZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bZoomInActionPerformed
+        wwp.eyeZoomAltitude(-(double) spZmFact.getValue());
+    }//GEN-LAST:event_bZoomInActionPerformed
+
+    private void bZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bZoomOutActionPerformed
+        wwp.eyeZoomAltitude((double) spZmFact.getValue());
+    }//GEN-LAST:event_bZoomOutActionPerformed
+
+    private void chAnnoSlayer2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chAnnoSlayer2ItemStateChanged
+        if (wwp.hasSurfShapeLayer(LAY_RULES)) {
+            wwp.getSurfShapeLayer(LAY_RULES).setShowAnnotation(chAnnoSlayer2.isSelected());
+        }
+    }//GEN-LAST:event_chAnnoSlayer2ItemStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        wwp.flyToEditShape();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void bDelSlayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelSlayer1ActionPerformed
+        wwp.removeSurfShapeLayer(LAY_FOOTPRINTS);
+    }//GEN-LAST:event_bDelSlayer1ActionPerformed
+
+    private void bDelSlayer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelSlayer2ActionPerformed
+        wwp.removeSurfShapeLayer(LAY_RULES);
+    }//GEN-LAST:event_bDelSlayer2ActionPerformed
+
+    private void bFlyThreeFootprintsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFlyThreeFootprintsActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            try {
+                ArrayList<Object> threeList = new ArrayList<>(3);
+                final SurfShapeLayer shpLayer = wwp.getSurfShapeLayer(LAY_FOOTPRINTS);
+                shpLayer.resetAllSurfShapeColors();
+                shpLayer.setSurfShapeColor("Footprint 1", Color.red, 1);
+                threeList.add(shpLayer.getSurfShape("Footprint 1"));
+                shpLayer.setSurfShapeColor("Footprint 2", Color.red, 1);
+                threeList.add(shpLayer.getSurfShape("Footprint 2"));
+                shpLayer.setSurfShapeColor("Footprint 3", Color.red, 1);
+                threeList.add(shpLayer.getSurfShape("Footprint 3"));
+                wwp.flyToObjects(threeList);
+            } catch (NoSuchShapeException ex) {
+            }
+        }
+    }//GEN-LAST:event_bFlyThreeFootprintsActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        WWindPanel.setupPropsForWWind();
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // setup logging configuration
+            LogManager.getLogManager().readConfiguration(TestFrame.class.getResourceAsStream("/logging.properties"));
+        } catch (IOException | SecurityException ex) {
+            // ignore will continue with default logging
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        // setup WorldWind system properties
+        WWindPanel.setupPropsForWWind();
+        try {
+            javax.swing.UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            // ignore will use Metal L&F
+        }
+        /*
+         * Create and display the form
+         */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new TestFrame().setVisible(true);
+                final TestFrame frame = new TestFrame();
+                frame.setSize(1200, 800);
+                frame.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bAdd;
-    private javax.swing.JButton bAdd2;
-    private javax.swing.JButton bChgColor;
-    private javax.swing.JButton bFlyToPrimo;
-    private javax.swing.JButton bFlyToPrimo1;
-    private javax.swing.JButton bResetColor;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton bAOI;
+    private javax.swing.JButton bAOIClear;
+    private javax.swing.JButton bAddListnr;
+    private javax.swing.JButton bAddSLayer1;
+    private javax.swing.JButton bAddSlayer2;
+    private javax.swing.JButton bAoiInfo;
+    private javax.swing.JButton bClear;
+    private javax.swing.JButton bClearSLayer1;
+    private javax.swing.JButton bClearSlayer2;
+    private javax.swing.JButton bDelAll;
+    private javax.swing.JButton bDelListnr;
+    private javax.swing.JButton bDelSlayer1;
+    private javax.swing.JButton bDelSlayer2;
+    private javax.swing.JButton bFirstShape;
+    private javax.swing.JButton bFirstShapeReset;
+    private javax.swing.JButton bFlyAoi;
+    private javax.swing.JButton bFlyThreeFootprints;
+    private javax.swing.JButton bFlyTo;
+    private javax.swing.JButton bJump;
+    private javax.swing.JButton bSecondShape;
+    private javax.swing.JButton bSelectF;
+    private javax.swing.JButton bSelectR;
+    private javax.swing.JButton bToAOI;
+    private javax.swing.JButton bToggleEdit;
+    private javax.swing.JButton bViewTo;
+    private javax.swing.JButton bZoomIn;
+    private javax.swing.JButton bZoomOut;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private net.falappa.swing.combobox.colorbox.ColorComboBox ccbFirstShape;
+    private net.falappa.swing.combobox.colorbox.ColorComboBox ccbLay3;
+    private javax.swing.JCheckBox chAnnoSlayer2;
+    private javax.swing.JCheckBox chEdBarToggle;
+    private javax.swing.JCheckBox chRubberband;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JLabel lMexs;
+    private javax.swing.JPanel pAoi;
+    private javax.swing.JPanel pControls;
+    private javax.swing.JPanel pEdit;
+    private javax.swing.JPanel pSelMove;
+    private javax.swing.JPanel pShapes;
+    private javax.swing.JPanel pViewSets;
+    private net.falappa.wwind.widgets.BaseCartoVisibilityPanel paneBaseCarto;
+    private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel paneSSVisibility;
+    private net.falappa.wwind.widgets.VisualAidsVisibilityPanel paneVisAid;
+    private javax.swing.JSpinner spZmFact;
     private javax.swing.JSplitPane splitter;
-    private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel surfShapeLayersVisibilityPanel1;
-    private net.falappa.wwind.widgets.VisualAidsVisibilityPanel visualAidsVisibilityPanel1;
-    private net.falappa.wwind.widgets.WWindPanel wWindPanel1;
+    private javax.swing.JToggleButton tbEditCirc;
+    private javax.swing.JToggleButton tbEditLine;
+    private javax.swing.JToggleButton tbEditPoint;
+    private javax.swing.JToggleButton tbEditPoly;
+    private javax.swing.JToggleButton tgFirstShapeVisibility;
+    private javax.swing.JToggleButton tgVisibleLayer1;
+    private javax.swing.JTextField txFtpNum;
+    private javax.swing.JTextField txRulNum;
+    private net.falappa.wwind.widgets.WWindPanel wwp;
     // End of variables declaration//GEN-END:variables
 }
