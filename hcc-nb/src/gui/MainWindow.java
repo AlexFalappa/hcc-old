@@ -557,15 +557,16 @@ public class MainWindow extends javax.swing.JFrame {
         HashMap<String, SurfShapesLayer> layerMap = new HashMap<>();
         // extract registry packages
         XmlObject[] res = resp.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:RegistryPackage");
+        ArrayList<String> prodIds = new ArrayList<>(res.length);
         for (XmlObject xo : res) {
-            // extract pid
+            // extract product id
             XmlCursor xc = xo.newCursor();
             String pid = xc.getAttributeText(new QName("id"));
             xc.dispose();
+            prodIds.add(pid);
             // extract collection
             String collection = "None";
             XmlObject[] xpos = xo.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[@name='urn:ogc:def:slot:OGC-CSW-ebRIM-EO::parentIdentifier']");
-//            XmlObject[] xpos = xo.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[contains(@name,'parentIdentifier')]");
             if (xpos.length > 0) {
                 xc = xpos[0].newCursor();
                 xc.toFirstChild();
@@ -598,6 +599,7 @@ public class MainWindow extends javax.swing.JFrame {
             // add a polygon to the layer
             ssl.addSurfPoly(geopoints, pid);
         }
+        pViewSettings.setProductIds(prodIds);
         wwindPane.redraw();
         return res.length;
     }
@@ -675,9 +677,5 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (BackingStoreException ex) {
             // no prefs, do nothing
         }
-    }
-
-    public void resetNavigation() {
-        pViewSettings.reset();
     }
 }

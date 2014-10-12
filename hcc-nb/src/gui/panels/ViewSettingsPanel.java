@@ -15,11 +15,10 @@
  */
 package gui.panels;
 
-import gov.nasa.worldwind.render.SurfacePolygon;
-import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.prefs.Preferences;
-import javax.swing.Action;
-import javax.swing.JCheckBox;
+import net.falappa.wwind.layers.NoSuchShapeException;
+import net.falappa.wwind.layers.SurfShapeLayer;
 import net.falappa.wwind.widgets.WWindPanel;
 
 /**
@@ -29,56 +28,40 @@ import net.falappa.wwind.widgets.WWindPanel;
  */
 public class ViewSettingsPanel extends javax.swing.JPanel {
 
-//    private int currFtpIndex = -1;
-//    private FootprintsLayer footprints;
-//    private AOILayer aois;
-//    private MOILayer mois;
-//    private ExtentVisibilitySupport extVisSupport;
+    private int currPidIndex = -1;
+    private ArrayList<String> prodIds;
+    private WWindPanel wwp;
+
     public ViewSettingsPanel() {
         initComponents();
     }
 
     public void linkTo(WWindPanel wwp) {
+        this.wwp = wwp;
         baseVisibility.linkTo(wwp);
         visAidsVisibility.linkTo(wwp);
         sslVisibility.linkTo(wwp);
-        /*
-         LayerList layers = wwd.getModel().getLayers();
-         List<Layer> layersByClass = layers.getLayersByClass(MOILayer.class);
-         mois = (MOILayer) layersByClass.get(0);
-         layersByClass = layers.getLayersByClass(FootprintsLayer.class);
-         footprints = (FootprintsLayer) layersByClass.get(0);
-         link(chFootprints, wwd, footprints);
-         layersByClass = layers.getLayersByClass(AOILayer.class);
-         aois = (AOILayer) layersByClass.get(0);
-         link(chAoi, wwd, aois);
-         Layer layer = layers.getLayerByName("Scale bar");
-         link(chScale, wwd, layer);
-         layer = layers.getLayerByName("Compass");
-         link(chCompass, wwd, layer);
-         layer = layers.getLayerByName("World Map");
-         link(chMiniMap, wwd, layer);
-         layer = layers.getLayerByName("View Controls");
-         link(chViewContrl, wwd, layer);
-         layer = layers.getLayerByName("Lat-Lon Graticule");
-         link(chGraticule, wwd, layer);
-         layer = layers.getLayerByName("Place Names");
-         link(chPlaceNames, wwd, layer);
-         layer = layers.getLayerByName("Political Boundaries");
-         link(chBoundaries, wwd, layer);
-         layer = layers.getLayerByName("NASA Blue Marble Image");
-         link(chBMImage, wwd, layer);
-         layer = layers.getLayerByName("Blue Marble (WMS) 2004");
-         link(chBMWMS, wwd, layer);
-         layer = layers.getLayerByName("MS Virtual Earth Aerial");
-         link(chMsVirtEarth, wwd, layer);
-         layer = layers.getLayerByName("Bing Imagery");
-         link(chBing, wwd, layer);
-         */
     }
 
-    public void reset() {
-        //currFtpIndex = -1;
+    public void storePrefs(Preferences prefs) {
+        // create a subnode for view settings
+        Preferences vnode = prefs.node("view");
+        // store cartography and visual aids visibility
+        baseVisibility.storePrefs(vnode);
+        visAidsVisibility.storePrefs(vnode);
+    }
+
+    public void loadPrefs(Preferences prefs) {
+        // get view settings subnode
+        Preferences vnode = prefs.node("view");
+        // load cartography and visual aids visibility
+        baseVisibility.loadPrefs(vnode);
+        visAidsVisibility.loadPrefs(vnode);
+    }
+
+    public void setProductIds(ArrayList<String> prodIds) {
+        this.prodIds = prodIds;
+        currPidIndex = -1;
         taRecDetails.setText("");
     }
 
@@ -128,7 +111,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         taRecDetails.setColumns(10);
         taRecDetails.setRows(5);
         taRecDetails.setTabSize(4);
-        taRecDetails.setEnabled(false);
         jScrollPane1.setViewportView(taRecDetails);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -166,43 +148,32 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrevActionPerformed
-//        final int numRenderables = footprints.getNumRenderables();
-//        if (numRenderables > 0) {
-//            currFtpIndex--;
-//            if (currFtpIndex < 0) {
-//                currFtpIndex = numRenderables - 1;
-//            }
-//            // put the footprint into view
-//            SurfacePolygon poly = flyToCurrFootprint();
-//            // set details
-//            updateRecDetails(poly);
-//        }
+        //select previous product id
+        if (--currPidIndex < 0) {
+            currPidIndex = prodIds.size() - 1;
+        }
+        flyToCurrProdid();
     }//GEN-LAST:event_bPrevActionPerformed
 
     private void bNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNextActionPerformed
-//        final int numRenderables = footprints.getNumRenderables();
-//        if (numRenderables > 0) {
-//            currFtpIndex++;
-//            if (currFtpIndex == numRenderables) {
-//                currFtpIndex = 0;
-//            }
-//            // put the footprint into view
-//            SurfacePolygon poly = flyToCurrFootprint();
-//            // set details
-//            updateRecDetails(poly);
-//        }
+        //select next product id
+        currPidIndex = (++currPidIndex) % prodIds.size();
+        flyToCurrProdid();
     }//GEN-LAST:event_bNextActionPerformed
 
-    private SurfacePolygon flyToCurrFootprint() {
-//        SurfacePolygon poly = footprints.getPoly(currFtpIndex);
-//        footprints.flyToShape(poly);
-//        return poly;
-        return null;
-    }
-
-    private void updateRecDetails(SurfacePolygon poly) {
-        // TODO display also sensing start-stop times
-        //taRecDetails.setText(String.format("Record: %d\nId: %s\n", currFtpIndex, poly.getValue(AVKey.HOVER_TEXT)));
+    private void flyToCurrProdid() {
+        final String pid = prodIds.get(currPidIndex);
+        // put the surface shape into view
+        for (SurfShapeLayer ssl : wwp.getAllSurfShapeLayers()) {
+            try {
+                ssl.flyToHiglhlightShape(pid);
+                // TODO display also sensing start-stop times
+                taRecDetails.setText(String.format("Record: %d\nId: %s\n", currPidIndex, pid));
+                break;
+            } catch (NoSuchShapeException ex) {
+                //ignored will cycle
+            }
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,33 +187,4 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JTextArea taRecDetails;
     private net.falappa.wwind.widgets.VisualAidsVisibilityPanel visAidsVisibility;
     // End of variables declaration//GEN-END:variables
-
-    public void storePrefs(Preferences prefs) {
-        // create a subnode for view settings
-        Preferences vnode = prefs.node("view");
-        // store cartography and visual aids visibility
-        baseVisibility.storePrefs(vnode);
-        visAidsVisibility.storePrefs(vnode);
-    }
-
-    private void putChbInPrefs(JCheckBox chb, Preferences vnode) {
-        vnode.putBoolean(chb.getText(), chb.isSelected());
-    }
-
-    public void loadPrefs(Preferences prefs) {
-        // get view settings subnode
-        Preferences vnode = prefs.node("view");
-        // load cartography and visual aids visibility
-        baseVisibility.loadPrefs(vnode);
-        visAidsVisibility.loadPrefs(vnode);
-    }
-
-    private void getChbFromPrefs(JCheckBox chb, Preferences vnode, boolean flag) {
-        chb.setSelected(vnode.getBoolean(chb.getText(), flag));
-        // force action firing
-        final Action act = chb.getAction();
-        if (act != null) {
-            act.actionPerformed(new ActionEvent(chb, 1, "initial"));
-        }
-    }
 }
