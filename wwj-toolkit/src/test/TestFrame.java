@@ -1,6 +1,5 @@
 package test;
 
-import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.LogManager;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import net.falappa.wwind.layers.MultiPolygonShapesLayer;
 import net.falappa.wwind.layers.NoSuchShapeException;
-import net.falappa.wwind.layers.ShapeSelectionSource;
 import net.falappa.wwind.layers.SurfShapeLayer;
 import net.falappa.wwind.layers.SurfShapesLayer;
 import net.falappa.wwind.utils.WWindUtils;
@@ -97,10 +96,7 @@ public class TestFrame extends javax.swing.JFrame {
         pShapes = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         ccbFirstShape = new net.falappa.swing.combobox.colorbox.ColorComboBox();
-        bAddListnr = new javax.swing.JButton();
         tgFirstShapeVisibility = new javax.swing.JToggleButton();
-        jLabel5 = new javax.swing.JLabel();
-        bDelListnr = new javax.swing.JButton();
         bDelSlayer1 = new javax.swing.JButton();
         bAddSLayer1 = new javax.swing.JButton();
         bFirstShape = new javax.swing.JButton();
@@ -416,28 +412,10 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
 
-        bAddListnr.setText("Add");
-        bAddListnr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAddListnrActionPerformed(evt);
-            }
-        });
-
         tgFirstShapeVisibility.setText("Toggle visibility");
         tgFirstShapeVisibility.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tgFirstShapeVisibilityActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Listener");
-
-        bDelListnr.setText("Del");
-        bDelListnr.setEnabled(false);
-        bDelListnr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bDelListnrActionPerformed(evt);
             }
         });
 
@@ -475,6 +453,7 @@ public class TestFrame extends javax.swing.JFrame {
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel17.setText("Shapes");
 
+        jLabel18.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel18.setText("Layer \"footprints\"");
 
@@ -495,6 +474,7 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel21.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel21.setText("Layer \"rules\"");
 
@@ -547,6 +527,24 @@ public class TestFrame extends javax.swing.JFrame {
             .addGroup(pShapesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pShapesLayout.createSequentialGroup()
+                        .addGap(0, 13, Short.MAX_VALUE)
+                        .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tgVisibleLayer1))
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tgFirstShapeVisibility)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
+                                        .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bFirstShapeReset))))))
+                    .addGroup(pShapesLayout.createSequentialGroup()
+                        .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pShapesLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -563,32 +561,11 @@ public class TestFrame extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pShapesLayout.createSequentialGroup()
-                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pShapesLayout.createSequentialGroup()
-                                        .addComponent(bAddListnr)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(bDelListnr))
-                                    .addComponent(tgVisibleLayer1)))
-                            .addGroup(pShapesLayout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(bFirstShape)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(bClearSLayer1))
-                            .addGroup(pShapesLayout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tgFirstShapeVisibility)
-                                    .addGroup(pShapesLayout.createSequentialGroup()
-                                        .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(bFirstShapeReset))))
                             .addComponent(chAnnoSlayer2)
                             .addGroup(pShapesLayout.createSequentialGroup()
                                 .addComponent(jLabel22)
@@ -596,10 +573,9 @@ public class TestFrame extends javax.swing.JFrame {
                                 .addComponent(bSecondShape)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(bClearSlayer2)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-
-        pShapesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddListnr, bDelListnr});
 
         pShapesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bAddSlayer2, bDelSlayer2});
 
@@ -618,11 +594,6 @@ public class TestFrame extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(bFirstShape)
                     .addComponent(bClearSLayer1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(bAddListnr)
-                    .addComponent(bDelListnr))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -646,7 +617,7 @@ public class TestFrame extends javax.swing.JFrame {
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chAnnoSlayer2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Shapes", pShapes);
@@ -827,12 +798,13 @@ public class TestFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bAOIActionPerformed
 
     private void bFirstShapeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFirstShapeActionPerformed
-        WWindUtils.randPolys(wwp, LAY_FOOTPRINTS, PREFIX_FOOTPRINTS, 40, 80, 10, 70, 5, 5);
+        final SurfShapesLayer lFoot = (SurfShapesLayer) wwp.getSurfShapeLayer(LAY_FOOTPRINTS);
+        WWindUtils.randPolys(wwp, lFoot, PREFIX_FOOTPRINTS, 40, 80, 10, 70, 3, 3);
     }//GEN-LAST:event_bFirstShapeActionPerformed
 
     private void bAddSLayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddSLayer1ActionPerformed
         final SurfShapesLayer lFoot = new SurfShapesLayer(LAY_FOOTPRINTS);
-        lFoot.setHighlightEvent(SelectEvent.RIGHT_CLICK);
+        lFoot.addShapeSelectionListener(shapeSelListnr);
         wwp.addSurfShapeLayer(lFoot);
         wwp.dumpLayerList();
         bFirstShape.setEnabled(true);
@@ -847,7 +819,10 @@ public class TestFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bClearSLayer1ActionPerformed
 
     private void bAddSlayer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddSlayer2ActionPerformed
-        wwp.addSurfShapeLayer(new SurfShapesLayer(LAY_RULES));
+        final MultiPolygonShapesLayer lRule = new MultiPolygonShapesLayer(LAY_RULES);
+        lRule.setHighlightColor(Color.yellow);
+        lRule.setHighlightOpacity(1);
+        wwp.addSurfShapeLayer(lRule);
         wwp.dumpLayerList();
         bSecondShape.setEnabled(true);
         bDelSlayer2.setEnabled(true);
@@ -855,7 +830,8 @@ public class TestFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bAddSlayer2ActionPerformed
 
     private void bSecondShapeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSecondShapeActionPerformed
-        WWindUtils.randPolys(wwp, LAY_RULES, PREFIX_RULES);
+        final MultiPolygonShapesLayer lRule = (MultiPolygonShapesLayer) wwp.getSurfShapeLayer(LAY_RULES);
+        WWindUtils.randMultipolys(wwp, lRule, PREFIX_RULES, 0, 60, 0, 50, 8, 8);
     }//GEN-LAST:event_bSecondShapeActionPerformed
 
     private void bClearSlayer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearSlayer2ActionPerformed
@@ -874,14 +850,6 @@ public class TestFrame extends javax.swing.JFrame {
         wwp.redraw();
     }//GEN-LAST:event_ccbLay3ItemStateChanged
 
-    private void bAddListnrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddListnrActionPerformed
-        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
-            ((ShapeSelectionSource) wwp.getSurfShapeLayer(LAY_FOOTPRINTS)).addShapeSelectionListener(shapeSelListnr);
-            bDelListnr.setEnabled(true);
-            bAddListnr.setEnabled(false);
-        }
-    }//GEN-LAST:event_bAddListnrActionPerformed
-
     private final PropertyChangeListener shapeSelListnr = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
@@ -890,14 +858,6 @@ public class TestFrame extends javax.swing.JFrame {
             lMexs.setText(mex);
         }
     };
-
-    private void bDelListnrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDelListnrActionPerformed
-        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
-            ((ShapeSelectionSource) wwp.getSurfShapeLayer(LAY_FOOTPRINTS)).removeShapeSelectionListener(shapeSelListnr);
-            bDelListnr.setEnabled(false);
-            bAddListnr.setEnabled(true);
-        }
-    }//GEN-LAST:event_bDelListnrActionPerformed
 
     private void bSelectFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSelectFActionPerformed
         if (!txFtpNum.getText().isEmpty()) {
@@ -1023,6 +983,7 @@ public class TestFrame extends javax.swing.JFrame {
             try {
                 wwp.getSurfShapeLayer(LAY_FOOTPRINTS).resetSurfShapeColor(PREFIX_FOOTPRINTS + "1");
                 wwp.redraw();
+                ccbFirstShape.setSelectedColor(wwp.getSurfShapeLayer(LAY_FOOTPRINTS).getColor());
             } catch (NoSuchShapeException ex) {
                 // ignored
             }
@@ -1140,7 +1101,6 @@ public class TestFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAOI;
     private javax.swing.JButton bAOIClear;
-    private javax.swing.JButton bAddListnr;
     private javax.swing.JButton bAddSLayer1;
     private javax.swing.JButton bAddSlayer2;
     private javax.swing.JButton bAoiInfo;
@@ -1148,7 +1108,6 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton bClearSLayer1;
     private javax.swing.JButton bClearSlayer2;
     private javax.swing.JButton bDelAll;
-    private javax.swing.JButton bDelListnr;
     private javax.swing.JButton bDelSlayer1;
     private javax.swing.JButton bDelSlayer2;
     private javax.swing.JButton bFirstShape;
@@ -1187,7 +1146,6 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JLabel lMexs;
