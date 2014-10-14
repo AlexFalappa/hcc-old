@@ -34,7 +34,7 @@ import net.falappa.wwind.utils.WWindUtils;
  * registered to be notified of shape selection changes.
  * <p>
  * The layer offers other useful methods such as "flying to" and programatically highlighting a shape.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShapeLayer, ShapeSelectionSource {
@@ -54,7 +54,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Initializing constructor.
-     * <p>
+     *
      * @param name the name of this layer
      */
     public MultiPolygonShapesLayer(String name) {
@@ -106,22 +106,12 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         super.dispose();
     }
 
-    /**
-     * Tells if shape highlighting on the configured mouse event is enabled.
-     * <p>
-     * @see #setHighlightEvent(java.lang.String)
-     * @return true if enabled
-     */
+    @Override
     public boolean isHighlightingEnabled() {
         return highlightingEnabled;
     }
 
-    /**
-     * Toggles shape highlighting on the configured mouse event.
-     * <p>
-     * @see #setHighlightEvent(java.lang.String)
-     * @param highlightingEnabled true to enable, false otherwise
-     */
+    @Override
     public void setHighlightingEnabled(boolean highlightingEnabled) {
         this.highlightingEnabled = highlightingEnabled;
         // hide popup and clear highlighed object when disabling
@@ -134,10 +124,12 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         }
     }
 
+    @Override
     public boolean isShowAnnotation() {
         return showAnnotation;
     }
 
+    @Override
     public void setShowAnnotation(boolean showAnnotation) {
         this.showAnnotation = showAnnotation;
         if (!showAnnotation) {
@@ -146,21 +138,12 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         }
     }
 
-    /**
-     * Getter for the current highlighting mouse event.
-     * <p>
-     * @return one of the {@link SelectEvent} mouse clicking constants
-     */
+    @Override
     public String getHighlightEvent() {
         return highlightEvent;
     }
 
-    /**
-     * Setter for the current highlighting mouse click event.
-     * <p>
-     * @param highlightEvent one of {@link SelectEvent#LEFT_CLICK},{@link SelectEvent#LEFT_DOUBLE_CLICK} or {@link SelectEvent#RIGHT_CLICK}
-     * constants
-     */
+    @Override
     public void setHighlightEvent(String highlightEvent) {
         if (highlightEvent.equals(SelectEvent.LEFT_CLICK) || highlightEvent.equals(SelectEvent.LEFT_DOUBLE_CLICK) || highlightEvent.equals(
                 SelectEvent.RIGHT_CLICK)) {
@@ -192,39 +175,23 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         attr.setInteriorOpacity(NORM_INSIDE_OPACITY * opacity);
     }
 
-    /**
-     * Returns the current highlighting color.
-     * <p>
-     * @return the current color
-     */
+    @Override
     public Color getHighlightColor() {
         return attrHigh.getOutlineMaterial().getDiffuse();
     }
 
-    /**
-     * Set the current highlighting color.
-     * <p>
-     * @param col the new color
-     */
+    @Override
     public void setHighlightColor(Color col) {
         attrHigh.setOutlineMaterial(new Material(col));
         attrHigh.setInteriorMaterial(new Material(col.brighter().brighter()));
     }
 
-    /**
-     * Returns the current highlighting opacity.
-     * <p>
-     * @return the current opacity
-     */
+    @Override
     public double getHighlightOpacity() {
         return attrHigh.getOutlineOpacity();
     }
 
-    /**
-     * Set the current highlighting opacity.
-     * <p>
-     * @param opacity the new opacity
-     */
+    @Override
     public void setHighlightOpacity(double opacity) {
         attrHigh.setOutlineOpacity(opacity);
         attrHigh.setInteriorOpacity(HIGHL_INSIDE_OPACITY * opacity);
@@ -232,7 +199,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Adds or substitutes a named surface multi polygon.
-     * <p>
+     *
      * @param polys the outer boundaries of the polygons
      * @param id the shape identifier
      */
@@ -264,7 +231,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Accessor for a named polygonal surface shape.
-     * <p>
+     *
      * @param id the shape identifier
      * @return the requested shape or null if the shape was not a polygon
      * @throws NoSuchShapeException if no shape with the given name exists
@@ -322,6 +289,15 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
     }
 
     @Override
+    public void resetAllSurfShapeColors() {
+        for (ArrayList<SurfacePolygon> spList : multiPolysById.values()) {
+            for (SurfacePolygon sp : spList) {
+                sp.setAttributes(attr);
+            }
+        }
+    }
+
+    @Override
     public void setSurfShapeVisible(String id, boolean flag) throws NoSuchShapeException {
         List<SurfacePolygon> mp = getMultiPoly(id);
         for (SurfacePolygon sp : mp) {
@@ -344,20 +320,15 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         if (!multiPolysById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
         }
-        internalFlyTo(multiPolysById.get(id).get(0));
+        internalFlyTo(multiPolysById.get(id).get(0));// TODO to be perfected with extent visibility support
     }
 
-    /**
-     * Highlights the surface shape with the given name.
-     * <p>
-     * @param id the shape identifier
-     * @throws NoSuchShapeException if no shape with the given name exists
-     */
-    public void highlightMultiPoly(String id) throws NoSuchShapeException {
+    @Override
+    public void highlightShape(String id) throws NoSuchShapeException {
         if (!multiPolysById.containsKey(id)) {
             throw new NoSuchShapeException(String.format("No such shape: %s", id));
         }
-        internalHighlight(multiPolysById.get(id), true);// TODO to be perfected with extent visibility support
+        internalHighlight(multiPolysById.get(id), true);
     }
 
     @Override
@@ -371,7 +342,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Implementation of WorldWind selection API.
-     * <p>
+     *
      * @param event selection event
      */
     @Override
@@ -384,11 +355,15 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
             final Object topObject = event.getTopObject();
             if (topObject instanceof SurfacePolygon) {
                 SurfacePolygon shape = (SurfacePolygon) topObject;
-                if (shape.getValue(AVKey.LAYER).equals(this)) {
+                final Object layer = shape.getValue(AVKey.LAYER);
+                if (layer instanceof MultiPolygonShapesLayer) {
+                    MultiPolygonShapesLayer mpl = (MultiPolygonShapesLayer) layer;
+                    if (mpl.getName().equals(getName())) {
                     ArrayList<SurfacePolygon> mp = multiPolysById.get(shape.getValue(AVKey.HOVER_TEXT).toString());
                     internalHighlight(mp, false);
                 }
                 wwd.redraw();
+                }
             }
         }
     }
@@ -410,7 +385,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Load SurfShapesLayer preferences from Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to look for this class own node
      */
     public void loadPrefs(Preferences baseNode) {
@@ -419,7 +394,7 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
 
     /**
      * Store SurfShapesLayer preferences using Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to store this class own node
      */
     public void storePrefs(Preferences baseNode) {
