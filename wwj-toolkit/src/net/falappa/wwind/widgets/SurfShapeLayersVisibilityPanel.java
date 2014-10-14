@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import net.falappa.wwind.layers.SurfShapeLayer;
-import net.falappa.wwind.layers.SurfShapesLayer;
 
 /**
  * A panel listing and controlling the visibility of {@link SurfShapesLayer} objects managed by a {@link WWindPanel}.
@@ -48,10 +47,10 @@ public class SurfShapeLayersVisibilityPanel extends javax.swing.JPanel implement
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equalsIgnoreCase(WWindPanel.EVENT_SURF_LAYER_ADDED)) {
             WWindPanel wwp = (WWindPanel) evt.getSource();
-            addSurfShapeLayer((SurfShapesLayer) evt.getNewValue(), wwp.getWWCanvas());
+            addSurfShapeLayer((SurfShapeLayer) evt.getNewValue(), wwp.getWWCanvas());
         }
         if (evt.getPropertyName().equalsIgnoreCase(WWindPanel.EVENT_SURF_LAYER_REMOVED)) {
-            removeSurfShapeLayer((SurfShapesLayer) evt.getOldValue());
+            removeSurfShapeLayer((SurfShapeLayer) evt.getOldValue());
         }
     }
 
@@ -94,7 +93,7 @@ public class SurfShapeLayersVisibilityPanel extends javax.swing.JPanel implement
         scroller.repaint();
     }
 
-    private void removeSurfShapeLayer(SurfShapesLayer sl) {
+    private void removeSurfShapeLayer(SurfShapeLayer sl) {
         // remove component whose name equals the layer name (checbox and strut)
         for (Component cmp : pLayers.getComponents()) {
             if (cmp.getName().equalsIgnoreCase(sl.getName())) {

@@ -16,6 +16,7 @@ import gov.nasa.worldwind.render.SurfacePolygon;
 import gov.nasa.worldwind.render.SurfaceSector;
 import gov.nasa.worldwind.render.SurfaceShape;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.prefs.Preferences;
 import net.falappa.wwind.utils.WWindUtils;
 
@@ -184,15 +185,13 @@ public class SingleSurfShapeLayer extends RenderableLayer {
         if (!hasShape()) {
             return;
         }
-        Sector sector;
         if (current instanceof SurfaceShape) {
             SurfaceShape shape = (SurfaceShape) current;
-            sector = Sector.boundingSector(shape.getLocations(wwd.getModel().getGlobe()));
+            WWindUtils.flyToObjects(wwd, Arrays.asList(shape));
         } else {
             Path shape = (Path) current;
-            sector = Sector.boundingSector(shape.getPositions());
+            WWindUtils.flyToObjects(wwd, Arrays.asList(shape));
         }
-        WWindUtils.flyToSector(wwd, sector);
     }
 
     /**
