@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
-public interface SurfShapeLayer extends Layer {
+public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Returns the current color of all layer shapes.
@@ -78,6 +78,11 @@ public interface SurfShapeLayer extends Layer {
      * @throws NoSuchShapeException if no shape with the given name exists
      */
     void resetSurfShapeColor(String id) throws NoSuchShapeException;
+
+    /**
+     * Reset the color and opacity of all surface shapes to those of the layer.
+     */
+    public void resetAllSurfShapeColors();
 
     /**
      * Toggles the visibility of the surface shape with the given name.
