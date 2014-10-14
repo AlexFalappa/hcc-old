@@ -25,6 +25,7 @@ import gov.nasa.worldwindx.examples.util.StatusLayer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -38,7 +39,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import net.falappa.wwind.layers.EditableMarkerLayer;
 import net.falappa.wwind.layers.ShapeSelectionSource;
@@ -97,6 +100,8 @@ public class WWindPanel extends javax.swing.JPanel {
     private MeasureTool mt = null;
     private EditableMarkerLayer eml = null;
     private EditButtonsPanel editBtnsPanel = null;
+    private LayerSettingsDialog layerSettingsDialog = null;
+    private JButton bLayerSettings = null;
 
     static {
         // set the WorldWind layers configuration file property
@@ -398,6 +403,40 @@ public class WWindPanel extends javax.swing.JPanel {
             pTop.add(Box.createHorizontalStrut(12), 3);
         }
         editBtnsPanel.setVisible(flag);
+        pTop.revalidate();
+    }
+
+    /**
+     * Shows/hides the layer settings button.
+     * <p>
+     * Layer settings button is hidden by default.
+     * <p>
+     * @param flag true to show the button
+     */
+    public void setLayerSettingsButtonVisible(boolean flag) {
+        // lazily construct the dialog
+        if (layerSettingsDialog == null) {
+            layerSettingsDialog = new LayerSettingsDialog((Frame) SwingUtilities.getAncestorOfClass(javax.swing.JFrame.class, this));
+            layerSettingsDialog.linkTo(this);
+            layerSettingsDialog.pack();
+            layerSettingsDialog.setLocationRelativeTo(this);
+        }
+        // lazily construct the button and place it on the toolbar
+        if (bLayerSettings == null) {
+            bLayerSettings = new JButton();
+            bLayerSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                    "/com/telespazio/wwind/widgets/img/glyphicons_114_list.png"))); // NOI18N
+            bLayerSettings.setToolTipText("Layer settings");
+            bLayerSettings.setMargin(new java.awt.Insets(0, 0, 0, 0));
+            bLayerSettings.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    layerSettingsDialog.setVisible(true);
+                }
+            });
+            pTop.add(Box.createHorizontalStrut(6), pTop.getComponentCount());
+            pTop.add(bLayerSettings, pTop.getComponentCount());
+        }
+        bLayerSettings.setVisible(flag);
         pTop.revalidate();
     }
 
@@ -935,17 +974,8 @@ public class WWindPanel extends javax.swing.JPanel {
         layers.add(slayer);
         // add a view controls layer and register a controller for it.
         ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
-        wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
         layers.add(viewControlsLayer);
-        // add a layer list layer
-//        LayerManagerLayer managerLayer = new LayerManagerLayer(wwCanvas);
-//        managerLayer.setFont(UIManager.getFont("Label.font"));
-//        managerLayer.setPosition(AVKey.NORTHEAST);
-//        managerLayer.setBorderWidth(5);
-//        managerLayer.setMinimized(true);
-//        managerLayer.setComponentDragEnabled(false);
-//        managerLayer.setLayerDragEnabled(false);
-//        layers.add(managerLayer);
+        wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
     }
 
     // lazily construct the MeasureTool and the EditableMarkerLayer
