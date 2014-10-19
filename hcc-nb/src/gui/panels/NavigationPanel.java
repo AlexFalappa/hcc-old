@@ -16,47 +16,29 @@
 package gui.panels;
 
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 import net.falappa.wwind.layers.NoSuchShapeException;
 import net.falappa.wwind.layers.SurfShapeLayer;
 import net.falappa.wwind.widgets.WWindPanel;
 
 /**
- * Globe view settings and other view manipulations.
+ * Navigation of search results.
  * <p>
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
-public class ViewSettingsPanel extends javax.swing.JPanel {
+public class NavigationPanel extends javax.swing.JPanel {
 
     private int currPidIndex = -1;
     private ArrayList<String> prodIds;
     private WWindPanel wwp;
 
-    public ViewSettingsPanel() {
+    public NavigationPanel() {
         initComponents();
     }
 
     public void linkTo(WWindPanel wwp) {
         this.wwp = wwp;
-        baseVisibility.linkTo(wwp);
-        visAidsVisibility.linkTo(wwp);
-        sslVisibility.linkTo(wwp);
-    }
-
-    public void storePrefs(Preferences prefs) {
-        // create a subnode for view settings
-        Preferences vnode = prefs.node("view");
-        // store cartography and visual aids visibility
-        baseVisibility.storePrefs(vnode);
-        visAidsVisibility.storePrefs(vnode);
-    }
-
-    public void loadPrefs(Preferences prefs) {
-        // get view settings subnode
-        Preferences vnode = prefs.node("view");
-        // load cartography and visual aids visibility
-        baseVisibility.loadPrefs(vnode);
-        visAidsVisibility.loadPrefs(vnode);
+        bNext.setEnabled(true);
+        bPrev.setEnabled(true);
     }
 
     public void setProductIds(ArrayList<String> prodIds) {
@@ -79,9 +61,6 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
         bNext = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taRecDetails = new javax.swing.JTextArea();
-        visAidsVisibility = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
-        baseVisibility = new net.falappa.wwind.widgets.BaseCartoVisibilityPanel();
-        sslVisibility = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Results navigation");
@@ -90,6 +69,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
         bPrev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_224_chevron-left.png"))); // NOI18N
         bPrev.setText("Previous");
+        bPrev.setEnabled(false);
         bPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bPrevActionPerformed(evt);
@@ -99,6 +79,7 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
 
         bNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images_16x16/glyphicons_223_chevron-right.png"))); // NOI18N
         bNext.setText("Next");
+        bNext.setEnabled(false);
         bNext.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         bNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,24 +101,15 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(sslVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(visAidsVisibility, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(baseVisibility, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(sslVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(baseVisibility, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(visAidsVisibility, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -179,12 +151,9 @@ public class ViewSettingsPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bNext;
     private javax.swing.JButton bPrev;
-    private net.falappa.wwind.widgets.BaseCartoVisibilityPanel baseVisibility;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel sslVisibility;
     private javax.swing.JTextArea taRecDetails;
-    private net.falappa.wwind.widgets.VisualAidsVisibilityPanel visAidsVisibility;
     // End of variables declaration//GEN-END:variables
 }

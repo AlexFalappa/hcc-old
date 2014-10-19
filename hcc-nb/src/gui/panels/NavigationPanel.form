@@ -19,12 +19,9 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="sslVisibility" max="32767" attributes="0"/>
-                  <Component id="jPanel3" alignment="1" pref="0" max="32767" attributes="0"/>
+                  <Component id="jPanel3" alignment="1" max="32767" attributes="0"/>
                   <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="visAidsVisibility" alignment="0" max="32767" attributes="0"/>
-                  <Component id="baseVisibility" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -32,14 +29,8 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="sslVisibility" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="baseVisibility" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="visAidsVisibility" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
@@ -70,6 +61,7 @@
               <Image iconType="3" name="/gui/images_16x16/glyphicons_224_chevron-left.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Previous"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bPrevActionPerformed"/>
@@ -81,6 +73,7 @@
               <Image iconType="3" name="/gui/images_16x16/glyphicons_223_chevron-right.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Next"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="10"/>
           </Properties>
           <Events>
@@ -106,11 +99,5 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="net.falappa.wwind.widgets.VisualAidsVisibilityPanel" name="visAidsVisibility">
-    </Component>
-    <Component class="net.falappa.wwind.widgets.BaseCartoVisibilityPanel" name="baseVisibility">
-    </Component>
-    <Component class="net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel" name="sslVisibility">
-    </Component>
   </SubComponents>
 </Form>
