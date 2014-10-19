@@ -1,14 +1,4 @@
-/*
- * Copyright (C) 2012-2014 Telespazio S.p.A. - A Finmeccanica / Thales Company
- * All rights reserved.
- *
- * This document discloses subject matter in which Telespazio S.p.A. has
- * proprietary rights. Recipient of the document shall not duplicate, use or
- * disclose in whole or in part, information contained herein except for or on
- * behalf of Telespazio S.p.A. to fulfill the purpose for which the document was
- * delivered to him.
- */
-package com.telespazio.wwind.widgets;
+package net.falappa.wwind.widgets;
 
 /**
  * Modeless dialog grouping a {@link BaseCartoVisibilityPanel}, a {@link VisualAidsVisibilityPanel} and a
@@ -58,9 +48,9 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pSurfShpLayers = new com.telespazio.wwind.widgets.SurfShapeLayersVisibilityPanel();
-        pVisAids = new com.telespazio.wwind.widgets.VisualAidsVisibilityPanel();
-        pBaseCarto = new com.telespazio.wwind.widgets.BaseCartoVisibilityPanel();
+        pSurfShpLayers = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
+        pVisAids = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
+        pBaseCarto = new net.falappa.wwind.widgets.BaseCartoVisibilityPanel();
 
         setTitle("Layer settings");
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -95,8 +85,8 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.telespazio.wwind.widgets.BaseCartoVisibilityPanel pBaseCarto;
-    private com.telespazio.wwind.widgets.SurfShapeLayersVisibilityPanel pSurfShpLayers;
-    private com.telespazio.wwind.widgets.VisualAidsVisibilityPanel pVisAids;
+    private net.falappa.wwind.widgets.BaseCartoVisibilityPanel pBaseCarto;
+    private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel pSurfShpLayers;
+    private net.falappa.wwind.widgets.VisualAidsVisibilityPanel pVisAids;
     // End of variables declaration//GEN-END:variables
 }

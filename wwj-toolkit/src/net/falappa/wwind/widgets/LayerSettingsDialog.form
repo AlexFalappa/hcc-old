@@ -56,11 +56,11 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.telespazio.wwind.widgets.SurfShapeLayersVisibilityPanel" name="pSurfShpLayers">
+    <Component class="net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel" name="pSurfShpLayers">
     </Component>
-    <Component class="com.telespazio.wwind.widgets.VisualAidsVisibilityPanel" name="pVisAids">
+    <Component class="net.falappa.wwind.widgets.VisualAidsVisibilityPanel" name="pVisAids">
     </Component>
-    <Component class="com.telespazio.wwind.widgets.BaseCartoVisibilityPanel" name="pBaseCarto">
+    <Component class="net.falappa.wwind.widgets.BaseCartoVisibilityPanel" name="pBaseCarto">
     </Component>
   </SubComponents>
 </Form>
