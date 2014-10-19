@@ -9,7 +9,7 @@ Within this project a series of data models and protocols have been designed to 
 
 **hcc** deals with catalogue browsing of earth observation product and offers a visual graphic interface for issuing catalogue queries.
 
-![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc-0.7.png)
+![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc-0.8.png)
 
 Features
 --------
@@ -30,12 +30,12 @@ Features
 Changelog
 ---------
 
-**v0.8**   ??/??/2014
+**v0.8**   19/10/2014
 
 * GetRecords results are grouped by collection and put in separate layers
-* New footprints layers visibility, color and opacity controls
-* New visibility panels for base cartography and visual aids
-* Redesign of spatial constraints widget layout
+* Removed right pane: footprints layers visibility, color and opacity controls together with visibility for base cartography and visual aids
+are now in a separate modeless dialog
+* Left pane: redesign of spatial constraints widget layout and integration of the navigation panel
 * Internal refactoring and enhancements
 
 **v0.7**
