@@ -1,5 +1,7 @@
 package net.falappa.wwind.widgets;
 
+import java.util.prefs.Preferences;
+
 /**
  * Modeless dialog grouping a {@link BaseCartoVisibilityPanel}, a {@link VisualAidsVisibilityPanel} and a
  * {@link SurfShapeLayersVisibilityPanel} together.
@@ -38,6 +40,16 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
         pSurfShpLayers.linkTo(wwp);
         pBaseCarto.linkTo(wwp);
         pVisAids.linkTo(wwp);
+    }
+
+    public void loadPrefs(Preferences viewPrefs) {
+        pBaseCarto.loadPrefs(viewPrefs);
+        pVisAids.loadPrefs(viewPrefs);
+    }
+
+    public void storePrefs(Preferences viewPrefs) {
+        pBaseCarto.storePrefs(viewPrefs);
+        pVisAids.storePrefs(viewPrefs);
     }
 
     /**
