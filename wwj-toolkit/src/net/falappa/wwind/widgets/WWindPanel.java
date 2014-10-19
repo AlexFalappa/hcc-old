@@ -425,7 +425,7 @@ public class WWindPanel extends javax.swing.JPanel {
         if (bLayerSettings == null) {
             bLayerSettings = new JButton();
             bLayerSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                    "/com/telespazio/wwind/widgets/img/glyphicons_114_list.png"))); // NOI18N
+                    "/net/falappa/wwind/widgets/img/glyphicons_114_list.png"))); // NOI18N
             bLayerSettings.setToolTipText("Layer settings");
             bLayerSettings.setMargin(new java.awt.Insets(0, 0, 0, 0));
             bLayerSettings.addActionListener(new java.awt.event.ActionListener() {
@@ -864,8 +864,12 @@ public class WWindPanel extends javax.swing.JPanel {
      * @param baseNode the root node under which to look for this class own node
      */
     public void loadPrefs(Preferences baseNode) {
-        // TODO caricamento da preferences
-        // TODO delegare anche ai layers??
+        // store layer settings
+        Preferences viewPrefs = baseNode.node("view");
+        if (layerSettingsDialog != null) {
+            layerSettingsDialog.loadPrefs(viewPrefs);
+        }
+        // TODO delegate to layer too??
     }
 
     /**
@@ -874,8 +878,12 @@ public class WWindPanel extends javax.swing.JPanel {
      * @param baseNode the root node under which to store this class own node
      */
     public void storePrefs(Preferences baseNode) {
-        // TODO memorizzazione preferences
-        // TODO delegare anche ai layers??
+        // store layer settings
+        Preferences viewPrefs = baseNode.node("view");
+        if (layerSettingsDialog != null) {
+            layerSettingsDialog.storePrefs(viewPrefs);
+        }
+        // TODO delegate to layer too??
     }
 
     /**
