@@ -27,26 +27,10 @@ Features
 * Persistence of catalogue definitions and view settings between invocations
 * Several Look & Feels available
 
-Changelog
----------
-
-**v0.8**   19/10/2014
-
-* GetRecords results are grouped by collection and put in separate layers
-* Removed right pane: footprints layers visibility, color and opacity controls together with visibility for base cartography and visual aids
-are now in a separate modeless dialog
-* Left pane: redesign of spatial constraints widget layout and integration of the navigation panel
-* Internal refactoring and enhancements
-
-**v0.7**
-
-* First public relelase
-
 Building
 --------
 
-hcc is written in Java, this repository contains three linked NetBeans projects. It uses the NASA WorldWind SDK v 2.0.0 for map and
-globe display. WorldWind in turn uses the JOGL library as Java-OpenGL bindings.
+hcc is written in Java, this repository contains three linked NetBeans projects. Dependencies are included for developer convenience.
 
 ### Tools
 
