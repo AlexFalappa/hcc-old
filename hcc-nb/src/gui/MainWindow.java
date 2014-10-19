@@ -71,7 +71,8 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (AxisFault ex) {
             ex.printStackTrace(System.err);
         }
-        pViewSettings.linkTo(wwindPane);
+        wwindPane.setLayerSettingsButtonVisible(true);
+        pNavigation.linkTo(wwindPane);
         loadPrefs();
     }
 
@@ -131,6 +132,7 @@ public class MainWindow extends javax.swing.JFrame {
         pTime = new gui.panels.TimeWindowPanel();
         pGeo = new gui.panels.GeoAreaPanel();
         pSearchButons = new gui.panels.SearchButtonsPanel();
+        pNavigation = new gui.panels.NavigationPanel();
         pToolBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cbCatalogues = new javax.swing.JComboBox();
@@ -140,7 +142,6 @@ public class MainWindow extends javax.swing.JFrame {
         bEditCat = new javax.swing.JButton();
         bInfo = new javax.swing.JButton();
         bSettings = new javax.swing.JButton();
-        pViewSettings = new gui.panels.ViewSettingsPanel();
         wwindPane = new net.falappa.wwind.widgets.WWindPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -159,19 +160,23 @@ public class MainWindow extends javax.swing.JFrame {
             pQueryParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pCollections, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pSearchButons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pTime, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-            .addComponent(pGeo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pTime, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(pGeo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(pNavigation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pQueryParamsLayout.setVerticalGroup(
             pQueryParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pQueryParamsLayout.createSequentialGroup()
-                .addComponent(pCollections, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pCollections, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(pTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(pGeo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
-                .addComponent(pSearchButons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(pSearchButons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(pNavigation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         getContentPane().add(pQueryParams, java.awt.BorderLayout.WEST);
@@ -248,7 +253,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEditCat)
                 .addGap(5, 5, 5)
-                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addComponent(lMexs, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -279,7 +284,6 @@ public class MainWindow extends javax.swing.JFrame {
         pToolBarLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bInfo, bSettings});
 
         getContentPane().add(pToolBar, java.awt.BorderLayout.PAGE_START);
-        getContentPane().add(pViewSettings, java.awt.BorderLayout.LINE_END);
 
         wwindPane.setBottomBar(true);
         getContentPane().add(wwindPane, java.awt.BorderLayout.CENTER);
@@ -369,11 +373,11 @@ public class MainWindow extends javax.swing.JFrame {
     public javax.swing.JLabel lMexs;
     private gui.panels.CollectionsPanel pCollections;
     private gui.panels.GeoAreaPanel pGeo;
+    private gui.panels.NavigationPanel pNavigation;
     private javax.swing.JPanel pQueryParams;
     private gui.panels.SearchButtonsPanel pSearchButons;
     private gui.panels.TimeWindowPanel pTime;
     private javax.swing.JPanel pToolBar;
-    private gui.panels.ViewSettingsPanel pViewSettings;
     public net.falappa.wwind.widgets.WWindPanel wwindPane;
     // End of variables declaration//GEN-END:variables
 
@@ -596,7 +600,7 @@ public class MainWindow extends javax.swing.JFrame {
             // add a polygon to the layer
             ssl.addSurfPoly(geopoints, pid);
         }
-        pViewSettings.setProductIds(prodIds);
+        pNavigation.setProductIds(prodIds);
         wwindPane.redraw();
         return res.length;
     }
@@ -632,7 +636,7 @@ public class MainWindow extends javax.swing.JFrame {
         // get preferences API node
         Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
         // save view settings
-        pViewSettings.storePrefs(prefs);
+        wwindPane.storePrefs(prefs);
         // save catalogue definitions
         Preferences pCatalogs = prefs.node("catalogues");
         for (int i = 0; i < dcmCatalogues.getSize(); i++) {
@@ -661,7 +665,7 @@ public class MainWindow extends javax.swing.JFrame {
             // get preferences API node
             Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
             // load view settings
-            pViewSettings.loadPrefs(prefs);
+            wwindPane.loadPrefs(prefs);
             // load catalogue definitions
             Preferences pCatalogs = prefs.node("catalogues");
             final String[] nodes = pCatalogs.childrenNames();
