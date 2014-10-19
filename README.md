@@ -9,6 +9,8 @@ Within this project a series of data models and protocols have been designed to 
 
 **hcc** deals with catalogue browsing of earth observation product and offers a visual graphic interface for issuing catalogue queries.
 
+![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc-0.7.png)
+
 Features
 --------
 
@@ -25,7 +27,33 @@ Features
 * Persistence of catalogue definitions and view settings between invocations
 * Several Look & Feels available
 
-Screenshot
-----------
+Changelog
+---------
 
-![hcc screenshot](https://github.com/AlexFalappa/hcc/raw/master/hcc-0.7.png)
+**v0.8**   ??/??/2014
+
+* GetRecords results are grouped by collection and put in separate layers
+* New footprints layers visibility, color and opacity controls
+* New visibility panels for base cartography and visual aids
+* Redesign of spatial constraints widget layout
+* Internal refactoring and enhancements
+
+**v0.7**
+
+* First public relelase
+
+Building
+--------
+
+hcc is written in Java, this repository contains three linked NetBeans projects. It uses the NASA WorldWind SDK v 2.0.0 for map and
+globe display. WorldWind in turn uses the JOGL library as Java-OpenGL bindings.
+
+### Tools
+
+* Java Development Kit version 7 (developed and tested with Oracle JDK)
+* NetBeans IDE (developed and tested with v8.0.1)
+
+### Notes
+
+It's recommended to choose the JDK 7 as default Java Platform for NetBeans, as the projects do not explicitly require a Java 7 platform.
+If you have NetBeans running on a JDK 8 assign a Java Platform explicitly.
