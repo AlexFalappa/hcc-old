@@ -10,8 +10,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.LogManager;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import net.falappa.wwind.layers.MultiPolygonShapesLayer;
 import net.falappa.wwind.layers.NoSuchShapeException;
@@ -49,6 +51,7 @@ public class TestFrame extends javax.swing.JFrame {
         paneVisAid.linkTo(wwp);
         paneBaseCarto.linkTo(wwp);
         paneSSVisibility.linkTo(wwp);
+        wwp.setLayerSettingsButtonVisible(true);
     }
 
     /**
@@ -113,6 +116,7 @@ public class TestFrame extends javax.swing.JFrame {
         chAnnoSlayer2 = new javax.swing.JCheckBox();
         bDelSlayer2 = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
+        bFirstEdit = new javax.swing.JButton();
         pEdit = new javax.swing.JPanel();
         tbEditPoint = new javax.swing.JToggleButton();
         tbEditCirc = new javax.swing.JToggleButton();
@@ -125,6 +129,9 @@ public class TestFrame extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         chRubberband = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        bEditPoly = new javax.swing.JButton();
+        bEditCircle = new javax.swing.JButton();
+        bEditLocations = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         paneSSVisibility = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
         wwp = new net.falappa.wwind.widgets.WWindPanel();
@@ -520,6 +527,13 @@ public class TestFrame extends javax.swing.JFrame {
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel22.setText("Shapes");
 
+        bFirstEdit.setText("Edit");
+        bFirstEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFirstEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pShapesLayout = new javax.swing.GroupLayout(pShapes);
         pShapes.setLayout(pShapesLayout);
         pShapesLayout.setHorizontalGroup(
@@ -538,7 +552,10 @@ public class TestFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
                                     .addComponent(tgFirstShapeVisibility)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bFirstEdit))
                                     .addGroup(pShapesLayout.createSequentialGroup()
                                         .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -604,7 +621,9 @@ public class TestFrame extends javax.swing.JFrame {
                     .addComponent(ccbFirstShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bFirstShapeReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(tgFirstShapeVisibility)
+                    .addComponent(bFirstEdit))
                 .addGap(18, 18, 18)
                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
@@ -699,12 +718,34 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
 
+        bEditPoly.setText("Start with polygon");
+        bEditPoly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditPolyActionPerformed(evt);
+            }
+        });
+
+        bEditCircle.setText("Start with circle");
+        bEditCircle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditCircleActionPerformed(evt);
+            }
+        });
+
+        bEditLocations.setText("Show locations");
+        bEditLocations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditLocationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pEditLayout = new javax.swing.GroupLayout(pEdit);
         pEdit.setLayout(pEditLayout);
         pEditLayout.setHorizontalGroup(
             pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pEditLayout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(chEdBarToggle)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
@@ -723,9 +764,16 @@ public class TestFrame extends javax.swing.JFrame {
                         .addComponent(tbEditCirc)
                         .addGap(0, 0, 0)
                         .addComponent(tbEditPoint))
-                    .addComponent(chRubberband)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(chRubberband))
+                    .addGroup(pEditLayout.createSequentialGroup()
+                        .addComponent(bEditPoly)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bEditCircle))
+                    .addGroup(pEditLayout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bEditLocations)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         pEditLayout.setVerticalGroup(
             pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -745,10 +793,16 @@ public class TestFrame extends javax.swing.JFrame {
                     .addComponent(bToAOI)
                     .addComponent(bClear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chEdBarToggle)
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bEditPoly)
+                    .addComponent(bEditCircle))
                 .addGap(18, 18, 18)
+                .addComponent(chEdBarToggle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bEditLocations))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Editing", pEdit);
@@ -776,7 +830,7 @@ public class TestFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bDelAll)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneSSVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(paneSSVisibility, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1068,6 +1122,44 @@ public class TestFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bFlyThreeFootprintsActionPerformed
 
+    private void bEditPolyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditPolyActionPerformed
+        ArrayList<LatLon> coords = new ArrayList<>();
+        coords.add(LatLon.fromDegrees(10, 10));
+        coords.add(LatLon.fromDegrees(20, 10));
+        coords.add(LatLon.fromDegrees(15, 15));
+        wwp.editShapeFromPoly(coords);
+    }//GEN-LAST:event_bEditPolyActionPerformed
+
+    private void bEditCircleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditCircleActionPerformed
+        wwp.editShapeFromCenterRadius(LatLon.fromDegrees(42, 12), 1000000);
+    }//GEN-LAST:event_bEditCircleActionPerformed
+
+    private void bFirstEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFirstEditActionPerformed
+        if (wwp.hasSurfShapeLayer(LAY_FOOTPRINTS)) {
+            try {
+                final SurfShapesLayer shpLayer = (SurfShapesLayer) wwp.getSurfShapeLayer(LAY_FOOTPRINTS);
+                wwp.editShapeFromPoly(shpLayer.getSurfPoly("Footprint 1").getLocations());
+            } catch (NoSuchShapeException ex) {
+            }
+        }
+    }//GEN-LAST:event_bFirstEditActionPerformed
+
+    private void bEditLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditLocationsActionPerformed
+        if (wwp.hasEditShape()) {
+            List<LatLon> locs = wwp.getEditShapeLocations();
+            JTextArea ta = new JTextArea();
+            for (LatLon loc : locs) {
+                ta.append(loc.toString());
+                ta.append("\n");
+            }
+            Double radius = wwp.getEditShapeRadius();
+            if (radius != null) {
+                ta.append(String.format("Radius %f", radius));
+            }
+            JOptionPane.showMessageDialog(this, ta, "Edit shape coords", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_bEditLocationsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1110,6 +1202,10 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton bDelAll;
     private javax.swing.JButton bDelSlayer1;
     private javax.swing.JButton bDelSlayer2;
+    private javax.swing.JButton bEditCircle;
+    private javax.swing.JButton bEditLocations;
+    private javax.swing.JButton bEditPoly;
+    private javax.swing.JButton bFirstEdit;
     private javax.swing.JButton bFirstShape;
     private javax.swing.JButton bFirstShapeReset;
     private javax.swing.JButton bFlyAoi;

@@ -22,10 +22,12 @@ import gov.nasa.worldwind.util.measure.MeasureToolController;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -35,6 +37,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -317,6 +320,95 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Shows a polygon editing shape from the given coordinates.
+     * <p>
+     * Sets polygon edit mode but does not start editing. Clears previous editing shapes and implicitly stops previous editing.
+     *
+     * @param locations the locations (that will get copied)
+     */
+    public void editShapeFromPoly(Iterable<? extends LatLon> locations) {
+        mtInit();
+        mt.clear();
+        editMode = EditModes.POLYGON;
+        eml.setEditing(false);
+        editing = false;
+        // create a copy of the given locations duplicating the first point at the end
+        ArrayList<LatLon> coords = new ArrayList<>();
+        for (LatLon location : locations) {
+            coords.add(location);
+        }
+        coords.add(coords.get(coords.size() - 1));
+        // build up a polygon from the coordinates
+        mt.setMeasureShape(new SurfacePolygon(coords));
+        mt.setFillColor(new Color(255, 255, 255, 63));
+        mt.setLineColor(COLOR_EDIT);
+    }
+
+    /**
+     * Shows a circle editing shape from the given center and radius.
+     * <p>
+     * Sets circle edit mode but does not start editing. Clears previous editing shapes and implicitly stops previous editing.
+     *
+     * @param center the circle center
+     * @param radius the circle radius in meters
+     */
+    public void editShapeFromCenterRadius(LatLon center, double radius) {
+        mtInit();
+        mt.clear();
+        editMode = EditModes.CIRCLE;
+        eml.setEditing(false);
+        editing = false;
+        // create a copy of the given surface polygon duplicating the first point at the end
+        mt.setMeasureShape(new SurfaceCircle(center, radius));
+        mt.setFillColor(new Color(255, 255, 255, 63));
+        mt.setLineColor(COLOR_EDIT);
+    }
+
+    /**
+     * Returns the current edit shape radius.
+     * <p>
+     * Applicable only when edit mode is {@link EditModes#CIRCLE}.
+     *
+     * @return the radius or null if not applicable
+     */
+    public Double getEditShapeRadius() {
+        Double ret = null;
+        if (hasEditShape() && mt.getMeasureShapeType().equals(MeasureTool.SHAPE_CIRCLE)) {
+            ret = mt.getWidth() / 2.d;
+        }
+        return ret;
+    }
+
+    /**
+     * Returns the current edit shape coordinates.
+     * <p>
+     * When edit mode is {@link EditModes#CIRCLE} gives the circle center coordinates. In case of {@link EditModes#POLYGON} the first
+     * coordinate is repeated.
+     *
+     * @return the coordinates or null if not applicable
+     */
+    public List<LatLon> getEditShapeLocations() {
+        ArrayList<LatLon> ret = null;
+        if (hasEditShape()) {
+            ret = new ArrayList<>();
+            if (eml.isPositionSet()) {
+                ret.add(eml.getPosition());
+            } else {
+                switch (mt.getMeasureShapeType()) {
+                    case MeasureTool.SHAPE_CIRCLE:
+                        ret.add(mt.getCenterPosition());
+                        break;
+                    case MeasureTool.SHAPE_PATH:
+                    case MeasureTool.SHAPE_POLYGON:
+                        ret.addAll(mt.getPositions());
+                        break;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
      * Transfers the editing shape to the Area of Interest or Marker of Interest layers.
      * <p>
      * Implicitly ends editing.
@@ -388,6 +480,15 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Tells if editing toolbar is shown.
+     * <p>
+     * @return true if editing functions enabled
+     */
+    public boolean isEditBarVisible() {
+        return editBtnsPanel != null && editBtnsPanel.isVisible();
+    }
+
+    /**
      * Shows/hides the editing toolbar.
      * <p>
      * Editing toolbar is hidden by default.
@@ -429,6 +530,7 @@ public class WWindPanel extends javax.swing.JPanel {
             bLayerSettings.setToolTipText("Layer settings");
             bLayerSettings.setMargin(new java.awt.Insets(0, 0, 0, 0));
             bLayerSettings.addActionListener(new java.awt.event.ActionListener() {
+                @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     layerSettingsDialog.setVisible(true);
                 }
@@ -441,12 +543,12 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Tells if editing toolbar is shown.
+     * Tells if the layer settings button is shown.
      * <p>
      * @return true if editing functions enabled
      */
-    public boolean isEditBarVisible() {
-        return editBtnsPanel != null && editBtnsPanel.isVisible();
+    public boolean isLayerSettingsButtonVisible() {
+        return bLayerSettings != null && bLayerSettings.isVisible();
     }
 
     /**
@@ -779,7 +881,8 @@ public class WWindPanel extends javax.swing.JPanel {
     /**
      * Instantly zooms in or out according to the given factor.
      * <p>
-     * Recalculates the current eye altitude according to the formula: <tt>current_altitude + current_altitude * zFact</tt>
+     * Recalculates the current eye altitude according to the formula:
+     * <tt>current_altitude + current_altitude * zFact</tt>
      * <p>
      * @param zFact the zoom factor, positive values zoom out while negative ones zoom in
      */
@@ -910,6 +1013,27 @@ public class WWindPanel extends javax.swing.JPanel {
         } else {
             ((Component) wwCanvas).setCursor(Cursor.getDefaultCursor());
         }
+    }
+
+    /**
+     * Retrieve a screenshot of World Wind current view
+     * <p>
+     * @return Burred image instance containing current view graphic details.
+     * @throws java.awt.AWTException if graphical libraries are not properly installed/working as expected.
+     */
+    public BufferedImage getScreenshot() throws AWTException {
+        // Get the Widget's Location and Size
+        Component world = this.wwCanvas;
+        java.awt.Point p = world.getLocationOnScreen();
+        int width = world.getWidth();
+        int height = world.getHeight();
+        BufferedImage screencapture = null;
+        // Sanity Check
+        if (height > 0 && width > 0) {
+            // Create the Buffer
+            screencapture = new java.awt.Robot().createScreenCapture(new java.awt.Rectangle(p.x, p.y, width, height));
+        }
+        return screencapture;
     }
 
     /**
