@@ -43,7 +43,7 @@ import org.apache.xmlbeans.XmlException;
  * builder.addTemporalOverlaps(date1, date2);
  * GetRecordsDocument req=builder.getRequest();
  * </pre>
- **
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class HmaGetRecordsBuilder {

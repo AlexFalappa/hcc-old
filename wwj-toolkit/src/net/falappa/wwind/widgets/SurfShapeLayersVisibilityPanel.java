@@ -10,7 +10,7 @@ import net.falappa.wwind.layers.SurfShapeLayer;
  * A panel listing and controlling the visibility of {@link SurfShapesLayer} objects managed by a {@link WWindPanel}.
  * <p>
  * Layers are listed in the order they are added.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class SurfShapeLayersVisibilityPanel extends javax.swing.JPanel implements PropertyChangeListener {
@@ -24,7 +24,7 @@ public class SurfShapeLayersVisibilityPanel extends javax.swing.JPanel implement
 
     /**
      * Attach this component to the given {@link WWindPanel}.
-     * <p>
+     *
      * @param wwp the WWindPanel to attach to
      */
     public void linkTo(WWindPanel wwp) {
@@ -40,7 +40,7 @@ public class SurfShapeLayersVisibilityPanel extends javax.swing.JPanel implement
      * Property change listener implementation.
      * <p>
      * Listens to {@link SurfShapesLayer} additions/removals
-     * <p>
+     *
      * @param evt property change event.
      */
     @Override

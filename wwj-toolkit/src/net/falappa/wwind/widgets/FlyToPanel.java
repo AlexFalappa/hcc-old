@@ -27,7 +27,7 @@ import net.falappa.wwind.posparser.PositionParser;
  * A panel allowing to enter a location and moving the view to the entered location.
  * <p>
  * The component also allows to go to the previous, next locations. The component enables after setting the controlled {@link WWindPanel}..
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class FlyToPanel extends javax.swing.JPanel {
@@ -53,7 +53,7 @@ public class FlyToPanel extends javax.swing.JPanel {
 
     /**
      * Initializing constructor.
-     * <p>
+     *
      * @param wp the WWindPanel to link to
      */
     public FlyToPanel(WWindPanel wp) {
@@ -62,7 +62,7 @@ public class FlyToPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the linked WWindPanel.
-     * <p>
+     *
      * @return the current WWindPanel
      */
     public WWindPanel getWWindPanel() {
@@ -71,7 +71,7 @@ public class FlyToPanel extends javax.swing.JPanel {
 
     /**
      * Setter for the linked WWindPanel.
-     * <p>
+     *
      * @param wp the new WWindPanel
      */
     public void setWWindPanel(WWindPanel wp) {
@@ -87,7 +87,7 @@ public class FlyToPanel extends javax.swing.JPanel {
 
     /**
      * Adds a <tt>PositionParser</tt> to the list of parsers used to interpret location strings.
-     * <p>
+     *
      * @param parser an object implementing the {@link PositionParser} interface
      */
     public void addParser(PositionParser parser) {

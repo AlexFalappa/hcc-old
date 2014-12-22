@@ -22,7 +22,7 @@ import net.falappa.wwind.widgets.WWindPanel;
 
 /**
  * Navigation of search results.
- **
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class NavigationPanel extends javax.swing.JPanel {

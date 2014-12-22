@@ -18,21 +18,21 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Returns the current color of all layer shapes.
-     * <p>
+     *
      * @return the current color
      */
     Color getColor();
 
     /**
      * Set the color of all layer shapes.
-     * <p>
+     *
      * @param col the new color
      */
     void setColor(Color col);
 
     /**
      * Accessor for a named surface shape.
-     * <p>
+     *
      * @param id the shape identifier
      * @return the requested shape
      * @throws NoSuchShapeException if no shape with the given name exists if no shape with the given name exists
@@ -41,7 +41,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Removes the surface shape of the given name.
-     * <p>
+     *
      * @param id the shape identifier
      * @throws NoSuchShapeException if no shape with the given name exists
      */
@@ -63,7 +63,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
      * Sets the color and opacity of the surface shape with the given name.
      * <p>
      * The color and opacity becomes independent from those of the layer.
-     * <p>
+     *
      * @param id the shape identifier
      * @param col new shape color
      * @param opacity new shape opacity
@@ -73,7 +73,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Reset the color and opacity of the surface shape with the given name to those of the layer.
-     * <p>
+     *
      * @param id the shape identifier
      * @throws NoSuchShapeException if no shape with the given name exists
      */
@@ -86,7 +86,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Toggles the visibility of the surface shape with the given name.
-     * <p>
+     *
      * @param id the shape identifier
      * @param flag true to show, false to hide
      * @throws NoSuchShapeException if no shape with the given name exists
@@ -95,7 +95,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Animates the map bringing the surface shape with the given name into view and highlights it.
-     * <p>
+     *
      * @param id the shape identifier
      * @throws NoSuchShapeException if no shape with the given name exists
      */
@@ -103,7 +103,7 @@ public interface SurfShapeLayer extends Layer, ShapeHighlighting {
 
     /**
      * Animates the map bringing the surface shape with the given name into view.
-     * <p>
+     *
      * @param id the shape identifier
      * @throws NoSuchShapeException if no shape with the given name exists
      */

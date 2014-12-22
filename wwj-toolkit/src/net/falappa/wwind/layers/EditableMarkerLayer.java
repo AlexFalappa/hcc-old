@@ -70,7 +70,7 @@ public class EditableMarkerLayer extends AbstractLayer {
 
     /**
      * Default constructor.
-     * <p>
+     *
      * @param wwd WorldWindow to link to
      * @param name layer name
      */

@@ -15,7 +15,7 @@ import javax.swing.JCheckBox;
  * Boundaries, Blue Marble Image, Blue Marble WMS and Microsoft Bing Map).
  * <p>
  * Layers are listed in the order they are added.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class BaseCartoVisibilityPanel extends javax.swing.JPanel {
@@ -31,7 +31,7 @@ public class BaseCartoVisibilityPanel extends javax.swing.JPanel {
 
     /**
      * Attach this component to the given {@link WWindPanel}.
-     * <p>
+     *
      * @param wwp the WWindPanel to attach to
      */
     public void linkTo(WWindPanel wwp) {
@@ -51,7 +51,7 @@ public class BaseCartoVisibilityPanel extends javax.swing.JPanel {
 
     /**
      * Store visibility state under the given preferences node.
-     * <p>
+     *
      * @param prefs a {@link Preferences} node to write under
      */
     public void storePrefs(Preferences prefs) {
@@ -67,7 +67,7 @@ public class BaseCartoVisibilityPanel extends javax.swing.JPanel {
 
     /**
      * Loads visibility state from the given preferences node and sets it on the linked WWindPanel.
-     * <p>
+     *
      * @param prefs a {@link Preferences} node to load from under
      */
     public void loadPrefs(Preferences prefs) {

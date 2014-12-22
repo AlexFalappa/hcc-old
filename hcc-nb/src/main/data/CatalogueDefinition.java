@@ -19,7 +19,7 @@ package main.data;
  * A catalogue definition.
  * <p>
  * Includes a name, the service endpoint URL and the SOAP version to use.
- **
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class CatalogueDefinition {

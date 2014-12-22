@@ -27,7 +27,7 @@ import net.falappa.wwind.utils.WWindUtils;
  * polygon, circle, sector, polyline) removes the previous one.
  * <p>
  * Recommended for containing areas of interest in spatial queries.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class SingleSurfShapeLayer extends RenderableLayer {
@@ -37,7 +37,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Initializing constructor.
-     * <p>
+     *
      * @param name the name of this layer
      */
     public SingleSurfShapeLayer(String name) {
@@ -54,7 +54,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Getter for the shape color
-     * <p>
+     *
      * @return the current color
      */
     public Color getColor() {
@@ -63,7 +63,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Setter for the shape color.
-     * <p>
+     *
      * @param col the new color
      */
     public void setColor(Color col) {
@@ -75,7 +75,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
      * Return the current surface shape.
      * <p>
      * Maybe null if no shape has ever been set.
-     * <p>
+     *
      * @return the current shape
      */
     public Renderable getShape() {
@@ -84,7 +84,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Changes the current shape to a circle.
-     * <p>
+     *
      * @param center the circle center
      * @param radius the circle radius in meters
      */
@@ -96,7 +96,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Changes the current shape to a geodetic polygon.
-     * <p>
+     *
      * @param coords the polygon corner coordiinates
      */
     public void setSurfPoly(Iterable<? extends LatLon> coords) {
@@ -107,7 +107,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Changes the current shape to a Lat Lon range expressed as minimum/maximum latitudes/longitudes.
-     * <p>
+     *
      * @param minlat minimum latitude
      * @param minlon minimum longitude
      * @param maxlat maximum latitude
@@ -123,7 +123,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Changes the current shape to a Lat Lon range expressed as a <tt>Sector</tt> object.
-     * <p>
+     *
      * @param sec the Sector
      */
     public void setSurfSect(Sector sec) {
@@ -136,7 +136,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Changes the current shape to a polyline.
-     * <p>
+     *
      * @param coords the polyline corners
      */
     public void setSurfLine(Iterable<? extends Position> coords) {
@@ -153,7 +153,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Tells if a shape exists.
-     * <p>
+     *
      * @return true if the shape of this layer has been set
      */
     public boolean hasShape() {
@@ -178,7 +178,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
      * Animate a given map bringing the current shape into view.
      * <p>
      * Does nothing if no sape has been set.
-     * <p>
+     *
      * @param wwd the <tt>WorldWindow</tt> to animate
      */
     public void flyToAOI(WorldWindow wwd) {
@@ -196,7 +196,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Load SurfShapesLayer preferences from Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to look for this class own node
      */
     public void loadPrefs(Preferences baseNode) {
@@ -205,7 +205,7 @@ public class SingleSurfShapeLayer extends RenderableLayer {
 
     /**
      * Store SurfShapesLayer preferences using Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to store this class own node
      */
     public void storePrefs(Preferences baseNode) {

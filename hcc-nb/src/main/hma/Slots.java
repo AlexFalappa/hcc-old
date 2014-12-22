@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /**
  * Utility class to support conversion of metadata names to HMA requests and responses slot names.
- **
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public final class Slots {

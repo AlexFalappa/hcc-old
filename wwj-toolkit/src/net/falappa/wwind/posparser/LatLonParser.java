@@ -21,7 +21,7 @@ import gov.nasa.worldwind.geom.Position;
  * A {@link PositionParser} for space separated Lat Lon strings.
  * <p>
  * Lat and lon should be double numbers
- * <p>
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class LatLonParser implements PositionParser {

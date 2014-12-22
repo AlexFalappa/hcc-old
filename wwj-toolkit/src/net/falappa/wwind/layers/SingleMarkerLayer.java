@@ -21,7 +21,7 @@ import net.falappa.wwind.utils.WWindUtils;
  * <p>
  * The layer is not pickable and is meant to be altered programmatically only (does not offer support for user interaction). Some parts of
  * the implementation has been taken from WorldWind MarkerLayer class.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class SingleMarkerLayer extends AbstractLayer {
@@ -32,7 +32,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Initializing constructor.
-     * <p>
+     *
      * @param name the name of this layer
      */
     public SingleMarkerLayer(String name) {
@@ -50,7 +50,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Getter for the marker color.
-     * <p>
+     *
      * @return the current color
      */
     public Color getColor() {
@@ -59,7 +59,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Setter for the marker color.
-     * <p>
+     *
      * @param col the new color
      */
     public void setColor(Color col) {
@@ -68,7 +68,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Setter for the marker position.
-     * <p>
+     *
      * @param coords the new position
      */
     public void setPosition(Position coords) {
@@ -82,7 +82,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Getter for the marker position.
-     * <p>
+     *
      * @return the current position or null if no position has ever been set (no marker)
      */
     public Position getPosition() {
@@ -101,7 +101,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Tells if the marker has ever been set.
-     * <p>
+     *
      * @return true if the marker has been positioned, false otherwise
      */
     public boolean isPositionSet() {
@@ -110,7 +110,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Load SurfShapesLayer preferences from Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to look for this class own node
      */
     public void loadPrefs(Preferences baseNode) {
@@ -119,7 +119,7 @@ public class SingleMarkerLayer extends AbstractLayer {
 
     /**
      * Store SurfShapesLayer preferences using Java Preferences API nodes.
-     * <p>
+     *
      * @param baseNode the root node under which to store this class own node
      */
     public void storePrefs(Preferences baseNode) {
@@ -155,7 +155,7 @@ public class SingleMarkerLayer extends AbstractLayer {
      * Animate a given map bringing the current marker into view.
      * <p>
      * Does nothing if no position has been set.
-     * <p>
+     *
      * @param wwd the <tt>WorldWindow</tt> to animate
      */
     public void flyToMOI(WorldWindow wwd) {

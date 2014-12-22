@@ -28,7 +28,7 @@ import gov.nasa.worldwind.view.orbit.FlatOrbitView;
 
 /**
  * WorldWindow globe/map switcher in a small inline panel.
- * <p>
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class FlatRoundInLinePanel extends javax.swing.JPanel {
@@ -50,7 +50,7 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
      * Initializing constructor.
      * <p>
      * Enables all panel functionalities.
-     * <p>
+     *
      * @param ww the WorldWindow to link to
      */
     public FlatRoundInLinePanel(WorldWindow ww) {
@@ -72,7 +72,7 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
 
     /**
      * Getter for the managed WorldWindow.
-     * <p>
+     *
      * @return the current WorldWindow
      */
     public WorldWindow getWorldWindow() {
@@ -81,7 +81,7 @@ public class FlatRoundInLinePanel extends javax.swing.JPanel {
 
     /**
      * Setter for the managed WorldWindow.
-     * <p>
+     *
      * @param ww the new WorldWindow
      */
     public void setWorldWindow(WorldWindow ww) {

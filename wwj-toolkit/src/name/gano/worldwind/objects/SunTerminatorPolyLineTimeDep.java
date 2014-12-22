@@ -35,7 +35,7 @@ import name.gano.astro.bodies.Sun;
 
 /**
  * A polyline object that is timedependant, representing the Sun's terminator
- * <p>
+ *
  * @author Shawn Gano
  */
 public class SunTerminatorPolyLineTimeDep extends Polyline implements TimeDepRenderable {
@@ -93,7 +93,7 @@ public class SunTerminatorPolyLineTimeDep extends Polyline implements TimeDepRen
      * Returns a list of lat/lon (radians) for the footprint TODO: add elevation limiting constraint!
      * <p>
      * Assumes a Earth is a perfect sphere!
-     * <p>
+     *
      * @param lat radians
      * @param lon radians
      * @param alt meters

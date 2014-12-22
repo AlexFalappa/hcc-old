@@ -37,7 +37,7 @@ import name.gano.astro.bodies.Sun;
  * A SurfacePolygon object representing the night earth area.
  * <p>
  * Derived from SunTerminatorPolyLineTimeDep from JSatTrack.
- * <p>
+ *
  * @author Shawn Gano
  * @author Alessandro Falappa
  */
@@ -95,7 +95,7 @@ public class EarthNightSurfacePolygon extends SurfacePolygon {
      * Recalculates the list of lat/lon (radians) for the polygon.
      * <p>
      * Note: assumes the Earth is a perfect sphere!
-     * <p>
+     *
      * @param lat sun latitude in radians
      * @param lon sun longitude in radians
      * @param alt sun altitude in meters

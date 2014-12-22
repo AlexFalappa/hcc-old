@@ -19,14 +19,14 @@ import gov.nasa.worldwind.geom.Position;
 
 /**
  * Capability to parse a position string.
- * <p>
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public interface PositionParser {
 
     /**
      * Analyzes the given text and tries to convert it into a position.
-     * <p>
+     *
      * @param text the string to parse
      * @return the parsed position or null
      */

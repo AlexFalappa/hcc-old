@@ -10,7 +10,7 @@ import net.falappa.wwind.helpers.EarthNightSurfacePolygon;
  * A layer containing a night and day overlay.
  * <p>
  * Manages sun positions computation and update of a {@link EarthNightSurfacePolygon}.
- * <p>
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class NightDayLayer extends RenderableLayer {

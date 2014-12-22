@@ -9,7 +9,7 @@ import javax.swing.JCheckBox;
 
 /**
  * A Swing {@link Action} to toggle WorldWind layers visibility.
- * <p>
+ *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class ToggleVisibilityAction extends AbstractAction {
@@ -19,7 +19,7 @@ public class ToggleVisibilityAction extends AbstractAction {
 
     /**
      * Initializing constructor.
-     * <p>
+     *
      * @param layer the WorldWind layer to hide/show
      * @param wwd the WorldWindow to redraw
      */

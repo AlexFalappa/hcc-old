@@ -31,7 +31,7 @@ import net.falappa.wwind.layers.EditableMarkerLayer;
  * Controls an internal MeasureTool linked to a WorldWindow. The MeasureTool can also be an external, preconfigured, one.
  * <p>
  * Controls an internal EditableMarkerLayer linked to a WorldWindow.
- * <p>
+ *
  * @author Alessandro Falappa
  */
 public class EditButtonsPanel extends javax.swing.JPanel {
@@ -47,7 +47,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the current {@link WorldWindow}.
-     * <p>
+     *
      * @return the current WorldWindow
      */
     public WorldWindow getWorldWindow() {
@@ -56,7 +56,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Setter for the {@link WorldWindow} and {@link MeasureTool}.
-     * <p>
+     *
      * @param wwindow the WorldWindow
      * @param mt the external MeasureTool
      */
@@ -77,7 +77,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Setter for the {@link WorldWindow}.
-     * <p>
+     *
      * @param wwindow the WorldWindow
      */
     public void setWorldWindow(WorldWindow wwindow) {
@@ -121,7 +121,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the edit shape fill color.
-     * <p>
+     *
      * @return the current color
      */
     public Color getColorFill() {
@@ -130,7 +130,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Setter for the edit shape fill color.
-     * <p>
+     *
      * @param colorFill the new color
      */
     public void setColorFill(Color colorFill) {
@@ -139,7 +139,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the edit shape outline color.
-     * <p>
+     *
      * @return the current color
      */
     public Color getColorBoundary() {
@@ -148,7 +148,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the edit shape outline color.
-     * <p>
+     *
      * @param colorBoundary the new color
      */
     public void setColorBoundary(Color colorBoundary) {
@@ -158,7 +158,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * Getter for the edit shape control points color.
-     * <p>
+     *
      * @return the current color
      */
     public Color getColorCtrlPoints() {
@@ -167,7 +167,7 @@ public class EditButtonsPanel extends javax.swing.JPanel {
 
     /**
      * setter for the edit shape control points color.
-     * <p>
+     *
      * @param colorCtrlPoints the new color
      */
     public void setColorCtrlPoints(Color colorCtrlPoints) {
