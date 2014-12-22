@@ -27,10 +27,13 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 
 /**
+ * SwingWorker to make the HMA GetCapabilities request.
  *
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class CapabilitiesWorker extends SwingWorker<CapabilitiesDocument, Void> {
+
+    private static final String NS_RIM = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
 
     private final HmaGetCapabilitiesBuilder builder = new HmaGetCapabilitiesBuilder();
     private final CatalogueStub stub;
@@ -43,8 +46,7 @@ public class CapabilitiesWorker extends SwingWorker<CapabilitiesDocument, Void> 
 
     @Override
     public CapabilitiesDocument doInBackground() throws Exception {
-        CapabilitiesDocument capDoc = null;
-        capDoc = stub.getCapabilities(builder.getRequest());
+        CapabilitiesDocument capDoc = stub.getCapabilities(builder.getRequest());
         return capDoc;
     }
 
@@ -57,7 +59,7 @@ public class CapabilitiesWorker extends SwingWorker<CapabilitiesDocument, Void> 
                 XmlObject[] res = capDoc.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot");
                 if (res.length > 0) {
                     XmlCursor xc = res[0].newCursor();
-                    xc.toChild("urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0", "ValueList");
+                    xc.toChild(NS_RIM, "ValueList");
                     if (xc.toFirstChild()) {
                         // at first <Value> tag
                         collections.add(xc.getTextValue());

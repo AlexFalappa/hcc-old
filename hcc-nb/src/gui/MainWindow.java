@@ -465,86 +465,6 @@ public class MainWindow extends javax.swing.JFrame {
                     builder.addSpatialRange(pGeo.getOperator(), 0, 10, 0, 10);
                     break;
             }
-            /*
-             switch (pGeo.getOperator()) {
-             case 0:
-             switch (pGeo.getPrimitive()) {
-             case 0:
-             builder.addSpatialOverlapsPolygon(pGeo.getPolygonCoords());
-             break;
-             case 1:
-             builder.addSpatialOverlapsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
-             break;
-             case 2:
-             builder.addSpatialOverlapsPolyline(pGeo.getPolylineCoords());
-             break;
-             case 3:
-             builder.addSpatialOverlapsPoint(pGeo.getPointLat(), pGeo.getPointLon());
-             break;
-             case 4:
-             builder.addSpatialOverlapsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-             break;
-             }
-             break;
-             case 1:
-             switch (pGeo.getPrimitive()) {
-             case 0:
-             builder.addSpatialContainsPolygon(pGeo.getPolygonCoords());
-             break;
-             case 1:
-             builder.addSpatialContainsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
-             break;
-             case 2:
-             builder.addSpatialContainsPolyline(pGeo.getPolylineCoords());
-             break;
-             case 3:
-             builder.addSpatialContainsPoint(pGeo.getPointLat(), pGeo.getPointLon());
-             break;
-             case 4:
-             builder.addSpatialContainsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-             break;
-             }
-             break;
-             case 2:
-             switch (pGeo.getPrimitive()) {
-             case 0:
-             builder.addSpatialIntersectsPolygon(pGeo.getPolygonCoords());
-             break;
-             case 1:
-             builder.addSpatialIntersectsCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
-             break;
-             case 2:
-             builder.addSpatialIntersectsPolyline(pGeo.getPolylineCoords());
-             break;
-             case 3:
-             builder.addSpatialIntersectsPoint(pGeo.getPointLat(), pGeo.getPointLon());
-             break;
-             case 4:
-             builder.addSpatialIntersectsRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-             break;
-             }
-             break;
-             case 3:
-             switch (pGeo.getPrimitive()) {
-             case 0:
-             builder.addSpatialIsContainedPolygon(pGeo.getPolygonCoords());
-             break;
-             case 1:
-             builder.addSpatialIsContainedCircle(pGeo.getCircleCenterLat(), pGeo.getCircleCenterLon(), pGeo.getCircleRadius());
-             break;
-             case 2:
-             builder.addSpatialIsContainedPolyline(pGeo.getPolylineCoords());
-             break;
-             case 3:
-             builder.addSpatialIsContainedPoint(pGeo.getPointLat(), pGeo.getPointLon());
-             break;
-             case 4:
-             builder.addSpatialIsContainedRange(pGeo.getRangeLatMin(), pGeo.getRangeLatMax(), pGeo.getRangeLonMin(), pGeo.getRangeLonMax());
-             break;
-             }
-             break;
-             }
-             */
         }
         final GetRecordsDocument request = builder.getRequest();
         System.out.println("********** Request ******************");
@@ -567,7 +487,8 @@ public class MainWindow extends javax.swing.JFrame {
             prodIds.add(pid);
             // extract collection
             String collection = "None";
-            XmlObject[] xpos = xo.selectPath("declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[@name='urn:ogc:def:slot:OGC-CSW-ebRIM-EO::parentIdentifier']");
+            XmlObject[] xpos = xo.selectPath(
+                    "declare namespace rim='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0' .//rim:Slot[@name='urn:ogc:def:slot:OGC-CSW-ebRIM-EO::parentIdentifier']");
             if (xpos.length > 0) {
                 xc = xpos[0].newCursor();
                 xc.toFirstChild();
@@ -671,7 +592,8 @@ public class MainWindow extends javax.swing.JFrame {
             final String[] nodes = pCatalogs.childrenNames();
             for (String nodeName : nodes) {
                 Preferences catPref = pCatalogs.node(nodeName);
-                CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12", false), catPref.getInt("timeout", 20000));
+                CatalogueDefinition catDef = new CatalogueDefinition(nodeName, catPref.get("edp", "n/a"), catPref.getBoolean("soapv12",
+                        false), catPref.getInt("timeout", 20000));
                 catDef.setCollections(catPref.get("collections", "").split("\\s"));
                 dcmCatalogues.addElement(catDef);
             }
