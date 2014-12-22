@@ -26,7 +26,7 @@ import net.opengis.www.ows.ExceptionType;
 
 /**
  * SwingWorker to make the GetRecords request.
- * <p>
+ **
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class GetRecordsWorker extends SwingWorker<Integer, String> {

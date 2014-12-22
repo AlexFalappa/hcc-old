@@ -46,7 +46,7 @@ import org.apache.xmlbeans.XmlOptions;
 
 /**
  * HCC main window.
- * <p>
+ **
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class MainWindow extends javax.swing.JFrame {

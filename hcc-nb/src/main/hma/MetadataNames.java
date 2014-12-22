@@ -19,7 +19,7 @@ package main.hma;
  * Enumeration of names of standard EO product metadata.
  * <p>
  * The strings refers to the metadata names in HMA catalogue spec.
- * <p>
+ **
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public enum MetadataNames {

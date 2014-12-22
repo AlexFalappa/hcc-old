@@ -24,7 +24,7 @@ import net.falappa.wwind.widgets.WWindPanel;
 
 /**
  * Application entry point.
- * <p>
+ **
  * @author Alessandro Falappa <alex.falappa@gmail.com>
  */
 public class App {
@@ -35,7 +35,7 @@ public class App {
 
     /**
      * Main method.
-     * <p>
+     **
      * @param args the command line arguments
      */
     public static void main(String args[]) {

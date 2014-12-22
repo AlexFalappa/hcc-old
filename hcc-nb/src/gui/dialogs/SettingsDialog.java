@@ -24,7 +24,7 @@ import main.App;
 
 /**
  * HCC settings dialog.
- * <p>
+ **
  * @author Alessandro Falappa
  */
 public class SettingsDialog extends javax.swing.JDialog {
