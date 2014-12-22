@@ -1,5 +1,6 @@
 package net.falappa.wwind.widgets;
 
+import com.telespazio.wwind.layers.WMSLayerFactory;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
@@ -8,6 +9,8 @@ import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
+import gov.nasa.worldwind.layers.Earth.BMNGOneImage;
+import gov.nasa.worldwind.layers.LatLonGraticuleLayer;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.ViewControlsLayer;
@@ -21,6 +24,7 @@ import gov.nasa.worldwind.util.measure.MeasureTool;
 import gov.nasa.worldwind.util.measure.MeasureToolController;
 import gov.nasa.worldwind.view.orbit.BasicOrbitView;
 import gov.nasa.worldwind.view.orbit.FlatOrbitView;
+import gov.nasa.worldwind.wms.WMSTiledImageLayer;
 import gov.nasa.worldwindx.examples.util.StatusLayer;
 import java.awt.AWTException;
 import java.awt.Color;
@@ -31,6 +35,13 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +50,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.Box;
@@ -92,6 +105,7 @@ public class WWindPanel extends javax.swing.JPanel {
     }
     public static final String EVENT_SURF_LAYER_ADDED = "WWindPanel.SurfShapeLayerAdded";
     public static final String EVENT_SURF_LAYER_REMOVED = "WWindPanel.SurfShapeLayerRemoved";
+    public static final String WWINDPANEL_BASECARTO_CONFIG_URL = "wwindpanel.basecarto.config.url";
     private static final Logger logger = Logger.getLogger(WWindPanel.class.getName());
     private static final Color COLOR_EDIT = new Color(0, 200, 255, 200);
     private final SingleSurfShapeLayer aoi = new SingleSurfShapeLayer("Area of Interest");
@@ -103,15 +117,21 @@ public class WWindPanel extends javax.swing.JPanel {
     private MeasureTool mt = null;
     private EditableMarkerLayer eml = null;
     private EditButtonsPanel editBtnsPanel = null;
-    private LayerSettingsDialog layerSettingsDialog = null;
+    private DynamicLayerSettingsDialog layerSettingsDialog = null;
     private JButton bLayerSettings = null;
 
     static {
         // set the WorldWind layers configuration file property
         StringBuilder sb = new StringBuilder("/");
-        sb.append(WWindPanel.class.getName().replace('.', '/')).append("Layers.xml");
+        sb.append(WWindPanel.class.getName().replace('.', '/'));
+        if (System.getProperty(WWINDPANEL_BASECARTO_CONFIG_URL) != null) {
+            sb.append("Layers_minimal.xml");
+        } else {
+            sb.append("Layers_online.xml");
+        }
         URL wwCfg = WWindPanel.class.getResource(sb.toString());
-        logger.config(String.format("Setting WordlWind app config document to: %s", wwCfg.toString()));
+        logger.log(Level.CONFIG, "Setting WordlWind app config document to: {0}", wwCfg.toString());
+        //NOTE: do not use WorldWind logger or Configuration class before the following statement as it interferes with the initial bootstrap sequence
         System.setProperty("gov.nasa.worldwind.app.config.document", wwCfg.toString());
     }
 
@@ -123,26 +143,26 @@ public class WWindPanel extends javax.swing.JPanel {
     public static void setupPropsForWWind() {
         // global JOGL properties
         System.setProperty("jogl.disable.opengles", "true");
-        logger.config("Disabled lookup for OpenGL/ES");
+        logger.log(Level.CONFIG, "Disabled lookup for OpenGL/ES");
         // indicate preferred JAXP XML parser to avoid problems in WorldWind when other parsers are available
         System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
         // set other global properties depending on the OS
         if (Configuration.isMacOS()) {
             // offset the lower right resize grab handle (avoid overlapping)
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
-            logger.config("Set Java2D and AWT hints for MacOS-X platform");
+            logger.log(Level.CONFIG, "Set Java2D and AWT hints for MacOS-X platform");
         } else if (Configuration.isWindowsOS()) {
             // prevents flashing during window resizing
             System.setProperty("sun.awt.noerasebackground", "true");
             // disable Java2D DirectDraw acceleration
             System.setProperty("sun.java2d.noddraw", "true");
-            logger.config("Set Java2D and AWT hints for Windows platform");
+            logger.log(Level.CONFIG, "Set Java2D and AWT hints for Windows platform");
         } else if (Configuration.isLinuxOS()) {
             // disable Java2D OpenGL acceleration
             System.setProperty("sun.java2d.opengl", "false");
             // prevents flashing during window resizing
             System.setProperty("sun.awt.noerasebackground", "true");
-            logger.config("Set Java2D and AWT hints for Linux platform");
+            logger.log(Level.CONFIG, "Set Java2D and AWT hints for Linux platform");
         }
     }
 
@@ -517,7 +537,7 @@ public class WWindPanel extends javax.swing.JPanel {
     public void setLayerSettingsButtonVisible(boolean flag) {
         // lazily construct the dialog
         if (layerSettingsDialog == null) {
-            layerSettingsDialog = new LayerSettingsDialog((Frame) SwingUtilities.getAncestorOfClass(javax.swing.JFrame.class, this));
+            layerSettingsDialog = new DynamicLayerSettingsDialog((Frame) SwingUtilities.getAncestorOfClass(javax.swing.JFrame.class, this));
             layerSettingsDialog.linkTo(this);
             layerSettingsDialog.pack();
             layerSettingsDialog.setLocationRelativeTo(this);
@@ -586,7 +606,7 @@ public class WWindPanel extends javax.swing.JPanel {
                 ((ShapeSelectionSource) slayer).linkTo(wwCanvas);
             }
             shapeLayers.put(layerName, slayer);
-            insertBeforePlacenames(slayer);
+            wwCanvas.getModel().getLayers().add(slayer);
             changeSupport.firePropertyChange(EVENT_SURF_LAYER_ADDED, null, slayer);
         }
     }
@@ -846,6 +866,38 @@ public class WWindPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Insert the layer into the layer list just before the Lat Lon graticule.
+     * <p>
+     * @param layer
+     */
+    public void insertBeforeGraticule(Layer layer) {
+        int pos = 0;
+        LayerList layers = wwCanvas.getModel().getLayers();
+        for (Layer l : layers) {
+            if (l instanceof LatLonGraticuleLayer) {
+                pos = layers.indexOf(l);
+            }
+        }
+        layers.add(pos, layer);
+    }
+
+    /**
+     * Insert the layer into the layer list just after the Blue Marble Next Generation Image layer.
+     * <p>
+     * @param layer
+     */
+    public void insertAfterBMNGImage(Layer layer) {
+        int pos = 0;
+        LayerList layers = wwCanvas.getModel().getLayers();
+        for (Layer l : layers) {
+            if (l instanceof BMNGOneImage) {
+                pos = layers.indexOf(l);
+            }
+        }
+        layers.add(pos + 1, layer);
+    }
+
+    /**
      * Asks for an asynchronous redraw of the map.
      */
     public void redraw() {
@@ -1044,7 +1096,6 @@ public class WWindPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         pTop = new javax.swing.JPanel();
         flyToPanel = new net.falappa.wwind.widgets.FlyToPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -1064,7 +1115,6 @@ public class WWindPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.Box.Filler filler1;
     private net.falappa.wwind.widgets.FlyToPanel flyToPanel;
     private net.falappa.wwind.widgets.FlatRoundInLinePanel globeSwitcher;
@@ -1095,10 +1145,12 @@ public class WWindPanel extends javax.swing.JPanel {
             }
         });
         LayerList layers = model.getLayers();
+        // (optionally) setup the base cartography WMS layer stack
+        setupBaseCarto();
         // add the area of interest layer
-        insertBeforePlacenames(aoi);
+        layers.add(aoi);
         // add the marker of interest layer
-        insertBeforePlacenames(moi);
+        layers.add(moi);
         // add a StatusLayer
         StatusLayer slayer = new StatusLayer();
         slayer.setEventSource(wwCanvas);
@@ -1108,6 +1160,66 @@ public class WWindPanel extends javax.swing.JPanel {
         ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
         layers.add(viewControlsLayer);
         wwCanvas.addSelectListener(new ViewControlsSelectListener(wwCanvas, viewControlsLayer));
+    }
+
+    private void setupBaseCarto() {
+        String cartoConfigUrl = System.getProperty(WWINDPANEL_BASECARTO_CONFIG_URL);
+        if (cartoConfigUrl == null) {
+            logger.log(Level.CONFIG, "No base cartography configuration url specified");
+            return;
+        }
+        logger.log(Level.CONFIG, "Loading base cartography from {0}", cartoConfigUrl);
+        InputStream is = null;
+        if (cartoConfigUrl.startsWith("file:")) {
+            try {
+                File f = new File(new URI(cartoConfigUrl));
+                if (f.isFile() && f.canRead()) {
+                    try {
+                        is = new FileInputStream(f);
+                    } catch (FileNotFoundException ex) {
+                        logger.log(Level.WARNING, ex.getMessage());
+                    }
+                }
+            } catch (URISyntaxException ex) {
+                logger.log(Level.WARNING, ex.getMessage());
+            }
+        } else if (cartoConfigUrl.startsWith("classpath:")) {
+            is = WWindPanel.class.getResourceAsStream(cartoConfigUrl.replace("classpath:", ""));
+        } else {
+            logger.log(Level.WARNING, "Unknown or malofrmed URL {0}", cartoConfigUrl);
+        }
+        if (is == null) {
+            logger.log(Level.SEVERE, "Could not find base cartography configuration url {0}", cartoConfigUrl);
+            return;
+        }
+        try {
+            Properties prop = new Properties();
+            prop.load(is);
+            int numLayers = Integer.parseInt(prop.getProperty("num-layers", "0"));
+            logger.log(Level.CONFIG, "Read {0} configured layers (top to bottom):", numLayers);
+            for (int i = numLayers; i > 0; i--) {
+                // skip iteration if display name with currend index does not exists
+                if (!prop.containsKey(String.format("%d.display-name", i))) {
+                    continue;
+                }
+                String displayName = prop.getProperty(String.format("%d.display-name", i));
+                String getCapUrl = prop.getProperty(String.format("%d.getcapabilities-url", i));
+                String getMapUrl = prop.getProperty(String.format("%d.getmap-url", i));
+                String layerNames = prop.getProperty(String.format("%d.server-layer-names", i));
+                String cacheFolder = prop.getProperty(String.format("%d.data-cache-folder", i));
+                int numLevels = Integer.parseInt(prop.getProperty(String.format("%d.num-levels", i), "1"));
+                boolean onLoad = Boolean.parseBoolean(prop.getProperty(String.format("%d.actuate-onLoad", i), "true"));
+                logger.log(Level.CONFIG, " {0}: {1} {2} - {3}",
+                        new Object[]{i, onLoad ? "[ON ]" : "[OFF]", displayName, getMapUrl});
+                WMSTiledImageLayer wmsl = WMSLayerFactory.createWMSLayer(displayName, getCapUrl, getMapUrl, layerNames, cacheFolder,
+                        numLevels);
+                wmsl.setEnabled(onLoad);
+                insertAfterBMNGImage(wmsl);
+            }
+        } catch (IOException ex) {
+            logger.log(Level.WARNING, "Could not load base cartography configuration from {0}: {1}", new Object[]{cartoConfigUrl, ex
+                .getMessage()});
+        }
     }
 
     // lazily construct the MeasureTool and the EditableMarkerLayer

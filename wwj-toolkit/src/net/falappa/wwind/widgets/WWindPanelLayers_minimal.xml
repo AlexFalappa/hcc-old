@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorldWindConfiguration version="1">
+    <LayerList>
+        <!--background-->
+        <Layer className="gov.nasa.worldwind.layers.StarsLayer">
+            <Property name="Name" value="Stars" />
+        </Layer>
+        <Layer className="gov.nasa.worldwind.layers.SkyGradientLayer" />
+        <!--essential cartography-->
+        <Layer className="gov.nasa.worldwind.layers.Earth.BMNGOneImage" actuate="onLoad"/>
+        <Layer className="gov.nasa.worldwind.layers.LatLonGraticuleLayer" actuate="onRequest" />
+        <!--visual aids-->
+        <Layer className="gov.nasa.worldwind.layers.WorldMapLayer" />
+        <Layer className="gov.nasa.worldwind.layers.ScalebarLayer" />
+        <Layer className="gov.nasa.worldwind.layers.CompassLayer" />
+    </LayerList>
+    <Property name="gov.nasa.worldwind.avkey.InitialLatitude" value="43" />
+    <Property name="gov.nasa.worldwind.avkey.InitialAltitude" value="15e6" />
+</WorldWindConfiguration>

@@ -397,6 +397,11 @@ public class SurfShapesLayer extends RenderableLayer implements ShapeSelectionSo
         addRenderable(popupAnnotation);
     }
 
+    @Override
+    public void removeAllRenderables() {
+        throw new IllegalStateException("Use removeAllShapes() method instead!");
+    }
+
     /**
      * Implementation of WorldWind selection API.
      *

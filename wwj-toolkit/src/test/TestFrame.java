@@ -88,7 +88,7 @@ public class TestFrame extends javax.swing.JFrame {
         bFlyThreeFootprints = new javax.swing.JButton();
         pViewSets = new javax.swing.JPanel();
         paneVisAid = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
-        paneBaseCarto = new net.falappa.wwind.widgets.BaseCartoVisibilityPanel();
+        paneBaseCarto = new net.falappa.wwind.widgets.DynamicCartoVisibilityPanel();
         pAoi = new javax.swing.JPanel();
         ccbLay3 = new net.falappa.swing.combobox.colorbox.ColorComboBox();
         jLabel14 = new javax.swing.JLabel();
@@ -311,11 +311,11 @@ public class TestFrame extends javax.swing.JFrame {
         pViewSets.setLayout(pViewSetsLayout);
         pViewSetsLayout.setHorizontalGroup(
             pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pViewSetsLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pViewSetsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(paneVisAid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pViewSetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paneVisAid, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pViewSetsLayout.setVerticalGroup(
@@ -324,8 +324,7 @@ public class TestFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(paneVisAid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(paneBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("View Settings", pViewSets);
@@ -553,7 +552,7 @@ public class TestFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pShapesLayout.createSequentialGroup()
-                                    .addComponent(tgFirstShapeVisibility)
+                                        .addComponent(tgFirstShapeVisibility)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(bFirstEdit))
                                     .addGroup(pShapesLayout.createSequentialGroup()
@@ -562,34 +561,34 @@ public class TestFrame extends javax.swing.JFrame {
                                         .addComponent(bFirstShapeReset))))))
                     .addGroup(pShapesLayout.createSequentialGroup()
                         .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pShapesLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bAddSLayer1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bDelSlayer1))
-                    .addGroup(pShapesLayout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bAddSlayer2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bDelSlayer2))
-                    .addGroup(pShapesLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pShapesLayout.createSequentialGroup()
-                                .addComponent(jLabel17)
+                                .addComponent(jLabel18)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bFirstShape)
+                                .addComponent(bAddSLayer1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bClearSLayer1))
-                            .addComponent(chAnnoSlayer2)
+                                .addComponent(bDelSlayer1))
                             .addGroup(pShapesLayout.createSequentialGroup()
-                                .addComponent(jLabel22)
+                                .addComponent(jLabel21)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bSecondShape)
+                                .addComponent(bAddSlayer2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bClearSlayer2)))))
+                                .addComponent(bDelSlayer2))
+                            .addGroup(pShapesLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bFirstShape)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bClearSLayer1))
+                                    .addComponent(chAnnoSlayer2)
+                                    .addGroup(pShapesLayout.createSequentialGroup()
+                                        .addComponent(jLabel22)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bSecondShape)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bClearSlayer2)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -622,7 +621,7 @@ public class TestFrame extends javax.swing.JFrame {
                     .addComponent(bFirstShapeReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(tgFirstShapeVisibility)
+                    .addComponent(tgFirstShapeVisibility)
                     .addComponent(bFirstEdit))
                 .addGap(18, 18, 18)
                 .addGroup(pShapesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -746,24 +745,24 @@ public class TestFrame extends javax.swing.JFrame {
             .addGroup(pEditLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chEdBarToggle)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
-                        .addComponent(bToggleEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bToAOI))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tbEditPoly)
-                        .addGap(0, 0, 0)
-                        .addComponent(tbEditLine)
-                        .addGap(0, 0, 0)
-                        .addComponent(tbEditCirc)
-                        .addGap(0, 0, 0)
-                        .addComponent(tbEditPoint))
+                    .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(chEdBarToggle)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
+                            .addComponent(bToggleEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(bClear)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(bToAOI))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pEditLayout.createSequentialGroup()
+                            .addComponent(jLabel16)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(tbEditPoly)
+                            .addGap(0, 0, 0)
+                            .addComponent(tbEditLine)
+                            .addGap(0, 0, 0)
+                            .addComponent(tbEditCirc)
+                            .addGap(0, 0, 0)
+                            .addComponent(tbEditPoint))
                         .addComponent(chRubberband))
                     .addGroup(pEditLayout.createSequentialGroup()
                         .addComponent(bEditPoly)
@@ -773,7 +772,7 @@ public class TestFrame extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bEditLocations)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pEditLayout.setVerticalGroup(
             pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -800,7 +799,7 @@ public class TestFrame extends javax.swing.JFrame {
                 .addComponent(chEdBarToggle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton2)
+                    .addComponent(jButton2)
                     .addComponent(bEditLocations))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
@@ -982,8 +981,9 @@ public class TestFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chEdBarToggleItemStateChanged
 
     private void bAoiInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAoiInfoActionPerformed
-        StringBuilder sb = new StringBuilder("Area of Interest type: ");
+        StringBuilder sb = new StringBuilder();
         if (wwp.hasAOI()) {
+            sb.append("Area of Interest type: ");
             switch (wwp.getAOIType()) {
                 case CIRCLE:
                     sb.append("Circle");
@@ -1012,7 +1012,7 @@ public class TestFrame extends javax.swing.JFrame {
                     sb.append("None");
             }
         } else {
-            sb.append("None");
+            sb.append("No area of interest");
         }
         JOptionPane.showMessageDialog(this, sb.toString(), "AOI Info", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_bAoiInfoActionPerformed
@@ -1164,6 +1164,8 @@ public class TestFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        //uncomment below to try online layers configuration
+//        System.setProperty(WWindPanel.WWINDPANEL_BASECARTO_CONFIGFILE, "basecarto-config-template.properties");
         try {
             // setup logging configuration
             LogManager.getLogManager().readConfiguration(TestFrame.class.getResourceAsStream("/logging.properties"));
@@ -1251,7 +1253,7 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pSelMove;
     private javax.swing.JPanel pShapes;
     private javax.swing.JPanel pViewSets;
-    private net.falappa.wwind.widgets.BaseCartoVisibilityPanel paneBaseCarto;
+    private net.falappa.wwind.widgets.DynamicCartoVisibilityPanel paneBaseCarto;
     private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel paneSSVisibility;
     private net.falappa.wwind.widgets.VisualAidsVisibilityPanel paneVisAid;
     private javax.swing.JSpinner spZmFact;

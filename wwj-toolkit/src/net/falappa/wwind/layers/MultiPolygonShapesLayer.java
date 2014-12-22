@@ -340,6 +340,11 @@ public class MultiPolygonShapesLayer extends RenderableLayer implements SurfShap
         addRenderable(popupAnnotation);
     }
 
+    @Override
+    public void removeAllRenderables() {
+        throw new IllegalStateException("Use removeAllShapes() method instead!");
+    }
+
     /**
      * Implementation of WorldWind selection API.
      *

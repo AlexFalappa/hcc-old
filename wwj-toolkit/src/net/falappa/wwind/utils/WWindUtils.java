@@ -23,9 +23,43 @@ import net.falappa.wwind.widgets.WWindPanel;
 public final class WWindUtils {
 
     /**
-     * Pivate to prevent instantiation
+     * Private to prevent instantiation
      */
     private WWindUtils() {
+    }
+
+    /**
+     * Packs an array of Lat Lon double coordinates (decimal degrees) creating a list of <code>LatLon</code> objects.
+     *
+     * @param ordinates an array of doubles with point coordinates (lat lon pairs)
+     * @return a List of LatLon objects
+     */
+    public static List<LatLon> latLonOrdinates2LatLonList(double[] ordinates) {
+        List<LatLon> ret = new ArrayList<>();
+        if (ordinates.length % 2 != 0) {
+            throw new IllegalArgumentException("Odd number of ordinates in given array");
+        }
+        for (int i = 0; i < ordinates.length; i += 2) {
+            ret.add(LatLon.fromDegrees(ordinates[i], ordinates[i + 1]));
+        }
+        return ret;
+    }
+
+    /**
+     * Packs an array of Lon Lat double coordinates (decimal degrees) creating a list of <code>LatLon</code> objects.
+     *
+     * @param ordinates an array of doubles with point coordinates (lon lat pairs)
+     * @return a List of LatLon objects
+     */
+    public static List<LatLon> lonLatOrdinates2LatLonList(double[] ordinates) {
+        List<LatLon> ret = new ArrayList<>();
+        if (ordinates.length % 2 != 0) {
+            throw new IllegalArgumentException("Odd number of ordinates in given array");
+        }
+        for (int i = 0; i < ordinates.length; i += 2) {
+            ret.add(LatLon.fromDegrees(ordinates[i + 1], ordinates[i]));
+        }
+        return ret;
     }
 
     /**

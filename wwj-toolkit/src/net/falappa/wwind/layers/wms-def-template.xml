@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layer version="1" layerType="TiledImageLayer">
+    <DisplayName>DISPLAY_NAME</DisplayName>
+    <Service serviceName="OGC:WMS" version="1.3">
+        <GetCapabilitiesURL>CAPABILITIES_URL</GetCapabilitiesURL>
+        <GetMapURL>MAP_URL</GetMapURL>
+        <LayerNames>LAYER_NAMES</LayerNames>
+    </Service>
+    <RetrievePropertiesFromService>true</RetrievePropertiesFromService>
+    <!-- day month year hours:minutes:seconds timezone -->
+    <DataCacheName>Earth/CACHE_FOLDER</DataCacheName>
+    <ImageFormat>image/png</ImageFormat>
+    <AvailableImageFormats>
+        <ImageFormat>image/png</ImageFormat>
+        <ImageFormat>image/jpeg</ImageFormat>
+    </AvailableImageFormats>
+    <FormatSuffix>.dds</FormatSuffix>
+    <NumLevels count="NUM_LEVELS" numEmpty="0"/>
+    <TileOrigin>
+        <LatLon units="degrees" latitude="-90" longitude="-180"/>
+    </TileOrigin>
+    <LevelZeroTileDelta>
+        <LatLon units="degrees" latitude="36" longitude="36"/>
+    </LevelZeroTileDelta>
+    <TileSize>
+        <Dimension width="512" height="512"/>
+    </TileSize>
+    <Sector>
+        <SouthWest>
+            <LatLon units="degrees" latitude="-90" longitude="-180"/>
+        </SouthWest>
+        <NorthEast>
+            <LatLon units="degrees" latitude="90" longitude="180"/>
+        </NorthEast>
+    </Sector>
+    <ForceLevelZeroLoads>true</ForceLevelZeroLoads>
+    <RetainLevelZeroTiles>true</RetainLevelZeroTiles>
+    <UseTransparentTextures>true</UseTransparentTextures>
+    <RetrievalTimeouts>
+        <ReadTimeout>
+            <Time units="milliseconds" value="30000"/>
+        </ReadTimeout>
+    </RetrievalTimeouts>
+    <!-- The following lines are included just to show how to set the values to other than their defaults -->
+    <MaxAbsentTileAttempts>5</MaxAbsentTileAttempts>
+    <MinAbsentTileCheckInterval>1000</MinAbsentTileCheckInterval>
+</Layer>

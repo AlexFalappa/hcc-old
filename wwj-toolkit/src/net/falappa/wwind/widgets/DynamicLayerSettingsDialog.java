@@ -1,22 +1,32 @@
+/*
+ * Copyright (C) 2012-2014 Telespazio S.p.A. - A Finmeccanica / Thales Company
+ * All rights reserved.
+ *
+ * This document discloses subject matter in which Telespazio S.p.A. has
+ * proprietary rights. Recipient of the document shall not duplicate, use or
+ * disclose in whole or in part, information contained herein except for or on
+ * behalf of Telespazio S.p.A. to fulfill the purpose for which the document was
+ * delivered to him.
+ */
 package net.falappa.wwind.widgets;
 
 import java.util.prefs.Preferences;
 
 /**
- * Modeless dialog grouping a {@link BaseCartoVisibilityPanel}, a {@link VisualAidsVisibilityPanel} and a
+ * Modeless dialog grouping a {@link DynamicCartoVisibilityPanel}, a {@link VisualAidsVisibilityPanel} and a
  * {@link SurfShapeLayersVisibilityPanel} together.
  *
  * @author Fabrizio Fabri
  * @author Alessandro Falappa
  */
-public class LayerSettingsDialog extends javax.swing.JDialog {
+public class DynamicLayerSettingsDialog extends javax.swing.JDialog {
 
     /**
      * Creates a new dialog.
      *
      * @param parent parent frame
      */
-    public LayerSettingsDialog(java.awt.Frame parent) {
+    public DynamicLayerSettingsDialog(java.awt.Frame parent) {
         super(parent, false);
         initComponents();
     }
@@ -26,7 +36,7 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
      *
      * @param parent parent dialog
      */
-    public LayerSettingsDialog(java.awt.Dialog parent) {
+    public DynamicLayerSettingsDialog(java.awt.Dialog parent) {
         super(parent, false);
         initComponents();
     }
@@ -38,17 +48,17 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
      */
     public void linkTo(WWindPanel wwp) {
         pSurfShpLayers.linkTo(wwp);
-        pBaseCarto.linkTo(wwp);
+        pBaseVmap.linkTo(wwp);
         pVisAids.linkTo(wwp);
     }
 
     public void loadPrefs(Preferences viewPrefs) {
-        pBaseCarto.loadPrefs(viewPrefs);
+        pBaseVmap.loadPrefs(viewPrefs);
         pVisAids.loadPrefs(viewPrefs);
     }
 
     public void storePrefs(Preferences viewPrefs) {
-        pBaseCarto.storePrefs(viewPrefs);
+        pBaseVmap.storePrefs(viewPrefs);
         pVisAids.storePrefs(viewPrefs);
     }
 
@@ -62,10 +72,9 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
 
         pSurfShpLayers = new net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel();
         pVisAids = new net.falappa.wwind.widgets.VisualAidsVisibilityPanel();
-        pBaseCarto = new net.falappa.wwind.widgets.BaseCartoVisibilityPanel();
+        pBaseVmap = new net.falappa.wwind.widgets.DynamicCartoVisibilityPanel();
 
         setTitle("Layer settings");
-        setPreferredSize(new java.awt.Dimension(400, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,9 +85,9 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pSurfShpLayers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(pVisAids, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pBaseCarto, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)))
+                        .addComponent(pVisAids, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pBaseVmap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -88,8 +97,8 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
                 .addComponent(pSurfShpLayers, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pBaseCarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pVisAids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pVisAids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pBaseVmap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -97,7 +106,7 @@ public class LayerSettingsDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private net.falappa.wwind.widgets.BaseCartoVisibilityPanel pBaseCarto;
+    private net.falappa.wwind.widgets.DynamicCartoVisibilityPanel pBaseVmap;
     private net.falappa.wwind.widgets.SurfShapeLayersVisibilityPanel pSurfShpLayers;
     private net.falappa.wwind.widgets.VisualAidsVisibilityPanel pVisAids;
     // End of variables declaration//GEN-END:variables
