@@ -17,6 +17,7 @@ package gui.dialogs;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.io.File;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
@@ -48,6 +49,12 @@ public class SettingsDialog extends javax.swing.JDialog {
         initComponents();
         // select the current look and feel
         cbLF.setSelectedItem(lafClassToNames.get(UIManager.getLookAndFeel().getClass().getName()));
+        // load dump flags and dirs from prefs
+        Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
+        chDumpReqs.setSelected(prefs.getBoolean(App.PREF_DUMP_REQS_FLAG, false));
+        dsfReqsDir.setDir(new File(prefs.get(App.PREF_DUMP_REQS_DIR, System.getProperty("user.home"))));
+        chDumpRsps.setSelected(prefs.getBoolean(App.PREF_DUMP_RESPS_FLAG, false));
+        dsfRspsDir.setDir(new File(prefs.get(App.PREF_DUMP_RESPS_DIR, System.getProperty("user.home"))));
     }
 
     /** This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
@@ -63,6 +70,12 @@ public class SettingsDialog extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         bCancel = new javax.swing.JButton();
         bOk = new javax.swing.JButton();
+        chDumpReqs = new javax.swing.JCheckBox();
+        chDumpRsps = new javax.swing.JCheckBox();
+        lDreqs = new javax.swing.JLabel();
+        lDrsps = new javax.swing.JLabel();
+        dsfRspsDir = new net.falappa.swing.text.DirSelectorField();
+        dsfReqsDir = new net.falappa.swing.text.DirSelectorField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("HCC Settings");
@@ -89,6 +102,30 @@ public class SettingsDialog extends javax.swing.JDialog {
             }
         });
 
+        chDumpReqs.setText("Dump requests");
+        chDumpReqs.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chDumpReqsItemStateChanged(evt);
+            }
+        });
+
+        chDumpRsps.setText("Dump responses");
+        chDumpRsps.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chDumpRspsItemStateChanged(evt);
+            }
+        });
+
+        lDreqs.setText("to");
+        lDreqs.setEnabled(false);
+
+        lDrsps.setText("to");
+        lDrsps.setEnabled(false);
+
+        dsfRspsDir.setEnabled(false);
+
+        dsfReqsDir.setEnabled(false);
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -105,10 +142,21 @@ public class SettingsDialog extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbLF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
+                    .addComponent(chDumpReqs)
+                    .addComponent(chDumpRsps)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 9, Short.MAX_VALUE))
-                            .addComponent(cbLF, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(lDrsps)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dsfRspsDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(lDreqs)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dsfReqsDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
 
@@ -123,6 +171,18 @@ public class SettingsDialog extends javax.swing.JDialog {
                     .addComponent(cbLF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chDumpReqs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lDreqs)
+                    .addComponent(dsfReqsDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chDumpRsps)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lDrsps)
+                    .addComponent(dsfRspsDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bCancel)
@@ -140,6 +200,11 @@ public class SettingsDialog extends javax.swing.JDialog {
         Preferences prefs = Preferences.userRoot().node(App.PREF_ROOT);
         // store selected LAF class name
         prefs.put(App.PREF_LAFCLASS, lafClassToNames.inverse().get(cbLF.getSelectedItem().toString()));
+        // store dump flags and dirs
+        prefs.putBoolean(App.PREF_DUMP_REQS_FLAG, chDumpReqs.isSelected());
+        prefs.put(App.PREF_DUMP_REQS_DIR, dsfReqsDir.getDir().getAbsolutePath());
+        prefs.putBoolean(App.PREF_DUMP_RESPS_FLAG, chDumpRsps.isSelected());
+        prefs.put(App.PREF_DUMP_RESPS_DIR, dsfRspsDir.getDir().getAbsolutePath());
         setVisible(false);
     }//GEN-LAST:event_bOkActionPerformed
 
@@ -147,12 +212,30 @@ public class SettingsDialog extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_bCancelActionPerformed
 
+    private void chDumpReqsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chDumpReqsItemStateChanged
+        boolean flag = chDumpReqs.isSelected();
+        lDreqs.setEnabled(flag);
+        dsfReqsDir.setEnabled(flag);
+    }//GEN-LAST:event_chDumpReqsItemStateChanged
+
+    private void chDumpRspsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chDumpRspsItemStateChanged
+        boolean flag = chDumpRsps.isSelected();
+        lDrsps.setEnabled(flag);
+        dsfRspsDir.setEnabled(flag);
+    }//GEN-LAST:event_chDumpRspsItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
     private javax.swing.JButton bOk;
     private javax.swing.JComboBox cbLF;
+    private javax.swing.JCheckBox chDumpReqs;
+    private javax.swing.JCheckBox chDumpRsps;
     private javax.swing.JPanel contentPane;
+    private net.falappa.swing.text.DirSelectorField dsfReqsDir;
+    private net.falappa.swing.text.DirSelectorField dsfRspsDir;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lDreqs;
+    private javax.swing.JLabel lDrsps;
     // End of variables declaration//GEN-END:variables
 }

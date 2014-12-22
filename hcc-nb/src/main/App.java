@@ -31,6 +31,10 @@ public class App {
 
     public static final String PREF_ROOT = "alexfalappa.hcc-nb";
     public static final String PREF_LAFCLASS = "LAF-classname";
+    public static final String PREF_DUMP_REQS_FLAG = "dump-requests";
+    public static final String PREF_DUMP_REQS_DIR = "dump-requests-dir";
+    public static final String PREF_DUMP_RESPS_FLAG = "dump-responses";
+    public static final String PREF_DUMP_RESPS_DIR = "dump-responses-dir";
     public static MainWindow frame;
 
     /**
