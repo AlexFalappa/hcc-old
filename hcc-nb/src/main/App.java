@@ -16,11 +16,17 @@
 package main;
 
 import gui.MainWindow;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.prefs.Preferences;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import net.falappa.utils.LogUtils;
 import net.falappa.wwind.widgets.WWindPanel;
+import org.apache.xmlbeans.XmlObject;
+import org.apache.xmlbeans.XmlOptions;
 
 /**
  * Application entry point.
@@ -36,6 +42,9 @@ public class App {
     public static final String PREF_DUMP_RESPS_FLAG = "dump-responses";
     public static final String PREF_DUMP_RESPS_DIR = "dump-responses-dir";
     public static MainWindow frame;
+    private static final Preferences prefs = Preferences.userRoot().node(PREF_ROOT);
+    private static final XmlOptions xopts = new XmlOptions().setSavePrettyPrint().setSavePrettyPrintIndent(2).setSaveNamespacesFirst();
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
     /**
      * Main method.
@@ -58,12 +67,58 @@ public class App {
     }
 
     private static void setPrefLAF() {
-        // get preferences API node
-        Preferences prefs = Preferences.userRoot().node(PREF_ROOT);
         try {
             UIManager.setLookAndFeel(prefs.get(PREF_LAFCLASS, UIManager.getSystemLookAndFeelClassName()));
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             //ignored will go with default look and feel
         }
+    }
+
+    public static void dumpReq(XmlObject req, boolean isResults) {
+        if (prefs.getBoolean(PREF_DUMP_REQS_FLAG, false)) {
+            try {
+                File dumpFile = new File(genDumpFilePath(true, isResults));
+                req.save(dumpFile, xopts);
+            } catch (IOException ex) {
+                // TODO log exception to logger
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    public static void dumpResp(XmlObject req, boolean isResults) {
+        if (prefs.getBoolean(PREF_DUMP_RESPS_FLAG, false)) {
+            try {
+                File dumpFile = new File(genDumpFilePath(false, isResults));
+                req.save(dumpFile, xopts);
+            } catch (IOException ex) {
+                // TODO log exception to logger
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    private static String genDumpFilePath(boolean isReq, boolean isResults) {
+        StringBuilder sb = new StringBuilder();
+        if (isReq) {
+            sb.append(prefs.get(PREF_DUMP_REQS_DIR, System.getProperty("user.home")));
+        } else {
+            sb.append(prefs.get(PREF_DUMP_RESPS_DIR, System.getProperty("user.home")));
+        }
+        sb.append(System.getProperty("file.separator"));
+        sb.append(sdf.format(new Date()));
+        sb.append('-').append(frame.getCurrentCatalogue().getName());
+        if (isResults) {
+            sb.append("-results");
+        } else {
+            sb.append("-hits");
+        }
+        if (isReq) {
+            sb.append("-req");
+        } else {
+            sb.append("-resp");
+        }
+        sb.append(".xml");
+        return sb.toString();
     }
 }

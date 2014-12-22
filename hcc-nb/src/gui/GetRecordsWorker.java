@@ -18,6 +18,7 @@ package gui;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
+import main.App;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsDocument;
 import net.opengis.www.cat.csw._2_0_2.GetRecordsResponseDocument;
 import net.opengis.www.cat.wrs._1_0.CatalogueStub;
@@ -45,9 +46,11 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
     protected Integer doInBackground() throws Exception {
         publish("Building request...");
         GetRecordsDocument req = mw.buildReq(isResults);
+        App.dumpReq(req, isResults);
         publish("Sending request...");
         int recs = 0;
         final GetRecordsResponseDocument resp = stub.getRecords(req);
+        App.dumpResp(resp, isResults);
         if (isResults) {
             publish("Processing response...");
             recs = mw.processResults(resp);
@@ -81,7 +84,8 @@ public class GetRecordsWorker extends SwingWorker<Integer, String> {
                 // decode error from remote service
                 final ServiceExceptionReportFault serf = (ServiceExceptionReportFault) cause;
                 final ExceptionType exc = serf.getFaultMessage().getExceptionReport().getExceptionArray(0);
-                mw.showErrorDialog("Server error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(), exc.getExceptionTextArray(0)));
+                mw.showErrorDialog("Server error", String.format("Exception Report code %s:\n%s", exc.getExceptionCode(),
+                        exc.getExceptionTextArray(0)));
             } else {
                 mw.showErrorDialog("Unexpected error", "Could not perform request!", ex);
             }

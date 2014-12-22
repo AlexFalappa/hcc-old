@@ -467,8 +467,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
         final GetRecordsDocument request = builder.getRequest();
-        System.out.println("********** Request ******************");
-        System.out.println(request.xmlText(new XmlOptions().setSavePrettyPrint()));
         return request;
     }
 
